@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Djuvec-Reis mit Cevapcici</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css?v=9">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <script src="../assets/thema.js?v=9"></script>
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="../index.html"><span class="marke-teller" aria-hidden="true"></span>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="../index.html">Alle Rezepte</a>
+        <a href="../planer.html">Wochenplaner</a>
+        <button type="button" class="thema-knopf" id="thema-knopf"><svg class="mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="thema-text">Dunkel</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="rezept">
+    <section class="rezept-buehne">
+      <img class="buehne-bild" src="../assets/bilder/djuvec-reis-cevapcici-breit.jpg" alt="" width="1800" height="1012" fetchpriority="high">
+      <div class="huelle">
+        <a class="zurueck" href="../index.html">Zurück zur Übersicht</a>
+
+        <div class="rezept-kopf">
+          <div>
+            <h1>Djuvec-Reis mit Cevapcici</h1>
+            <p class="rezept-intro">Würzige Hackfleischröllchen mit rotem Tomaten-Paprika-Reis. Dazu passen Ajvar und Krautsalat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="huelle">
+
+      <dl class="fakten">
+        <div><dt>Zeit</dt><dd>1 Std.</dd></div>
+        <div><dt>Schwierigkeit</dt><dd>mittel</dd></div>
+        <div><dt>Kategorie</dt><dd>Klassiker</dd></div>
+        <div><dt>Ernährung</dt><dd>mit Fleisch</dd></div>
+      </dl>
+
+      <div class="rezept-raster">
+        <section class="zutaten">
+          <h2>Zutaten</h2>
+          <div class="portionen" data-basis="4">
+            <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
+            <span><output aria-live="polite">4</output> Portionen</span>
+            <button type="button" data-schritt="1" aria-label="Eine Portion mehr">+</button>
+          </div>
+          <h3>Für die Cevapcici</h3>
+          <ul>
+            <li><b data-menge="1" data-einheit="kg">1 kg</b>Rinderhack</li>
+            <li><b data-menge="2" data-einheit="EL">2 EL</b>Gehackte Petersilie, frisch oder TK</li>
+            <li><b data-menge="2">2</b><span data-einzahl="Knoblauchzehe" data-mehrzahl="Knoblauchzehen">Knoblauchzehen</span></li>
+            <li><b data-menge="2">2</b><span data-einzahl="Ei" data-mehrzahl="Eier">Eier</span></li>
+            <li><b data-menge="2" data-einheit="TL">2 TL</b>Paprika, edelsüß</li>
+            <li><b data-menge="1" data-einheit="TL">1 TL</b>Getrockneter Majoran</li>
+            <li><b data-menge="1" data-einheit="TL">1 TL</b>Getrockneter Oregano</li>
+            <li><b></b>Etwas Salz und Pfeffer</li>
+          </ul>
+          <h3>Für den Djuvec-Reis</h3>
+          <ul>
+            <li><b data-menge="250" data-einheit="g">250 g</b>Langkornreis</li>
+            <li><b data-menge="1">1</b><span data-einzahl="Zwiebel" data-mehrzahl="Zwiebeln">Zwiebel</span></li>
+            <li><b data-menge="1">1</b><span data-einzahl="Knoblauchzehe" data-mehrzahl="Knoblauchzehen">Knoblauchzehe</span></li>
+            <li><b data-menge="1">1</b><span data-einzahl="rote Paprika" data-mehrzahl="rote Paprika">rote Paprika</span></li>
+            <li><b data-menge="1" data-einheit="EL">1 EL</b>Ajvar, mild</li>
+            <li><b data-menge="400" data-einheit="ml">400 ml</b>Passierte Tomaten</li>
+            <li><b data-menge="400" data-einheit="ml">400 ml</b>Wasser</li>
+            <li><b></b>Etwas Salz und Pfeffer</li>
+            <li><b></b>Etwas Öl</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Zubereitung</h2>
+          <ol class="schritte">
+            <li>Für die Cevapcici den Knoblauch pressen und mit dem Hackfleisch in eine große Schüssel geben. Eier, Petersilie, Paprika, Majoran und Oregano zugeben, kräftig salzen und pfeffern und alles am besten mit den Händen vermengen.</li>
+            <li>Kleine Röllchen mit etwa 2 cm Durchmesser formen. Direkt braten oder mit Folie abgedeckt in den Kühlschrank stellen, bis es losgeht.</li>
+            <li>In einer Pfanne mit etwas Öl einige Minuten braten und dabei wenden. Alternativ in zwei Portionen im Airfryer auf der Grillpfanne bei 180 °C in 9–10 Minuten ohne zusätzliches Fett garen.</li>
+            <li>Für den Reis Knoblauch und Zwiebel fein würfeln, die Paprika ebenfalls würfeln.</li>
+            <li>Knoblauch, Zwiebel und Paprika in etwas Öl dünsten. Ajvar und Reis dazugeben und kurz mitdünsten.</li>
+            <li>Wasser und passierte Tomaten zugießen, verrühren und etwa 25 Minuten köcheln lassen. Dabei immer wieder umrühren. Mit Salz und Pfeffer abschmecken.</li>
+          </ol>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fuss">
+    <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
+  </footer>
+
+  <script src="../assets/rezept.js?v=9"></script>
+</body>
+</html>
