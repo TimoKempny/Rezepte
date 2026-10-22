@@ -555,6 +555,10 @@ a { color: inherit; }
   display: flex; gap: var(--s3);
 }
 .zutaten li b { font-family: var(--schrift-ui); font-weight: 700; flex: none; width: 5.5rem; color: var(--haupt-text); }
+/* Zwischenüberschriften, wenn ein Rezept mehrere Zutatengruppen hat (Teig, Belag …) */
+.zutaten h3 { font-size: 1rem; margin: var(--s5) 0 var(--s1); color: var(--leise); }
+.zutaten .portionen + h3 { margin-top: 0; }
+.tipp + .tipp { margin-top: var(--s4); }
 
 .schritte { list-style: none; margin: 0; padding: 0; counter-reset: schritt; display: grid; gap: var(--s5); }
 .schritte li {

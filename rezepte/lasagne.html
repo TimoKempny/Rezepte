@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lasagne wie beim Italiener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css?v=8">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <script src="../assets/thema.js?v=8"></script>
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="../index.html"><span class="marke-teller" aria-hidden="true"></span>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="../index.html">Alle Rezepte</a>
+        <a href="../planer.html">Wochenplaner</a>
+        <button type="button" class="thema-knopf" id="thema-knopf"><svg class="mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="thema-text">Dunkel</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="rezept">
+    <section class="rezept-buehne">
+      <img class="buehne-bild" src="../assets/bilder/lasagne-breit.jpg" alt="" width="1800" height="1012" fetchpriority="high">
+      <div class="huelle">
+        <a class="zurueck" href="../index.html">Zurück zur Übersicht</a>
+
+        <div class="rezept-kopf">
+          <div>
+            <h1>Lasagne wie beim Italiener</h1>
+            <p class="rezept-intro">Mit lange eingekochtem Ragù, selbstgemachter Béchamel und goldbrauner Käsekruste.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="huelle">
+
+      <dl class="fakten">
+        <div><dt>Zeit</dt><dd>1 Std.</dd></div>
+        <div><dt>Schwierigkeit</dt><dd>mittel</dd></div>
+        <div><dt>Kategorie</dt><dd>Pasta</dd></div>
+        <div><dt>Ernährung</dt><dd>mit Fleisch</dd></div>
+      </dl>
+
+      <div class="rezept-raster">
+        <section class="zutaten">
+          <h2>Zutaten</h2>
+          <div class="portionen" data-basis="4">
+            <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
+            <span><output aria-live="polite">4</output> Portionen</span>
+            <button type="button" data-schritt="1" aria-label="Eine Portion mehr">+</button>
+          </div>
+          <h3>Für die Bolognese</h3>
+          <ul>
+            <li><b></b>Olivenöl</li>
+            <li><b data-menge="500" data-einheit="g">500 g</b>Gemischtes Hackfleisch</li>
+            <li><b data-menge="1">1</b><span data-einzahl="Zwiebel" data-mehrzahl="Zwiebeln">Zwiebel</span></li>
+            <li><b data-menge="2">2</b><span data-einzahl="Knoblauchzehe" data-mehrzahl="Knoblauchzehen">Knoblauchzehen</span></li>
+            <li><b data-menge="1">1</b><span data-einzahl="Bund Petersilie (oder TK)" data-mehrzahl="Bund Petersilie (oder TK)">Bund Petersilie (oder TK)</span></li>
+            <li><b data-menge="1" data-einheit="EL">1 EL</b>Tomatenmark</li>
+            <li><b data-menge="1" data-einheit="Dose">1 Dose</b><span data-einzahl="Geschälte Tomaten (800 g)" data-mehrzahl="Geschälte Tomaten (je 800 g)">Geschälte Tomaten (800 g)</span></li>
+            <li><b></b>Etwas Rotwein</li>
+          </ul>
+          <h3>Für die Béchamelsoße</h3>
+          <ul>
+            <li><b data-menge="0.5" data-einheit="l">0,5 l</b>Milch</li>
+            <li><b data-menge="30" data-einheit="g">30 g</b>Butter</li>
+            <li><b data-menge="40" data-einheit="g">40 g</b>Mehl</li>
+            <li><b></b>Salz und Pfeffer</li>
+            <li><b></b>Zitronensaft</li>
+            <li><b></b>Muskat</li>
+          </ul>
+          <h3>Außerdem</h3>
+          <ul>
+            <li><b></b>Butter für die Form</li>
+            <li><b data-menge="300" data-einheit="g">300 g</b>Lasagneplatten</li>
+            <li><b></b>Geriebener Käse nach Belieben</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Zubereitung</h2>
+          <ol class="schritte">
+            <li>Für das Ragù Olivenöl in einem Topf erhitzen und das Hackfleisch darin rundherum anbraten. Gehackte Zwiebel und Petersilie dazugeben, Knoblauch in feinen Scheiben und Tomatenmark einrühren und mitbraten.</li>
+            <li>Mit den Dosentomaten aufgießen, salzen, pfeffern und nach Belieben Rotwein dazugeben. Ohne Deckel mindestens 30 Minuten einkochen lassen.</li>
+            <li>Für die Béchamel Butter in einem kleinen Topf schmelzen, das Mehl mit dem Schneebesen einrühren und hellgelb anschwitzen. Milch dazugießen und glatt rühren. Falls Klümpchen bleiben, die Soße durch ein feines Sieb streichen.</li>
+            <li>Béchamel knapp 30 Minuten auf kleiner Flamme köcheln lassen, damit der Mehlgeschmack verschwindet. Mit Salz, Pfeffer, Zitronensaft und etwas Muskat abschmecken.</li>
+            <li>Eine gebutterte, ofenfeste Form mit etwas Ragù ausstreichen. Abwechselnd Lasagneplatten, Ragù und Béchamel einschichten, bis die Form voll ist. Die oberste Schicht ist Béchamel.</li>
+            <li>Dick mit geriebenem Käse bestreuen, Butterflöckchen daraufsetzen und im heißen Ofen bei 180 °C Umluft 30–40 Minuten backen, bis die Kruste goldbraun ist.</li>
+          </ol>
+          <p class="tipp"><strong>Tipp:</strong> Die Lasagne lässt sich gut am Vortag vorbereiten.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fuss">
+    <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
+  </footer>
+
+  <script src="../assets/rezept.js?v=8"></script>
+</body>
+</html>
