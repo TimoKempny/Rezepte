@@ -190,6 +190,20 @@ function festhalten(tag) {
 
 // ---------- Anzeige ----------
 
+// Montag der Woche, für die geplant wird: heute, wenn Montag ist, sonst der kommende
+function wochenstart() {
+  const heute = new Date();
+  heute.setHours(0, 0, 0, 0);
+  heute.setDate(heute.getDate() + ((8 - heute.getDay()) % 7));
+  return heute;
+}
+
+function datumVon(tag, format) {
+  const d = wochenstart();
+  d.setDate(d.getDate() + tag);
+  return d.toLocaleDateString("de-DE", format);
+}
+
 function tagHTML(tag) {
   const eintrag = plan[tag];
   const t = TAGE[tag];
@@ -197,7 +211,7 @@ function tagHTML(tag) {
 
   if (!r) {
     return `<article class="tag tag-leer">
-      <div class="tag-name">${t.kurz}<small>${t.lang}</small></div>
+      <div class="tag-name">${t.kurz}<small>${t.lang}</small><span class="tag-datum">${datumVon(tag, { day: "numeric", month: "long" })}</span></div>
       <div class="teller"><span>?</span></div>
       <div class="tag-info"><h3>Kein passendes Rezept</h3><p>Lockere die Kriterien links.</p></div>
       <div class="tag-aktion"><button type="button" class="knopf zweit klein" data-aktion="wuerfeln" data-tag="${tag}">Neu würfeln</button></div>
@@ -208,11 +222,12 @@ function tagHTML(tag) {
   if (istFleischfrei(r)) merkmale.push(`<li class="gruen">${esc(r.ernaehrung)}</li>`);
 
   return `<article class="tag${eintrag.fest ? " fest" : ""}">
-    <div class="tag-name">${t.kurz}<small>${t.lang}</small></div>
+    <div class="tag-name">${t.kurz}<small>${t.lang}</small><span class="tag-datum">${datumVon(tag, { day: "numeric", month: "long" })}</span></div>
     ${tellerHTML(r)}
     <div class="tag-info">
       <h3><a href="${esc(r.seite)}">${esc(r.titel)}</a></h3>
-      <ul class="merkmale">${merkmale.join("")}</ul>
+      <p class="tag-beschreibung">${esc(r.beschreibung)}</p>
+      <ul class="merkmale">${merkmale.join("")}<li class="nur-druck">${r.portionen} Portionen</li></ul>
     </div>
     <div class="tag-aktion">
       <button type="button" class="knopf zweit klein" data-aktion="festhalten" data-tag="${tag}" aria-pressed="${eintrag.fest}">${eintrag.fest ? "Festgehalten" : "Festhalten"}</button>
@@ -232,16 +247,22 @@ function anzeigen() {
     return;
   }
 
+  // Nur im Druck sichtbar: Kopf mit Zeitraum und Fußzeile mit Adresse der Seite
+  const zeitraum = `${datumVon(0, { day: "numeric", month: "long" })} bis ${datumVon(6, { day: "numeric", month: "long", year: "numeric" })}`;
+  const adresse = location.protocol.startsWith("http") ? location.host + location.pathname.replace(/planer\.html$/, "") : "";
+
   el.woche.innerHTML = `
+    <header class="druck-kopf"><h2>Wochenplan</h2><p>${zeitraum}</p></header>
     <div class="woche-aktionen">
       <h2>Deine Woche</h2>
       <div>
-        <button type="button" class="knopf zweit klein" data-aktion="drucken">Drucken</button>
+        <button type="button" class="knopf zweit klein" data-aktion="drucken">Drucken / PDF</button>
         <button type="button" class="knopf zweit klein" data-aktion="leeren">Plan leeren</button>
       </div>
     </div>
     ${meldung ? `<p class="woche-meldung">${esc(meldung)}</p>` : ""}
-    ${tage.map(tagHTML).join("")}`;
+    ${tage.map(tagHTML).join("")}
+    ${adresse ? `<p class="druck-fuss">Alle Rezepte: ${esc(adresse)}</p>` : ""}`;
 }
 
 // ---------- Speicher ----------
