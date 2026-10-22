@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unsere Rezepte</title>
+  <meta name="description" content="Unsere Kochrezepte zum Filtern und Durchstöbern, dazu ein Wochenplaner fürs Kochen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="index.html"><span class="marke-teller" aria-hidden="true"></span>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="index.html" aria-current="page">Alle Rezepte</a>
+        <a href="planer.html">Wochenplaner</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="huelle">
+        <div>
+          <h1>Was kochen wir heute?</h1>
+          <p class="hero-text" id="hero-text">Unsere erprobten Rezepte, sortiert nach dem, was gerade passt.</p>
+          <div class="suche">
+            <label class="nur-screenreader" for="suche">Rezepte durchsuchen</label>
+            <input id="suche" type="search" placeholder="Rezept oder Zutat suchen" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="vorschlag" id="vorschlag" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="filter" aria-label="Rezepte filtern">
+      <div class="huelle">
+        <div class="chips" id="kategorien" role="group" aria-label="Kategorie"></div>
+
+        <div class="regler">
+          <div class="feld">
+            <label for="zeit">Kochzeit bis <span class="feld-wert" id="zeit-wert"></span></label>
+            <input id="zeit" type="range" min="15" max="180" step="5" value="180">
+          </div>
+          <div class="feld">
+            <span class="feld-name" id="ernaehrung-label">Ernährung</span>
+            <div class="segmente" id="ernaehrung" role="group" aria-labelledby="ernaehrung-label">
+              <button type="button" data-wert="alle" aria-pressed="true">Alles</button>
+              <button type="button" data-wert="vegetarisch" aria-pressed="false">Vegetarisch</button>
+              <button type="button" data-wert="vegan" aria-pressed="false">Vegan</button>
+            </div>
+          </div>
+          <div class="feld">
+            <label for="schwierigkeit">Schwierigkeit</label>
+            <select id="schwierigkeit">
+              <option value="alle">Alle</option>
+              <option value="leicht">Nur leicht</option>
+              <option value="mittel">Bis mittel</option>
+            </select>
+          </div>
+          <div class="feld">
+            <label for="sortierung">Sortieren nach</label>
+            <select id="sortierung">
+              <option value="neu">Neueste zuerst</option>
+              <option value="zeit-auf">Kochzeit, kürzeste zuerst</option>
+              <option value="zeit-ab">Kochzeit, längste zuerst</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ergebnis-zeile">
+          <p class="anzahl" id="anzahl" aria-live="polite"></p>
+          <button type="button" class="textlink" id="zuruecksetzen" hidden>Filter zurücksetzen</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="sammlung" aria-label="Rezepte">
+      <div class="huelle">
+        <ul class="raster" id="raster"></ul>
+        <div class="leer" id="leer" hidden>
+          <div class="teller" aria-hidden="true"><span>?</span></div>
+          <h2>Kein Rezept passt zu diesen Filtern</h2>
+          <p>Erhöhe die Kochzeit oder wähle eine andere Kategorie.</p>
+          <button type="button" class="knopf zweit" id="leer-zuruecksetzen">Filter zurücksetzen</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="teaser">
+      <div class="huelle">
+        <div>
+          <div class="teaser-woche" aria-hidden="true">
+            <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+          </div>
+          <h2>Die ganze Woche planen</h2>
+          <p>Gib vor, wie viel Zeit du an welchen Tagen hast und wie oft es fleischfrei sein soll. Der Planer stellt die Woche aus unseren Rezepten zusammen.</p>
+        </div>
+        <a class="knopf" href="planer.html">Wochenplan erstellen</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="fuss">
+    <div class="huelle">Neue Rezepte kommen als eigene Seite in den Ordner <code>rezepte/</code>.</div>
+  </footer>
+
+  <script src="assets/rezepte.js"></script>
+  <script src="assets/gemeinsam.js"></script>
+  <script src="assets/uebersicht.js"></script>
+</body>
+</html>

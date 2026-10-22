@@ -1,0 +1,483 @@
+/* ---------- Tokens ---------- */
+:root {
+  --grund: #F6F7FA;
+  --flaeche: #FFFFFF;
+  --tinte: #1A2236;
+  --leise: #586179;
+  --linie: #D7DCE7;
+  --kobalt: #2340A0;
+  --kobalt-tief: #1A3080;
+  --kobalt-hell: #E4E9F7;
+  --senf: #E0A526;
+  --senf-hell: #FBF0D4;
+  --teller-innen: #FFFFFF;
+
+  --schrift-ui: "Bricolage Grotesque", system-ui, sans-serif;
+  --schrift-text: "Literata", Georgia, serif;
+
+  --s1: 0.25rem; --s2: 0.5rem; --s3: 0.75rem; --s4: 1rem;
+  --s5: 1.5rem; --s6: 2rem; --s7: 3rem; --s8: 4.5rem;
+
+  --breite: 72rem;
+  --rund: 0.6rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --grund: #0F1426;
+    --flaeche: #171D34;
+    --tinte: #E8EBF4;
+    --leise: #A2AAC1;
+    --linie: #2B3352;
+    --kobalt: #8DA4FF;
+    --kobalt-tief: #B4C3FF;
+    --kobalt-hell: #222B50;
+    --senf: #F0BB4A;
+    --senf-hell: #3A3220;
+    --teller-innen: #EDEFF5;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Grundlagen ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--tinte);
+  font-family: var(--schrift-ui);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.1; margin: 0; font-weight: 700; }
+p { margin: 0; }
+a { color: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--kobalt);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.huelle {
+  width: 100%;
+  max-width: var(--breite);
+  margin-inline: auto;
+  padding-inline: var(--s4);
+}
+@media (min-width: 48rem) { .huelle { padding-inline: var(--s6); } }
+
+.nur-screenreader {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Kopfzeile ---------- */
+.kopf {
+  border-bottom: 1px solid var(--linie);
+  background: var(--flaeche);
+}
+.kopf .huelle {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s4); min-height: 4rem; flex-wrap: wrap;
+}
+.marke {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-weight: 800; font-size: 1.25rem; text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.marke-teller {
+  width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  border: 4px solid var(--kobalt);
+  background: radial-gradient(circle, var(--senf) 0 38%, var(--teller-innen) 40%);
+}
+.kopf nav { display: flex; gap: var(--s1); }
+.kopf nav a {
+  text-decoration: none; font-weight: 600; color: var(--leise);
+  padding: var(--s2) var(--s3); border-radius: 999px;
+}
+.kopf nav a:hover { color: var(--tinte); background: var(--kobalt-hell); }
+.kopf nav a[aria-current="page"] { color: var(--kobalt); background: var(--kobalt-hell); }
+
+/* ---------- Teller ---------- */
+.teller {
+  --rand: 6px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: var(--rand) solid var(--kobalt);
+  background:
+    radial-gradient(circle, var(--speise) 0 54%, transparent 55%),
+    radial-gradient(circle, transparent 0 70%, rgba(26, 34, 54, 0.06) 71% 72%, transparent 73%),
+    var(--teller-innen);
+  display: grid; place-items: center;
+}
+.teller span {
+  font-weight: 800;
+  font-size: 2.6rem;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+  line-height: 1;
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-block: var(--s7) var(--s6); }
+.hero .huelle {
+  display: grid; gap: var(--s6);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+@media (min-width: 52rem) {
+  .hero .huelle { grid-template-columns: 1.35fr 1fr; gap: var(--s8); }
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  font-variation-settings: "opsz" 96;
+}
+.hero-text { margin-top: var(--s4); color: var(--leise); font-size: 1.2rem; max-width: 34ch; }
+
+.suche { margin-top: var(--s6); position: relative; max-width: 32rem; }
+.suche input {
+  width: 100%;
+  font: inherit; font-size: 1.15rem;
+  padding: var(--s4) var(--s5);
+  border: 2px solid var(--linie);
+  border-radius: 999px;
+  background: var(--flaeche);
+  color: var(--tinte);
+}
+.suche input::placeholder { color: var(--leise); }
+.suche input:focus { outline: none; border-color: var(--kobalt); }
+
+.vorschlag {
+  display: grid; justify-items: center; text-align: center; gap: var(--s3);
+}
+.vorschlag a { text-decoration: none; }
+.vorschlag .teller { width: min(17rem, 58vw); --rand: 12px; }
+.vorschlag .teller span { font-size: 5rem; }
+.vorschlag-label { color: var(--leise); font-size: 0.95rem; }
+.vorschlag h2 { font-size: 1.6rem; letter-spacing: -0.01em; }
+.vorschlag h2 a { text-decoration: none; }
+.vorschlag h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.vorschlag-info { color: var(--leise); }
+
+.dreht { animation: drehen 0.6s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes drehen {
+  from { transform: rotate(-200deg) scale(0.85); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .dreht { animation: none; } }
+
+/* ---------- Knöpfe ---------- */
+.knopf {
+  font: inherit; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  padding: var(--s2) var(--s4);
+  min-height: 2.6rem;
+  border-radius: 999px;
+  border: 2px solid var(--kobalt);
+  background: var(--kobalt); color: #fff;
+  cursor: pointer; text-decoration: none;
+}
+.knopf:hover { background: var(--kobalt-tief); border-color: var(--kobalt-tief); }
+.knopf.zweit { background: transparent; color: var(--kobalt); }
+.knopf.zweit:hover { background: var(--kobalt-hell); }
+.knopf.klein { min-height: 2.1rem; padding: var(--s1) var(--s3); font-size: 0.9rem; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .knopf:not(.zweit) { color: #0F1426; }
+}
+
+/* ---------- Filter ---------- */
+.filter {
+  border-block: 1px solid var(--linie);
+  background: var(--flaeche);
+  padding-block: var(--s5);
+}
+.filter .huelle { display: grid; gap: var(--s5); }
+
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.chip {
+  font: inherit; font-weight: 600; font-size: 0.95rem;
+  display: inline-flex; align-items: center; gap: var(--s2);
+  padding: var(--s1) var(--s3) var(--s1) var(--s2);
+  min-height: 2.25rem;
+  border: 2px solid var(--linie); border-radius: 999px;
+  background: transparent; color: var(--tinte); cursor: pointer;
+}
+.chip::before {
+  content: ""; width: 0.95rem; height: 0.95rem; border-radius: 50%;
+  background: var(--punkt, var(--leise));
+  box-shadow: 0 0 0 2px var(--kobalt-hell);
+}
+.chip.ohne-punkt { padding-left: var(--s3); }
+.chip.ohne-punkt::before { display: none; }
+.chip:hover { border-color: var(--kobalt); }
+.chip[aria-pressed="true"] { border-color: var(--kobalt); background: var(--kobalt-hell); color: var(--kobalt-tief); }
+
+.regler {
+  display: grid; gap: var(--s4);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  align-items: end;
+}
+.feld { display: grid; gap: var(--s1); }
+.feld > label, .feld > .feld-name { font-weight: 600; font-size: 0.95rem; }
+.feld-wert { color: var(--kobalt); font-weight: 700; }
+.feld select, .feld input[type="number"] {
+  font: inherit;
+  padding: var(--s2) var(--s3);
+  border: 2px solid var(--linie); border-radius: var(--rund);
+  background: var(--grund); color: var(--tinte);
+  min-height: 2.6rem;
+}
+.feld select:focus, .feld input:focus { outline: none; border-color: var(--kobalt); }
+.feld input[type="range"] { width: 100%; accent-color: var(--kobalt); min-height: 2.6rem; }
+
+.segmente {
+  display: flex; border: 2px solid var(--linie); border-radius: 999px;
+  padding: 3px; gap: 2px; background: var(--grund);
+}
+.segmente button {
+  flex: 1; font: inherit; font-size: 0.92rem; font-weight: 600;
+  padding: var(--s1) var(--s2); min-height: 2.1rem;
+  border: 0; border-radius: 999px; background: transparent; color: var(--leise); cursor: pointer;
+}
+.segmente button[aria-pressed="true"] { background: var(--kobalt); color: #fff; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .segmente button[aria-pressed="true"] { color: #0F1426; }
+}
+
+.ergebnis-zeile {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--s4); flex-wrap: wrap;
+}
+.anzahl { color: var(--leise); }
+.anzahl strong { color: var(--tinte); }
+
+.textlink {
+  font: inherit; font-weight: 600; color: var(--kobalt);
+  background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* ---------- Rezeptraster ---------- */
+.sammlung { padding-block: var(--s7) var(--s8); }
+.raster {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--s7) var(--s5);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 40rem) {
+  .raster { grid-template-columns: repeat(auto-fill, minmax(14.5rem, 1fr)); gap: var(--s7) var(--s5); }
+}
+@media (max-width: 39.99rem) {
+  .raster { gap: var(--s6) var(--s4); }
+  .rezept-karte h3 { font-size: 1.1rem; }
+  .rezept-karte p { display: none; }
+  .teller span { font-size: 2rem; }
+}
+.rezept-karte {
+  display: grid; gap: var(--s3);
+  text-decoration: none;
+}
+.rezept-karte .teller { width: 72%; transition: transform 0.25s ease; }
+.rezept-karte:hover .teller { transform: rotate(-12deg); }
+@media (prefers-reduced-motion: reduce) { .rezept-karte:hover .teller { transform: none; } }
+.rezept-karte h3 { font-size: 1.3rem; letter-spacing: -0.01em; margin-top: var(--s2); }
+.rezept-karte:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.rezept-karte p { color: var(--leise); font-family: var(--schrift-text); font-size: 0.98rem; line-height: 1.55; }
+
+.merkmale { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); }
+.merkmale li {
+  font-size: 0.85rem; font-weight: 600;
+  padding: 0.1rem var(--s2); border-radius: 999px;
+  background: var(--kobalt-hell); color: var(--kobalt-tief);
+}
+.merkmale li.gruen { background: #E3F1DA; color: #2F5A1A; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .merkmale li.gruen { background: #23361C; color: #B8DDA2; }
+}
+
+.leer {
+  text-align: center; padding: var(--s8) var(--s4);
+  display: grid; justify-items: center; gap: var(--s4);
+}
+.leer .teller { width: 7rem; --speise: var(--linie); }
+.leer h2 { font-size: 1.5rem; }
+.leer p { color: var(--leise); max-width: 36ch; }
+
+/* ---------- Planer-Teaser ---------- */
+.teaser { background: var(--kobalt); color: #fff; }
+.teaser .huelle {
+  display: grid; gap: var(--s5); padding-block: var(--s7);
+  grid-template-columns: 1fr; align-items: center;
+}
+@media (min-width: 48rem) { .teaser .huelle { grid-template-columns: 1fr auto; } }
+.teaser h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
+.teaser p { margin-top: var(--s2); opacity: 0.85; max-width: 46ch; }
+.teaser .knopf { background: #fff; color: var(--kobalt); border-color: #fff; }
+.teaser .knopf:hover { background: var(--kobalt-hell); border-color: var(--kobalt-hell); }
+.teaser-woche { display: flex; gap: var(--s2); margin-bottom: var(--s4); }
+.teaser-woche span {
+  width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  border: 3px solid #fff; display: grid; place-items: center;
+  font-size: 0.75rem; font-weight: 700;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .teaser { background: #1C2A66; }
+  :root:not([data-theme="light"]) .teaser .knopf { color: #1C2A66; }
+}
+
+/* ---------- Fußzeile ---------- */
+.fuss { border-top: 1px solid var(--linie); padding-block: var(--s5); color: var(--leise); font-size: 0.92rem; }
+
+/* ---------- Wochenplaner ---------- */
+.planer-kopf { padding-block: var(--s7) var(--s5); }
+.planer-kopf h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); font-weight: 800; letter-spacing: -0.03em; }
+.planer-kopf p { margin-top: var(--s3); color: var(--leise); font-size: 1.15rem; max-width: 52ch; }
+
+.planer {
+  display: grid; gap: var(--s6); padding-bottom: var(--s8);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+@media (min-width: 60rem) { .planer { grid-template-columns: 21rem 1fr; } }
+
+.kriterien {
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: 1rem;
+  padding: var(--s5);
+  display: grid; gap: var(--s5);
+}
+@media (min-width: 60rem) { .kriterien { position: sticky; top: var(--s4); } }
+.kriterien fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+.kriterien legend { font-weight: 700; padding: 0; margin-bottom: var(--s2); }
+.hinweis { color: var(--leise); font-size: 0.88rem; }
+
+.tage { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--s1); }
+.tag-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+.tag-wahl span {
+  display: grid; place-items: center; aspect-ratio: 1;
+  border-radius: 50%; border: 3px solid var(--linie);
+  font-weight: 700; font-size: 0.85rem; cursor: pointer; color: var(--leise);
+}
+.tag-wahl input:checked + span { border-color: var(--kobalt); color: var(--kobalt); background: var(--kobalt-hell); }
+.tag-wahl input:focus-visible + span { outline: 3px solid var(--kobalt); outline-offset: 2px; }
+
+.schalter { display: flex; gap: var(--s3); align-items: flex-start; cursor: pointer; }
+.schalter input { width: 1.2rem; height: 1.2rem; accent-color: var(--kobalt); margin-top: 0.15rem; flex: none; }
+
+.woche { display: grid; gap: var(--s3); }
+.woche-aktionen { display: flex; gap: var(--s2); flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: var(--s2); }
+.woche-aktionen h2 { font-size: 1.5rem; }
+.woche-aktionen div { display: flex; gap: var(--s2); flex-wrap: wrap; }
+
+.tag {
+  display: grid; align-items: center; gap: var(--s3) var(--s4);
+  grid-template-columns: 3.4rem 4.2rem 1fr;
+  grid-template-areas: "name teller info" "aktion aktion aktion";
+  padding: var(--s4);
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: 1rem;
+}
+@media (min-width: 40rem) {
+  .tag { grid-template-columns: 4rem 4.6rem 1fr auto; grid-template-areas: "name teller info aktion"; }
+}
+.tag.fest { border-color: var(--senf); box-shadow: inset 6px 0 0 var(--senf); background: linear-gradient(90deg, var(--senf-hell), var(--flaeche) 40%); }
+.tag-name { grid-area: name; font-weight: 800; font-size: 1.05rem; line-height: 1.15; }
+.tag-name small { display: block; font-weight: 500; color: var(--leise); font-size: 0.8rem; }
+.tag .teller { grid-area: teller; --rand: 4px; }
+.tag .teller span { font-size: 1.4rem; }
+.tag-info { grid-area: info; min-width: 0; }
+.tag-info h3 { font-size: 1.15rem; }
+.tag-info h3 a { text-decoration: none; }
+.tag-info h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.tag-info .merkmale { margin-top: var(--s2); }
+.tag-aktion { grid-area: aktion; display: flex; gap: var(--s2); flex-wrap: wrap; }
+.tag-leer .tag-info p { color: var(--leise); font-size: 0.95rem; }
+.tag-leer .teller { --speise: var(--linie); }
+
+.woche-meldung {
+  padding: var(--s3) var(--s4); border-radius: var(--rund);
+  background: var(--senf-hell); border: 1px solid var(--senf);
+}
+.woche-start {
+  text-align: center; padding: var(--s8) var(--s4);
+  border: 2px dashed var(--linie); border-radius: 1rem;
+  display: grid; justify-items: center; gap: var(--s3); color: var(--leise);
+}
+
+/* ---------- Rezeptseite ---------- */
+.rezept { padding-block: var(--s6) var(--s8); }
+.zurueck { color: var(--kobalt); font-weight: 600; text-decoration: none; }
+.zurueck:hover { text-decoration: underline; }
+.rezept-kopf {
+  display: grid; gap: var(--s5); margin-top: var(--s5);
+  grid-template-columns: 1fr; align-items: center;
+}
+@media (min-width: 48rem) { .rezept-kopf { grid-template-columns: 1fr 13rem; } }
+.rezept-kopf .teller { width: 11rem; --rand: 10px; }
+.rezept-kopf .teller span { font-size: 4rem; }
+.rezept h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.03em; }
+.rezept-intro { font-family: var(--schrift-text); font-size: 1.2rem; line-height: 1.6; color: var(--leise); margin-top: var(--s4); max-width: 40ch; }
+
+.fakten {
+  display: flex; flex-wrap: wrap; gap: var(--s5) var(--s7);
+  margin: var(--s6) 0 0; padding-block: var(--s4);
+  border-block: 1px solid var(--linie);
+}
+.fakten dt { color: var(--leise); font-size: 0.88rem; }
+.fakten dd { margin: 0; font-weight: 700; font-size: 1.15rem; }
+
+.rezept-raster {
+  display: grid; gap: var(--s7); margin-top: var(--s7);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 52rem) { .rezept-raster { grid-template-columns: 18rem 1fr; } }
+.rezept-raster h2 { font-size: 1.6rem; margin-bottom: var(--s4); }
+.portionen { color: var(--leise); margin-bottom: var(--s3); }
+
+.zutaten ul { list-style: none; margin: 0; padding: 0; }
+.zutaten li {
+  font-family: var(--schrift-text);
+  padding-block: var(--s2);
+  border-bottom: 1px solid var(--linie);
+  display: flex; gap: var(--s3);
+}
+.zutaten li b { font-family: var(--schrift-ui); font-weight: 700; flex: none; width: 5.5rem; color: var(--kobalt); }
+
+.schritte { list-style: none; margin: 0; padding: 0; counter-reset: schritt; display: grid; gap: var(--s5); }
+.schritte li {
+  counter-increment: schritt;
+  display: grid; grid-template-columns: 2.6rem 1fr; gap: var(--s4);
+  font-family: var(--schrift-text); font-size: 1.08rem; line-height: 1.7;
+  max-width: 62ch;
+}
+.schritte li::before {
+  content: counter(schritt);
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  border: 3px solid var(--kobalt); color: var(--kobalt);
+  display: grid; place-items: center;
+  font-family: var(--schrift-ui); font-weight: 800;
+}
+.tipp {
+  margin-top: var(--s6); padding: var(--s4) var(--s5);
+  background: var(--senf-hell); border-radius: var(--rund);
+  font-family: var(--schrift-text); max-width: 62ch;
+}
+.tipp strong { font-family: var(--schrift-ui); }
+
+/* ---------- Druck ---------- */
+@media print {
+  .kopf, .fuss, .kriterien, .tag-aktion, .woche-aktionen div, .zurueck, .teaser { display: none !important; }
+  body { background: #fff; color: #000; }
+  .planer { grid-template-columns: 1fr; }
+  .tag { break-inside: avoid; border-color: #bbb; box-shadow: none; background: #fff; }
+}
