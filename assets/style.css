@@ -123,24 +123,25 @@ a { color: inherit; }
   border: 4px solid var(--kobalt);
   background: radial-gradient(circle, var(--senf) 0 38%, var(--teller-innen) 40%);
 }
-.kopf-rechts { display: flex; align-items: center; gap: var(--s2); }
-.kopf nav { display: flex; gap: var(--s1); }
-
-.thema-knopf {
-  width: 2.5rem; height: 2.5rem; flex: none;
-  display: grid; place-items: center;
-  border: 2px solid var(--linie); border-radius: 50%;
-  background: transparent; color: var(--tinte); cursor: pointer;
-}
-.thema-knopf:hover { border-color: var(--kobalt); color: var(--kobalt); }
-.thema-knopf svg { width: 1.2rem; height: 1.2rem; }
-.thema-knopf .sonne, .thema-knopf[aria-pressed="true"] .mond { display: none; }
-.thema-knopf[aria-pressed="true"] .sonne { display: block; }
-.kopf nav a {
-  text-decoration: none; font-weight: 600; color: var(--leise);
+.kopf nav { display: flex; align-items: center; gap: var(--s1); flex-wrap: wrap; }
+.kopf nav a, .thema-knopf {
+  font: inherit; font-weight: 600; font-size: 1rem; line-height: 1.5;
+  text-decoration: none; color: var(--leise);
   padding: var(--s2) var(--s3); border-radius: 999px;
+  border: 0; background: transparent; cursor: pointer;
 }
-.kopf nav a:hover { color: var(--tinte); background: var(--kobalt-hell); }
+.kopf nav a:hover, .thema-knopf:hover { color: var(--tinte); background: var(--kobalt-hell); }
+
+/* Hell/Dunkel-Umschalter: zeigt das Ziel-Design (Mond = dunkel einschalten) */
+.thema-knopf { display: inline-flex; align-items: center; gap: var(--s2); }
+.thema-knopf svg { width: 1.1rem; height: 1.1rem; flex: none; }
+/* Auf schmalen Bildschirmen nur das Symbol, der Text bleibt für Screenreader */
+@media (max-width: 36rem) {
+  .thema-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .thema-knopf { padding-inline: var(--s2); }
+}
+.thema-knopf .sonne, .thema-knopf[data-dunkel="true"] .mond { display: none; }
+.thema-knopf[data-dunkel="true"] .sonne { display: block; }
 .kopf nav a[aria-current="page"] { color: var(--kobalt); background: var(--kobalt-hell); }
 
 /* ---------- Teller ---------- */
@@ -169,24 +170,44 @@ a { color: inherit; }
   line-height: 1;
 }
 
-/* ---------- Hero ---------- */
-.hero { padding-block: var(--s7) var(--s6); }
-.hero .huelle {
-  display: grid; gap: var(--s6);
-  grid-template-columns: 1fr;
-  align-items: center;
+/* ---------- Hero: Foto als Hintergrund, Schrift darauf ---------- */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-block: var(--s8);
+  color: #fff;
+}
+.hero-hintergrund {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* Abdunkelung, damit die Schrift auf jedem Bildteil lesbar bleibt */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(12, 16, 34, 0.78), rgba(12, 16, 34, 0.62));
 }
 @media (min-width: 52rem) {
-  .hero .huelle { grid-template-columns: 1.15fr 1fr; gap: var(--s8); }
+  .hero { padding-block: 7rem; min-height: 38rem; }
+  .hero::before {
+    background: linear-gradient(90deg, rgba(12, 16, 34, 0.9) 0%, rgba(12, 16, 34, 0.7) 45%, rgba(12, 16, 34, 0.15) 100%);
+  }
+}
+.hero .huelle {
+  display: grid; gap: var(--s7);
+  grid-template-columns: 1fr;
+  align-items: end;
+}
+@media (min-width: 52rem) {
+  .hero .huelle { grid-template-columns: 1.3fr 1fr; gap: var(--s8); }
 }
 .hero h1 {
-  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  font-size: clamp(2.6rem, 7vw, 5.6rem);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 0.95;
   font-variation-settings: "opsz" 96;
+  text-wrap: balance;
 }
-.hero-text { margin-top: var(--s4); color: var(--leise); font-size: 1.2rem; max-width: 34ch; }
+.hero-text { margin-top: var(--s4); color: rgba(255, 255, 255, 0.86); font-size: 1.2rem; max-width: 36ch; }
 
 .suche { margin-top: var(--s6); position: relative; max-width: 32rem; }
 .suche input {
@@ -200,30 +221,20 @@ a { color: inherit; }
 }
 .suche input::placeholder { color: var(--leise); }
 .suche input:focus { outline: none; border-color: var(--kobalt); }
-
-/* Startbild mit überlappender Vorschlagskarte */
-.hero-bild { position: relative; }
-.hero-bild > img {
-  display: block; width: 100%; height: auto;
-  aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: 1.5rem;
-}
-@media (min-width: 52rem) {
-  .hero-bild > img { aspect-ratio: 5 / 6; max-height: 40rem; }
-}
+.hero .suche input { border-color: transparent; }
+.hero .suche input:focus { border-color: var(--kobalt); }
+.hero :focus-visible { outline-color: #fff; }
 
 .vorschlag {
-  position: relative;
-  margin: -3.5rem var(--s3) 0;
+  color: var(--tinte);
   display: grid; grid-template-columns: 6.5rem 1fr; align-items: center; gap: var(--s2) var(--s4);
   padding: var(--s4);
   background: var(--flaeche);
-  border: 1px solid var(--linie);
   border-radius: 1.2rem;
-  box-shadow: 0 18px 40px -18px rgba(15, 20, 38, 0.45);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6);
 }
 @media (min-width: 52rem) {
-  .vorschlag { position: absolute; left: -3.5rem; bottom: 2.5rem; margin: 0; width: min(25rem, 90%); }
+  .vorschlag { justify-self: end; width: min(26rem, 100%); }
 }
 .vorschlag a { text-decoration: none; }
 .vorschlag .teller { width: 100%; --rand: 5px; }
@@ -471,15 +482,36 @@ a { color: inherit; }
 }
 
 /* ---------- Rezeptseite ---------- */
-.rezept { padding-block: var(--s6) var(--s8); }
+.rezept { padding-bottom: var(--s8); }
 .zurueck { color: var(--kobalt); font-weight: 600; text-decoration: none; }
 .zurueck:hover { text-decoration: underline; }
+
+/* Kopfbereich: Gerichtfoto unscharf und abgedunkelt hinter Titel und Beschreibung */
+.rezept-buehne {
+  position: relative; isolation: isolate; overflow: hidden;
+  padding-block: var(--s6) var(--s7);
+  background: var(--teaser); color: #fff;
+}
+.buehne-bild {
+  position: absolute; inset: 0; z-index: -2;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: blur(26px) saturate(1.15);
+  transform: scale(1.15);
+}
+.rezept-buehne::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(12, 16, 34, 0.82), rgba(12, 16, 34, 0.45));
+}
+.rezept-buehne .zurueck { color: #fff; }
+.rezept-buehne .rezept-intro { color: rgba(255, 255, 255, 0.88); }
+.rezept-buehne .teller { box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.7); }
+.rezept-buehne :focus-visible { outline-color: #fff; }
 .rezept-kopf {
   display: grid; gap: var(--s5); margin-top: var(--s5);
   grid-template-columns: 1fr; align-items: center;
 }
 @media (min-width: 48rem) { .rezept-kopf { grid-template-columns: 1fr 20rem; } }
-.rezept-kopf .teller { width: min(20rem, 80vw); --rand: 12px; }
+.rezept-kopf .teller { width: min(20rem, 60vw); --rand: 12px; }
 .rezept-kopf .teller span { font-size: 4rem; }
 .rezept h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.03em; }
 .rezept-intro { font-family: var(--schrift-text); font-size: 1.2rem; line-height: 1.6; color: var(--leise); margin-top: var(--s4); max-width: 40ch; }

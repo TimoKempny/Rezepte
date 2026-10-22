@@ -18,11 +18,13 @@
     const knopf = document.getElementById("thema-knopf");
     if (!knopf) return;
 
+    const text = knopf.querySelector(".thema-text");
+    // Der Knopf nennt das Design, zu dem er wechselt
     const aktualisieren = () => {
       const dunkel = istDunkel();
-      knopf.setAttribute("aria-pressed", String(dunkel));
-      knopf.setAttribute("aria-label", dunkel ? "Helles Design einschalten" : "Dunkles Design einschalten");
-      knopf.title = knopf.getAttribute("aria-label");
+      knopf.dataset.dunkel = String(dunkel);
+      text.textContent = dunkel ? "Hell" : "Dunkel";
+      knopf.title = dunkel ? "Helles Design einschalten" : "Dunkles Design einschalten";
     };
 
     knopf.addEventListener("click", () => {

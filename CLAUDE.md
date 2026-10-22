@@ -13,7 +13,14 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
   `teller mit-bild`. Fremde Fotos nur mit freier Lizenz und Eintrag in `bildnachweise.html`.
 - **Eintrag in `assets/rezepte.js`** mit `id`, `titel`, `seite`, `bild`, `kategorie`, `zeit`, `schwierigkeit`,
   `ernaehrung`, `portionen`, `beschreibung`, `hinzugefuegt`. Übersicht und Wochenplaner lesen nur diese Liste.
-- Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`), Favicon-Links und Fußzeile wie in den bestehenden Seiten.
+- Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Wochenplaner"),
+  Favicon-Links und Fußzeile wie in den bestehenden Seiten.
+- Kopfbereich `rezept-buehne` mit dem Foto als unscharfem Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
+
+## Cache
+
+GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=2`).
 
 ## Gestaltung
 
