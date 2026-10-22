@@ -14,7 +14,7 @@
   const mehr = regler.querySelector('[data-schritt="1"]');
   const MIN = 1, MAX = 24;
 
-  const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Becher: "Becher", Glas: "Gläser" };
+  const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Becher: "Becher", Glas: "Gläser", Flasche: "Flaschen" };
   const BRUECHE = { 0.25: "¼", 0.5: "½", 0.75: "¾" };
 
   function zahl(wert, einheit) {
