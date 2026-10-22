@@ -19,8 +19,13 @@ function istFleischfrei(rezept) {
   return rezept.ernaehrung === "vegan" || rezept.ernaehrung === "vegetarisch";
 }
 
-// Emaille-Teller: Kategorie-Farbe in der Mitte, Anfangsbuchstabe darauf
+// Emaille-Teller: Foto in der Mitte, ohne Foto die Kategorie-Farbe mit Anfangsbuchstabe
 function tellerHTML(rezept, extraKlasse = "") {
+  if (rezept.bild) {
+    return `<div class="teller mit-bild ${extraKlasse}" aria-hidden="true">
+      <img src="${esc(rezept.bild)}" alt="" loading="lazy" width="720" height="720">
+    </div>`;
+  }
   const farbe = window.KATEGORIEN[rezept.kategorie] || "#9AA3B5";
   return `<div class="teller ${extraKlasse}" style="--speise:${farbe}" aria-hidden="true">
     <span>${esc(rezept.titel.charAt(0))}</span>
