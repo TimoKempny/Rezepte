@@ -21,7 +21,7 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=8`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=9`).
 
 ## Gestaltung
 
