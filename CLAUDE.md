@@ -21,10 +21,18 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=5`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=6`).
 
 ## Gestaltung
 
-Emaille-Teller als Leitmotiv (kobaltblauer Rand, Foto oder Kategorie-Farbe in der Mitte). Farben nur über die Tokens
-in `assets/style.css`; das dunkle Design ist zweimal definiert (Systemeinstellung und `data-theme="dark"`), Änderungen
-an Tokens in beiden Blöcken nachziehen.
+Emaille-Teller als Leitmotiv (Rand in der Hauptfarbe, Foto oder Kategorie-Farbe in der Mitte). Farben nur über die
+Tokens in `assets/style.css`, nie direkt im Code. Rollen:
+
+- `--haupt` Flächen (Tellerrand, Knöpfe, aktive Filter, Teaser), Schrift darauf `--auf-haupt`
+- `--haupt-text` Links, Mengen, Fokus (lesbare Variante der Hauptfarbe), `--haupt-hell` dezente Hover-Flächen
+- `--akzent` / `--akzent-tief` / `--akzent-hell` festgehaltene Tage, Tipps, Logo-Mitte
+
+Palette (vom Nutzer vorgegeben): Hell Hauptfarbe `#FEE0CE`, Akzent `#CEFEE0`; Dunkel Hauptfarbe `#404040`,
+Akzent `#B9CD8A` (im Dunkel-Design ist der Akzent zugleich `--haupt-text`). Das dunkle Design ist zweimal definiert
+(Systemeinstellung und `data-theme="dark"`), der Druck setzt die hellen Werte; Änderungen in allen drei Blöcken
+nachziehen und Kontrast für Schrift ≥ 4,5:1 prüfen.

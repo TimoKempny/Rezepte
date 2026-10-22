@@ -1,20 +1,23 @@
 /* ---------- Tokens ---------- */
 :root {
-  --grund: #F6F7FA;
+  --grund: #FBF8F6;
   --flaeche: #FFFFFF;
-  --tinte: #1A2236;
-  --leise: #586179;
-  --linie: #D7DCE7;
-  --kobalt: #2340A0;
-  --kobalt-tief: #1A3080;
-  --kobalt-hell: #E4E9F7;
-  --senf: #E0A526;
-  --senf-hell: #FBF0D4;
+  --tinte: #2A211C;
+  --leise: #6B5D55;
+  --linie: #EADFD8;
+  --haupt: #FEE0CE;
+  --haupt-tief: #F9CDB3;
+  --haupt-hell: #FFF1E8;
+  --haupt-text: #A1461B;
+  --auf-haupt: #2A211C;
+  --akzent: #CEFEE0;
+  --akzent-tief: #3E9C70;
+  --akzent-hell: #E8FFF1;
   --teller-innen: #FFFFFF;
-  --auf-kobalt: #FFFFFF;
-  --gruen-grund: #E3F1DA;
-  --gruen-text: #2F5A1A;
-  --teaser: #2340A0;
+  --gruen-grund: #DDF7E8;
+  --gruen-text: #24603F;
+  --teaser: #FEE0CE;
+  --auf-teaser: #2A211C;
 
   --schrift-ui: "Bricolage Grotesque", system-ui, sans-serif;
   --schrift-text: "Literata", Georgia, serif;
@@ -30,40 +33,46 @@
 /* Dunkles Design: folgt dem System, außer es wurde per Umschalter "light" gewählt */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --grund: #0F1426;
-    --flaeche: #171D34;
-    --tinte: #E8EBF4;
-    --leise: #A2AAC1;
-    --linie: #2B3352;
-    --kobalt: #8DA4FF;
-    --kobalt-tief: #B4C3FF;
-    --kobalt-hell: #222B50;
-    --senf: #F0BB4A;
-    --senf-hell: #3A3220;
-    --teller-innen: #EDEFF5;
-    --auf-kobalt: #0F1426;
-    --gruen-grund: #23361C;
-    --gruen-text: #B8DDA2;
-    --teaser: #1C2A66;
+    --grund: #151515;
+    --flaeche: #222222;
+    --tinte: #EDEDED;
+    --leise: #A8A8A8;
+    --linie: #3D3D3D;
+    --haupt: #404040;
+    --haupt-tief: #4D4D4D;
+    --haupt-hell: #333333;
+    --haupt-text: #B9CD8A;
+    --auf-haupt: #F2F2F2;
+    --akzent: #B9CD8A;
+    --akzent-tief: #B9CD8A;
+    --akzent-hell: #2A3022;
+    --teller-innen: #EDEDED;
+    --gruen-grund: #2C3322;
+    --gruen-text: #CFE0A8;
+    --teaser: #404040;
+    --auf-teaser: #F2F2F2;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --grund: #0F1426;
-  --flaeche: #171D34;
-  --tinte: #E8EBF4;
-  --leise: #A2AAC1;
-  --linie: #2B3352;
-  --kobalt: #8DA4FF;
-  --kobalt-tief: #B4C3FF;
-  --kobalt-hell: #222B50;
-  --senf: #F0BB4A;
-  --senf-hell: #3A3220;
-  --teller-innen: #EDEFF5;
-  --auf-kobalt: #0F1426;
-  --gruen-grund: #23361C;
-  --gruen-text: #B8DDA2;
-  --teaser: #1C2A66;
+  --grund: #151515;
+  --flaeche: #222222;
+  --tinte: #EDEDED;
+  --leise: #A8A8A8;
+  --linie: #3D3D3D;
+  --haupt: #404040;
+  --haupt-tief: #4D4D4D;
+  --haupt-hell: #333333;
+  --haupt-text: #B9CD8A;
+  --auf-haupt: #F2F2F2;
+  --akzent: #B9CD8A;
+  --akzent-tief: #B9CD8A;
+  --akzent-hell: #2A3022;
+  --teller-innen: #EDEDED;
+  --gruen-grund: #2C3322;
+  --gruen-text: #CFE0A8;
+  --teaser: #404040;
+  --auf-teaser: #F2F2F2;
   color-scheme: dark;
 }
 
@@ -86,7 +95,7 @@ p { margin: 0; }
 a { color: inherit; }
 
 :focus-visible {
-  outline: 3px solid var(--kobalt);
+  outline: 3px solid var(--haupt-text);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -120,8 +129,8 @@ a { color: inherit; }
 }
 .marke-teller {
   width: 1.6rem; height: 1.6rem; border-radius: 50%;
-  border: 4px solid var(--kobalt);
-  background: radial-gradient(circle, var(--senf) 0 38%, var(--teller-innen) 40%);
+  border: 4px solid var(--haupt-text);
+  background: radial-gradient(circle, var(--akzent-tief) 0 38%, var(--teller-innen) 40%);
 }
 .kopf nav { display: flex; align-items: center; gap: var(--s1); flex-wrap: wrap; }
 .kopf nav a, .thema-knopf {
@@ -130,7 +139,7 @@ a { color: inherit; }
   padding: var(--s2) var(--s3); border-radius: 999px;
   border: 0; background: transparent; cursor: pointer;
 }
-.kopf nav a:hover, .thema-knopf:hover { color: var(--tinte); background: var(--kobalt-hell); }
+.kopf nav a:hover, .thema-knopf:hover { color: var(--tinte); background: var(--haupt-hell); }
 
 /* Hell/Dunkel-Umschalter: zeigt das Ziel-Design (Mond = dunkel einschalten) */
 .thema-knopf { display: inline-flex; align-items: center; gap: var(--s2); }
@@ -142,14 +151,14 @@ a { color: inherit; }
 }
 .thema-knopf .sonne, .thema-knopf[data-dunkel="true"] .mond { display: none; }
 .thema-knopf[data-dunkel="true"] .sonne { display: block; }
-.kopf nav a[aria-current="page"] { color: var(--kobalt); background: var(--kobalt-hell); }
+.kopf nav a[aria-current="page"] { color: var(--auf-haupt); background: var(--haupt); }
 
 /* ---------- Teller ---------- */
 .teller {
   --rand: 6px;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: var(--rand) solid var(--kobalt);
+  border: var(--rand) solid var(--haupt);
   background:
     radial-gradient(circle, var(--speise) 0 54%, transparent 55%),
     radial-gradient(circle, transparent 0 70%, rgba(26, 34, 54, 0.06) 71% 72%, transparent 73%),
@@ -185,12 +194,12 @@ a { color: inherit; }
 /* Abdunkelung, damit die Schrift auf jedem Bildteil lesbar bleibt */
 .hero::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(12, 16, 34, 0.78), rgba(12, 16, 34, 0.62));
+  background: linear-gradient(180deg, rgba(22, 18, 16, 0.78), rgba(22, 18, 16, 0.62));
 }
 @media (min-width: 52rem) {
   .hero { padding-block: 7rem; min-height: 38rem; }
   .hero::before {
-    background: linear-gradient(90deg, rgba(12, 16, 34, 0.9) 0%, rgba(12, 16, 34, 0.7) 45%, rgba(12, 16, 34, 0.15) 100%);
+    background: linear-gradient(90deg, rgba(22, 18, 16, 0.9) 0%, rgba(22, 18, 16, 0.7) 45%, rgba(22, 18, 16, 0.15) 100%);
   }
 }
 .hero .huelle {
@@ -222,9 +231,9 @@ a { color: inherit; }
   color: var(--tinte);
 }
 .suche input::placeholder { color: var(--leise); }
-.suche input:focus { outline: none; border-color: var(--kobalt); }
+.suche input:focus { outline: none; border-color: var(--haupt-text); }
 .hero .suche input { border-color: transparent; }
-.hero .suche input:focus { border-color: var(--kobalt); }
+.hero .suche input:focus { border-color: var(--haupt-text); }
 .hero :focus-visible { outline-color: #fff; }
 
 .vorschlag {
@@ -262,13 +271,13 @@ a { color: inherit; }
   padding: var(--s2) var(--s4);
   min-height: 2.6rem;
   border-radius: 999px;
-  border: 2px solid var(--kobalt);
-  background: var(--kobalt); color: var(--auf-kobalt);
+  border: 2px solid var(--haupt);
+  background: var(--haupt); color: var(--auf-haupt);
   cursor: pointer; text-decoration: none;
 }
-.knopf:hover { background: var(--kobalt-tief); border-color: var(--kobalt-tief); }
-.knopf.zweit { background: transparent; color: var(--kobalt); }
-.knopf.zweit:hover { background: var(--kobalt-hell); }
+.knopf:hover { background: var(--haupt-tief); border-color: var(--haupt-tief); }
+.knopf.zweit { background: transparent; color: var(--haupt-text); border-color: var(--haupt-text); }
+.knopf.zweit:hover { background: var(--haupt-hell); }
 .knopf.klein { min-height: 2.1rem; padding: var(--s1) var(--s3); font-size: 0.9rem; }
 
 /* ---------- Filter ---------- */
@@ -291,12 +300,12 @@ a { color: inherit; }
 .chip::before {
   content: ""; width: 0.95rem; height: 0.95rem; border-radius: 50%;
   background: var(--punkt, var(--leise));
-  box-shadow: 0 0 0 2px var(--kobalt-hell);
+  box-shadow: 0 0 0 2px var(--haupt-hell);
 }
 .chip.ohne-punkt { padding-left: var(--s3); }
 .chip.ohne-punkt::before { display: none; }
-.chip:hover { border-color: var(--kobalt); }
-.chip[aria-pressed="true"] { border-color: var(--kobalt); background: var(--kobalt-hell); color: var(--kobalt-tief); }
+.chip:hover { border-color: var(--haupt-text); }
+.chip[aria-pressed="true"] { border-color: var(--haupt); background: var(--haupt); color: var(--auf-haupt); }
 
 .regler {
   display: grid; gap: var(--s4);
@@ -305,7 +314,7 @@ a { color: inherit; }
 }
 .feld { display: grid; gap: var(--s1); }
 .feld > label, .feld > .feld-name { font-weight: 600; font-size: 0.95rem; }
-.feld-wert { color: var(--kobalt); font-weight: 700; }
+.feld-wert { color: var(--haupt-text); font-weight: 700; }
 .feld select, .feld input[type="number"] {
   font: inherit;
   padding: var(--s2) var(--s3);
@@ -313,8 +322,8 @@ a { color: inherit; }
   background: var(--grund); color: var(--tinte);
   min-height: 2.6rem;
 }
-.feld select:focus, .feld input:focus { outline: none; border-color: var(--kobalt); }
-.feld input[type="range"] { width: 100%; accent-color: var(--kobalt); min-height: 2.6rem; }
+.feld select:focus, .feld input:focus { outline: none; border-color: var(--haupt-text); }
+.feld input[type="range"] { width: 100%; accent-color: var(--haupt-text); min-height: 2.6rem; }
 
 .segmente {
   display: flex; border: 2px solid var(--linie); border-radius: 999px;
@@ -325,7 +334,7 @@ a { color: inherit; }
   padding: var(--s1) var(--s2); min-height: 2.1rem;
   border: 0; border-radius: 999px; background: transparent; color: var(--leise); cursor: pointer;
 }
-.segmente button[aria-pressed="true"] { background: var(--kobalt); color: var(--auf-kobalt); }
+.segmente button[aria-pressed="true"] { background: var(--haupt); color: var(--auf-haupt); }
 
 .ergebnis-zeile {
   display: flex; justify-content: space-between; align-items: center; gap: var(--s4); flex-wrap: wrap;
@@ -334,7 +343,7 @@ a { color: inherit; }
 .anzahl strong { color: var(--tinte); }
 
 .textlink {
-  font: inherit; font-weight: 600; color: var(--kobalt);
+  font: inherit; font-weight: 600; color: var(--haupt-text);
   background: none; border: 0; padding: 0; cursor: pointer;
   text-decoration: underline; text-underline-offset: 3px;
 }
@@ -370,7 +379,7 @@ a { color: inherit; }
 .merkmale li {
   font-size: 0.85rem; font-weight: 600;
   padding: 0.1rem var(--s2); border-radius: 999px;
-  background: var(--kobalt-hell); color: var(--kobalt-tief);
+  background: var(--haupt-hell); color: var(--haupt-text);
 }
 .merkmale li.gruen { background: var(--gruen-grund); color: var(--gruen-text); }
 
@@ -384,7 +393,7 @@ a { color: inherit; }
 .leer p { color: var(--leise); max-width: 36ch; }
 
 /* ---------- Planer-Teaser ---------- */
-.teaser { background: var(--teaser); color: #fff; }
+.teaser { background: var(--teaser); color: var(--auf-teaser); }
 .teaser .huelle {
   display: grid; gap: var(--s5); padding-block: var(--s7);
   grid-template-columns: 1fr; align-items: center;
@@ -392,12 +401,12 @@ a { color: inherit; }
 @media (min-width: 48rem) { .teaser .huelle { grid-template-columns: 1fr auto; } }
 .teaser h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
 .teaser p { margin-top: var(--s2); opacity: 0.85; max-width: 46ch; }
-.teaser .knopf { background: #fff; color: var(--teaser); border-color: #fff; }
-.teaser .knopf:hover { background: var(--kobalt-hell); border-color: var(--kobalt-hell); }
+.teaser .knopf { background: var(--auf-teaser); color: var(--teaser); border-color: var(--auf-teaser); }
+.teaser .knopf:hover { opacity: 0.88; }
 .teaser-woche { display: flex; gap: var(--s2); margin-bottom: var(--s4); }
 .teaser-woche span {
   width: 2.2rem; height: 2.2rem; border-radius: 50%;
-  border: 3px solid #fff; display: grid; place-items: center;
+  border: 3px solid var(--auf-teaser); display: grid; place-items: center;
   font-size: 0.75rem; font-weight: 700;
 }
 
@@ -436,11 +445,11 @@ a { color: inherit; }
   border-radius: 50%; border: 3px solid var(--linie);
   font-weight: 700; font-size: 0.85rem; cursor: pointer; color: var(--leise);
 }
-.tag-wahl input:checked + span { border-color: var(--kobalt); color: var(--kobalt); background: var(--kobalt-hell); }
-.tag-wahl input:focus-visible + span { outline: 3px solid var(--kobalt); outline-offset: 2px; }
+.tag-wahl input:checked + span { border-color: var(--haupt); color: var(--auf-haupt); background: var(--haupt); }
+.tag-wahl input:focus-visible + span { outline: 3px solid var(--haupt-text); outline-offset: 2px; }
 
 .schalter { display: flex; gap: var(--s3); align-items: flex-start; cursor: pointer; }
-.schalter input { width: 1.2rem; height: 1.2rem; accent-color: var(--kobalt); margin-top: 0.15rem; flex: none; }
+.schalter input { width: 1.2rem; height: 1.2rem; accent-color: var(--haupt-text); margin-top: 0.15rem; flex: none; }
 
 .woche { display: grid; gap: var(--s3); }
 .woche-aktionen { display: flex; gap: var(--s2); flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: var(--s2); }
@@ -459,7 +468,7 @@ a { color: inherit; }
 @media (min-width: 40rem) {
   .tag { grid-template-columns: 4rem 4.6rem 1fr auto; grid-template-areas: "name teller info aktion"; }
 }
-.tag.fest { border-color: var(--senf); box-shadow: inset 6px 0 0 var(--senf); background: linear-gradient(90deg, var(--senf-hell), var(--flaeche) 40%); }
+.tag.fest { border-color: var(--akzent-tief); box-shadow: inset 6px 0 0 var(--akzent); background: linear-gradient(90deg, var(--akzent-hell), var(--flaeche) 40%); }
 .tag-name { grid-area: name; font-weight: 800; font-size: 1.05rem; line-height: 1.15; }
 .tag-name small { display: block; font-weight: 500; color: var(--leise); font-size: 0.8rem; }
 .tag .teller { grid-area: teller; --rand: 4px; }
@@ -475,7 +484,7 @@ a { color: inherit; }
 
 .woche-meldung {
   padding: var(--s3) var(--s4); border-radius: var(--rund);
-  background: var(--senf-hell); border: 1px solid var(--senf);
+  background: var(--akzent-hell); border: 1px solid var(--akzent-tief);
 }
 .woche-start {
   text-align: center; padding: var(--s8) var(--s4);
@@ -485,14 +494,14 @@ a { color: inherit; }
 
 /* ---------- Rezeptseite ---------- */
 .rezept { padding-bottom: var(--s8); }
-.zurueck { color: var(--kobalt); font-weight: 600; text-decoration: none; }
+.zurueck { color: var(--haupt-text); font-weight: 600; text-decoration: none; }
 .zurueck:hover { text-decoration: underline; }
 
 /* Kopfbereich: Gerichtfoto als Hintergrund hinter Titel und Beschreibung, wie auf der Startseite */
 .rezept-buehne {
   position: relative; isolation: isolate; overflow: hidden;
   padding-block: var(--s6) var(--s8);
-  background: var(--teaser); color: #fff;
+  background: #2A211C; color: #fff;
 }
 @media (min-width: 52rem) { .rezept-buehne { min-height: 30rem; padding-bottom: 6rem; } }
 .buehne-bild {
@@ -501,11 +510,11 @@ a { color: inherit; }
 }
 .rezept-buehne::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(12, 16, 34, 0.55), rgba(12, 16, 34, 0.8));
+  background: linear-gradient(180deg, rgba(22, 18, 16, 0.55), rgba(22, 18, 16, 0.8));
 }
 @media (min-width: 52rem) {
   .rezept-buehne::before {
-    background: linear-gradient(90deg, rgba(12, 16, 34, 0.9) 0%, rgba(12, 16, 34, 0.65) 50%, rgba(12, 16, 34, 0.15) 100%);
+    background: linear-gradient(90deg, rgba(22, 18, 16, 0.9) 0%, rgba(22, 18, 16, 0.65) 50%, rgba(22, 18, 16, 0.15) 100%);
   }
 }
 .rezept-buehne .zurueck { color: #fff; }
@@ -537,10 +546,10 @@ a { color: inherit; }
   width: 2.4rem; height: 2.4rem; flex: none;
   display: grid; place-items: center;
   font: inherit; font-size: 1.3rem; font-weight: 700; line-height: 1;
-  border: 2px solid var(--kobalt); border-radius: 50%;
-  background: transparent; color: var(--kobalt); cursor: pointer;
+  border: 2px solid var(--haupt-text); border-radius: 50%;
+  background: transparent; color: var(--haupt-text); cursor: pointer;
 }
-.portionen button:hover:not(:disabled) { background: var(--kobalt-hell); }
+.portionen button:hover:not(:disabled) { background: var(--haupt-hell); }
 .portionen button:disabled { opacity: 0.35; cursor: default; }
 .portionen output { font-weight: 800; font-size: 1.3rem; color: var(--tinte); min-width: 1.5ch; text-align: center; }
 
@@ -552,7 +561,7 @@ a { color: inherit; }
   border-bottom: 1px solid var(--linie);
   display: flex; gap: var(--s3);
 }
-.zutaten li b { font-family: var(--schrift-ui); font-weight: 700; flex: none; width: 5.5rem; color: var(--kobalt); }
+.zutaten li b { font-family: var(--schrift-ui); font-weight: 700; flex: none; width: 5.5rem; color: var(--haupt-text); }
 
 .schritte { list-style: none; margin: 0; padding: 0; counter-reset: schritt; display: grid; gap: var(--s5); }
 .schritte li {
@@ -564,13 +573,13 @@ a { color: inherit; }
 .schritte li::before {
   content: counter(schritt);
   width: 2.6rem; height: 2.6rem; border-radius: 50%;
-  border: 3px solid var(--kobalt); color: var(--kobalt);
+  border: 3px solid var(--haupt); background: var(--haupt); color: var(--auf-haupt);
   display: grid; place-items: center;
   font-family: var(--schrift-ui); font-weight: 800;
 }
 .tipp {
   margin-top: var(--s6); padding: var(--s4) var(--s5);
-  background: var(--senf-hell); border-radius: var(--rund);
+  background: var(--akzent-hell); border-radius: var(--rund);
   font-family: var(--schrift-text); max-width: 62ch;
 }
 .tipp strong { font-family: var(--schrift-ui); }
@@ -584,9 +593,24 @@ a { color: inherit; }
 @media print {
   /* Immer hell drucken, auch wenn das dunkle Design aktiv ist */
   :root, :root[data-theme] {
-    --grund: #FFFFFF; --flaeche: #FFFFFF; --tinte: #1A2236; --leise: #586179; --linie: #D7DCE7;
-    --kobalt: #2340A0; --kobalt-tief: #1A3080; --kobalt-hell: #E4E9F7;
-    --teller-innen: #FFFFFF; --gruen-grund: #E3F1DA; --gruen-text: #2F5A1A;
+    --grund: #FBF8F6;
+    --flaeche: #FFFFFF;
+    --tinte: #2A211C;
+    --leise: #6B5D55;
+    --linie: #EADFD8;
+    --haupt: #FEE0CE;
+    --haupt-tief: #F9CDB3;
+    --haupt-hell: #FFF1E8;
+    --haupt-text: #A1461B;
+    --auf-haupt: #2A211C;
+    --akzent: #CEFEE0;
+    --akzent-tief: #3E9C70;
+    --akzent-hell: #E8FFF1;
+    --teller-innen: #FFFFFF;
+    --gruen-grund: #DDF7E8;
+    --gruen-text: #24603F;
+    --teaser: #FEE0CE;
+    --auf-teaser: #2A211C;
     color-scheme: light;
   }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -598,7 +622,7 @@ a { color: inherit; }
 
   .druck-kopf {
     display: flex; justify-content: space-between; align-items: baseline; gap: 6mm;
-    padding-bottom: 3mm; border-bottom: 2.5pt solid var(--kobalt);
+    padding-bottom: 3mm; border-bottom: 2.5pt solid var(--haupt-text);
   }
   .druck-kopf h2 { font-size: 26pt; font-weight: 800; letter-spacing: -0.02em; }
   .druck-kopf p { font-size: 11pt; color: var(--leise); }
@@ -630,5 +654,5 @@ a { color: inherit; }
 /* ---------- Bildnachweise ---------- */
 .nachweis-liste { list-style: none; margin: 0 0 var(--s8); padding: 0; display: grid; gap: var(--s3); max-width: 52rem; }
 .nachweis-liste li { display: flex; gap: var(--s4); align-items: center; padding-block: var(--s3); border-bottom: 1px solid var(--linie); font-size: 0.95rem; }
-.nachweis-liste img { width: 4.5rem; height: 4.5rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--kobalt); flex: none; }
-.nachweis-liste a, .fuss a { color: var(--kobalt); }
+.nachweis-liste img { width: 4.5rem; height: 4.5rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--haupt); flex: none; }
+.nachweis-liste a, .fuss a { color: var(--haupt-text); }
