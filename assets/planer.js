@@ -219,7 +219,7 @@ function tagHTML(tag) {
   }
 
   const merkmale = [`<li>${formatZeit(r.zeit)}</li>`, `<li>${esc(r.kategorie)}</li>`];
-  if (istFleischfrei(r)) merkmale.push(`<li class="gruen">${esc(r.ernaehrung)}</li>`);
+  if (istFleischfrei(r)) merkmale.push(`<li>${esc(r.ernaehrung)}</li>`);
 
   return `<article class="tag${eintrag.fest ? " fest" : ""}">
     <div class="tag-name">${t.kurz}<small>${t.lang}</small><span class="tag-datum">${datumVon(tag, { day: "numeric", month: "long" })}</span></div>

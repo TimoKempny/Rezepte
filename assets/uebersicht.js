@@ -74,7 +74,7 @@ const sortierer = {
 
 function karteHTML(r) {
   const merkmale = [`<li>${formatZeit(r.zeit)}</li>`, `<li>${esc(r.schwierigkeit)}</li>`];
-  if (istFleischfrei(r)) merkmale.push(`<li class="gruen">${esc(r.ernaehrung)}</li>`);
+  if (istFleischfrei(r)) merkmale.push(`<li>${esc(r.ernaehrung)}</li>`);
   return `<li>
     <a class="rezept-karte" href="${esc(r.seite)}">
       ${tellerHTML(r)}
