@@ -7,9 +7,12 @@
   <!--
     Vorlage für ein neues Rezept:
     1. Datei kopieren, z. B. nach rezepte/mein-rezept.html
-    2. Foto quadratisch (ca. 720 × 720) als assets/bilder/mein-rezept.jpg ablegen und den Teller ersetzen durch
-       <div class="teller mit-bild" aria-hidden="true"><img src="../assets/bilder/mein-rezept.jpg" alt="" width="720" height="720"></div>
-       Ohne Foto bleibt der farbige Teller (--speise = Farbe der Kategorie).
+    2. Foto in zwei Versionen ablegen:
+       assets/bilder/mein-rezept.jpg        quadratisch, ca. 720 × 720 (Teller in Übersicht und Wochenplaner)
+       assets/bilder/mein-rezept-breit.jpg  16:9, ca. 1800 × 1012 (Hintergrund im Kopfbereich dieser Seite)
+       und direkt unter <section class="rezept-buehne"> einfügen:
+       <img class="buehne-bild" src="../assets/bilder/mein-rezept-breit.jpg" alt="" width="1800" height="1012" fetchpriority="high">
+       Ohne Foto bleibt der Kopfbereich kobaltblau.
     3. Titel, Fakten, Zutaten und Schritte ausfüllen.
        Portionen: data-basis und <output> auf die Portionszahl setzen, für die die Mengen gelten.
        Zutaten:   <b data-menge="200" data-einheit="g">200 g</b>  ->  wird beim Ändern der Portionen umgerechnet
@@ -20,10 +23,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/style.css?v=2">
+  <link rel="stylesheet" href="../assets/style.css?v=5">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/favicon-180.png">
-  <script src="../assets/thema.js?v=2"></script>
+  <script src="../assets/thema.js?v=5"></script>
 </head>
 <body>
   <header class="kopf">
@@ -47,7 +50,6 @@
             <h1>Name des Rezepts</h1>
             <p class="rezept-intro">Ein, zwei Sätze, was das Gericht ausmacht.</p>
           </div>
-          <div class="teller" style="--speise:#E0A526" aria-hidden="true"><span>N</span></div>
         </div>
       </div>
     </section>
@@ -91,6 +93,6 @@
     <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="../assets/rezept.js?v=2"></script>
+  <script src="../assets/rezept.js?v=5"></script>
 </body>
 </html>

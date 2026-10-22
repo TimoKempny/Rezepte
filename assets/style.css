@@ -158,6 +158,8 @@ a { color: inherit; }
 }
 /* Teller mit Foto: weißer Innenring, Bild rund zugeschnitten */
 .teller.mit-bild { background: var(--teller-innen); padding: 7%; }
+/* Übersicht: Foto direkt im kobaltblauen Rand, ohne weißen Innenring */
+.rezept-karte .teller.mit-bild, .vorschlag .teller.mit-bild { padding: 0; }
 .teller img {
   display: block; width: 100%; height: 100%;
   border-radius: 50%; object-fit: cover;
@@ -486,33 +488,30 @@ a { color: inherit; }
 .zurueck { color: var(--kobalt); font-weight: 600; text-decoration: none; }
 .zurueck:hover { text-decoration: underline; }
 
-/* Kopfbereich: Gerichtfoto unscharf und abgedunkelt hinter Titel und Beschreibung */
+/* Kopfbereich: Gerichtfoto als Hintergrund hinter Titel und Beschreibung, wie auf der Startseite */
 .rezept-buehne {
   position: relative; isolation: isolate; overflow: hidden;
-  padding-block: var(--s6) var(--s7);
+  padding-block: var(--s6) var(--s8);
   background: var(--teaser); color: #fff;
 }
+@media (min-width: 52rem) { .rezept-buehne { min-height: 30rem; padding-bottom: 6rem; } }
 .buehne-bild {
   position: absolute; inset: 0; z-index: -2;
   width: 100%; height: 100%; object-fit: cover;
-  filter: blur(26px) saturate(1.15);
-  transform: scale(1.15);
 }
 .rezept-buehne::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(90deg, rgba(12, 16, 34, 0.82), rgba(12, 16, 34, 0.45));
+  background: linear-gradient(180deg, rgba(12, 16, 34, 0.55), rgba(12, 16, 34, 0.8));
+}
+@media (min-width: 52rem) {
+  .rezept-buehne::before {
+    background: linear-gradient(90deg, rgba(12, 16, 34, 0.9) 0%, rgba(12, 16, 34, 0.65) 50%, rgba(12, 16, 34, 0.15) 100%);
+  }
 }
 .rezept-buehne .zurueck { color: #fff; }
 .rezept-buehne .rezept-intro { color: rgba(255, 255, 255, 0.88); }
-.rezept-buehne .teller { box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.7); }
 .rezept-buehne :focus-visible { outline-color: #fff; }
-.rezept-kopf {
-  display: grid; gap: var(--s5); margin-top: var(--s5);
-  grid-template-columns: 1fr; align-items: center;
-}
-@media (min-width: 48rem) { .rezept-kopf { grid-template-columns: 1fr 20rem; } }
-.rezept-kopf .teller { width: min(20rem, 60vw); --rand: 12px; }
-.rezept-kopf .teller span { font-size: 4rem; }
+.rezept-kopf { margin-top: var(--s7); }
 .rezept h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.03em; }
 .rezept-intro { font-family: var(--schrift-text); font-size: 1.2rem; line-height: 1.6; color: var(--leise); margin-top: var(--s4); max-width: 40ch; }
 
@@ -577,11 +576,55 @@ a { color: inherit; }
 .tipp strong { font-family: var(--schrift-ui); }
 
 /* ---------- Druck ---------- */
+/* Elemente, die nur auf dem gedruckten Wochenplan erscheinen */
+.druck-kopf, .druck-fuss, .tag-datum, .tag-beschreibung, .merkmale .nur-druck { display: none; }
+
+@page { size: A4 portrait; margin: 12mm 14mm; }
+
 @media print {
-  .kopf, .fuss, .kriterien, .tag-aktion, .woche-aktionen div, .zurueck, .teaser { display: none !important; }
-  body { background: #fff; color: #000; }
-  .planer { grid-template-columns: 1fr; }
-  .tag { break-inside: avoid; border-color: #bbb; box-shadow: none; background: #fff; }
+  /* Immer hell drucken, auch wenn das dunkle Design aktiv ist */
+  :root, :root[data-theme] {
+    --grund: #FFFFFF; --flaeche: #FFFFFF; --tinte: #1A2236; --leise: #586179; --linie: #D7DCE7;
+    --kobalt: #2340A0; --kobalt-tief: #1A3080; --kobalt-hell: #E4E9F7;
+    --teller-innen: #FFFFFF; --gruen-grund: #E3F1DA; --gruen-text: #2F5A1A;
+    color-scheme: light;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; font-size: 10pt; }
+
+  .kopf, .fuss, .kriterien, .planer-kopf, .woche-aktionen, .woche-meldung, .tag-aktion, .zurueck, .teaser { display: none !important; }
+  .huelle { max-width: none; padding: 0; }
+  .planer { display: block; padding: 0; }
+
+  .druck-kopf {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 6mm;
+    padding-bottom: 3mm; border-bottom: 2.5pt solid var(--kobalt);
+  }
+  .druck-kopf h2 { font-size: 26pt; font-weight: 800; letter-spacing: -0.02em; }
+  .druck-kopf p { font-size: 11pt; color: var(--leise); }
+
+  .woche { gap: 0; }
+  .tag, .tag.fest {
+    grid-template-columns: 30mm 25mm 1fr;
+    grid-template-areas: "name teller info";
+    gap: 0 6mm; padding: 3.8mm 0;
+    border: 0; border-bottom: 0.6pt solid var(--linie); border-radius: 0;
+    background: none; box-shadow: none;
+    break-inside: avoid;
+  }
+  /* Langer Tagesname groß, Datum darunter; das Kürzel wird ausgeblendet */
+  .tag-name { font-size: 0; }
+  .tag-name small { font-size: 13pt; font-weight: 800; color: var(--tinte); }
+  .tag-datum { display: block; font-size: 9pt; font-weight: 500; color: var(--leise); margin-top: 0.5mm; }
+  .tag .teller { width: 25mm; --rand: 3px; }
+  .tag-info h3 { font-size: 13.5pt; }
+  .tag-info h3 a { color: inherit; }
+  .tag-beschreibung { display: block; font-family: var(--schrift-text); font-size: 9.5pt; line-height: 1.4; color: var(--leise); margin-top: 1mm; }
+  .tag-info .merkmale { margin-top: 1.5mm; }
+  .merkmale li { font-size: 8pt; }
+  .merkmale .nur-druck { display: block; }
+
+  .druck-fuss { display: block; margin-top: 4mm; font-size: 8pt; color: var(--leise); }
 }
 
 /* ---------- Bildnachweise ---------- */
