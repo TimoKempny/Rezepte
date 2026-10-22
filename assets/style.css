@@ -11,6 +11,10 @@
   --senf: #E0A526;
   --senf-hell: #FBF0D4;
   --teller-innen: #FFFFFF;
+  --auf-kobalt: #FFFFFF;
+  --gruen-grund: #E3F1DA;
+  --gruen-text: #2F5A1A;
+  --teaser: #2340A0;
 
   --schrift-ui: "Bricolage Grotesque", system-ui, sans-serif;
   --schrift-text: "Literata", Georgia, serif;
@@ -18,11 +22,12 @@
   --s1: 0.25rem; --s2: 0.5rem; --s3: 0.75rem; --s4: 1rem;
   --s5: 1.5rem; --s6: 2rem; --s7: 3rem; --s8: 4.5rem;
 
-  --breite: 72rem;
+  --breite: 86rem;
   --rund: 0.6rem;
   color-scheme: light;
 }
 
+/* Dunkles Design: folgt dem System, außer es wurde per Umschalter "light" gewählt */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --grund: #0F1426;
@@ -36,8 +41,30 @@
     --senf: #F0BB4A;
     --senf-hell: #3A3220;
     --teller-innen: #EDEFF5;
+    --auf-kobalt: #0F1426;
+    --gruen-grund: #23361C;
+    --gruen-text: #B8DDA2;
+    --teaser: #1C2A66;
     color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --grund: #0F1426;
+  --flaeche: #171D34;
+  --tinte: #E8EBF4;
+  --leise: #A2AAC1;
+  --linie: #2B3352;
+  --kobalt: #8DA4FF;
+  --kobalt-tief: #B4C3FF;
+  --kobalt-hell: #222B50;
+  --senf: #F0BB4A;
+  --senf-hell: #3A3220;
+  --teller-innen: #EDEFF5;
+  --auf-kobalt: #0F1426;
+  --gruen-grund: #23361C;
+  --gruen-text: #B8DDA2;
+  --teaser: #1C2A66;
+  color-scheme: dark;
 }
 
 /* ---------- Grundlagen ---------- */
@@ -70,7 +97,7 @@ a { color: inherit; }
   margin-inline: auto;
   padding-inline: var(--s4);
 }
-@media (min-width: 48rem) { .huelle { padding-inline: var(--s6); } }
+@media (min-width: 48rem) { .huelle { padding-inline: var(--s5); } }
 
 .nur-screenreader {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
@@ -96,7 +123,19 @@ a { color: inherit; }
   border: 4px solid var(--kobalt);
   background: radial-gradient(circle, var(--senf) 0 38%, var(--teller-innen) 40%);
 }
+.kopf-rechts { display: flex; align-items: center; gap: var(--s2); }
 .kopf nav { display: flex; gap: var(--s1); }
+
+.thema-knopf {
+  width: 2.5rem; height: 2.5rem; flex: none;
+  display: grid; place-items: center;
+  border: 2px solid var(--linie); border-radius: 50%;
+  background: transparent; color: var(--tinte); cursor: pointer;
+}
+.thema-knopf:hover { border-color: var(--kobalt); color: var(--kobalt); }
+.thema-knopf svg { width: 1.2rem; height: 1.2rem; }
+.thema-knopf .sonne, .thema-knopf[aria-pressed="true"] .mond { display: none; }
+.thema-knopf[aria-pressed="true"] .sonne { display: block; }
 .kopf nav a {
   text-decoration: none; font-weight: 600; color: var(--leise);
   padding: var(--s2) var(--s3); border-radius: 999px;
@@ -116,6 +155,12 @@ a { color: inherit; }
     var(--teller-innen);
   display: grid; place-items: center;
 }
+/* Teller mit Foto: weißer Innenring, Bild rund zugeschnitten */
+.teller.mit-bild { background: var(--teller-innen); padding: 7%; }
+.teller img {
+  display: block; width: 100%; height: 100%;
+  border-radius: 50%; object-fit: cover;
+}
 .teller span {
   font-weight: 800;
   font-size: 2.6rem;
@@ -132,7 +177,7 @@ a { color: inherit; }
   align-items: center;
 }
 @media (min-width: 52rem) {
-  .hero .huelle { grid-template-columns: 1.35fr 1fr; gap: var(--s8); }
+  .hero .huelle { grid-template-columns: 1.15fr 1fr; gap: var(--s8); }
 }
 .hero h1 {
   font-size: clamp(2.6rem, 7vw, 5.2rem);
@@ -156,14 +201,36 @@ a { color: inherit; }
 .suche input::placeholder { color: var(--leise); }
 .suche input:focus { outline: none; border-color: var(--kobalt); }
 
+/* Startbild mit überlappender Vorschlagskarte */
+.hero-bild { position: relative; }
+.hero-bild > img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 1.5rem;
+}
+@media (min-width: 52rem) {
+  .hero-bild > img { aspect-ratio: 5 / 6; max-height: 40rem; }
+}
+
 .vorschlag {
-  display: grid; justify-items: center; text-align: center; gap: var(--s3);
+  position: relative;
+  margin: -3.5rem var(--s3) 0;
+  display: grid; grid-template-columns: 6.5rem 1fr; align-items: center; gap: var(--s2) var(--s4);
+  padding: var(--s4);
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: 1.2rem;
+  box-shadow: 0 18px 40px -18px rgba(15, 20, 38, 0.45);
+}
+@media (min-width: 52rem) {
+  .vorschlag { position: absolute; left: -3.5rem; bottom: 2.5rem; margin: 0; width: min(25rem, 90%); }
 }
 .vorschlag a { text-decoration: none; }
-.vorschlag .teller { width: min(17rem, 58vw); --rand: 12px; }
-.vorschlag .teller span { font-size: 5rem; }
-.vorschlag-label { color: var(--leise); font-size: 0.95rem; }
-.vorschlag h2 { font-size: 1.6rem; letter-spacing: -0.01em; }
+.vorschlag .teller { width: 100%; --rand: 5px; }
+.vorschlag .teller span { font-size: 2.4rem; }
+.vorschlag-text { display: grid; gap: var(--s1); justify-items: start; }
+.vorschlag-label { color: var(--leise); font-size: 0.9rem; }
+.vorschlag h2 { font-size: 1.3rem; letter-spacing: -0.01em; }
 .vorschlag h2 a { text-decoration: none; }
 .vorschlag h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .vorschlag-info { color: var(--leise); }
@@ -183,16 +250,13 @@ a { color: inherit; }
   min-height: 2.6rem;
   border-radius: 999px;
   border: 2px solid var(--kobalt);
-  background: var(--kobalt); color: #fff;
+  background: var(--kobalt); color: var(--auf-kobalt);
   cursor: pointer; text-decoration: none;
 }
 .knopf:hover { background: var(--kobalt-tief); border-color: var(--kobalt-tief); }
 .knopf.zweit { background: transparent; color: var(--kobalt); }
 .knopf.zweit:hover { background: var(--kobalt-hell); }
 .knopf.klein { min-height: 2.1rem; padding: var(--s1) var(--s3); font-size: 0.9rem; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .knopf:not(.zweit) { color: #0F1426; }
-}
 
 /* ---------- Filter ---------- */
 .filter {
@@ -248,10 +312,7 @@ a { color: inherit; }
   padding: var(--s1) var(--s2); min-height: 2.1rem;
   border: 0; border-radius: 999px; background: transparent; color: var(--leise); cursor: pointer;
 }
-.segmente button[aria-pressed="true"] { background: var(--kobalt); color: #fff; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .segmente button[aria-pressed="true"] { color: #0F1426; }
-}
+.segmente button[aria-pressed="true"] { background: var(--kobalt); color: var(--auf-kobalt); }
 
 .ergebnis-zeile {
   display: flex; justify-content: space-between; align-items: center; gap: var(--s4); flex-wrap: wrap;
@@ -298,10 +359,8 @@ a { color: inherit; }
   padding: 0.1rem var(--s2); border-radius: 999px;
   background: var(--kobalt-hell); color: var(--kobalt-tief);
 }
-.merkmale li.gruen { background: #E3F1DA; color: #2F5A1A; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .merkmale li.gruen { background: #23361C; color: #B8DDA2; }
-}
+.merkmale li.gruen { background: var(--gruen-grund); color: var(--gruen-text); }
+
 
 .leer {
   text-align: center; padding: var(--s8) var(--s4);
@@ -312,7 +371,7 @@ a { color: inherit; }
 .leer p { color: var(--leise); max-width: 36ch; }
 
 /* ---------- Planer-Teaser ---------- */
-.teaser { background: var(--kobalt); color: #fff; }
+.teaser { background: var(--teaser); color: #fff; }
 .teaser .huelle {
   display: grid; gap: var(--s5); padding-block: var(--s7);
   grid-template-columns: 1fr; align-items: center;
@@ -320,7 +379,7 @@ a { color: inherit; }
 @media (min-width: 48rem) { .teaser .huelle { grid-template-columns: 1fr auto; } }
 .teaser h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; }
 .teaser p { margin-top: var(--s2); opacity: 0.85; max-width: 46ch; }
-.teaser .knopf { background: #fff; color: var(--kobalt); border-color: #fff; }
+.teaser .knopf { background: #fff; color: var(--teaser); border-color: #fff; }
 .teaser .knopf:hover { background: var(--kobalt-hell); border-color: var(--kobalt-hell); }
 .teaser-woche { display: flex; gap: var(--s2); margin-bottom: var(--s4); }
 .teaser-woche span {
@@ -328,10 +387,7 @@ a { color: inherit; }
   border: 3px solid #fff; display: grid; place-items: center;
   font-size: 0.75rem; font-weight: 700;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .teaser { background: #1C2A66; }
-  :root:not([data-theme="light"]) .teaser .knopf { color: #1C2A66; }
-}
+
 
 /* ---------- Fußzeile ---------- */
 .fuss { border-top: 1px solid var(--linie); padding-block: var(--s5); color: var(--leise); font-size: 0.92rem; }
@@ -422,8 +478,8 @@ a { color: inherit; }
   display: grid; gap: var(--s5); margin-top: var(--s5);
   grid-template-columns: 1fr; align-items: center;
 }
-@media (min-width: 48rem) { .rezept-kopf { grid-template-columns: 1fr 13rem; } }
-.rezept-kopf .teller { width: 11rem; --rand: 10px; }
+@media (min-width: 48rem) { .rezept-kopf { grid-template-columns: 1fr 20rem; } }
+.rezept-kopf .teller { width: min(20rem, 80vw); --rand: 12px; }
 .rezept-kopf .teller span { font-size: 4rem; }
 .rezept h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -0.03em; }
 .rezept-intro { font-family: var(--schrift-text); font-size: 1.2rem; line-height: 1.6; color: var(--leise); margin-top: var(--s4); max-width: 40ch; }
@@ -442,7 +498,21 @@ a { color: inherit; }
 }
 @media (min-width: 52rem) { .rezept-raster { grid-template-columns: 18rem 1fr; } }
 .rezept-raster h2 { font-size: 1.6rem; margin-bottom: var(--s4); }
-.portionen { color: var(--leise); margin-bottom: var(--s3); }
+.portionen {
+  display: flex; align-items: center; gap: var(--s3);
+  margin-bottom: var(--s4); color: var(--leise);
+}
+.portionen button {
+  width: 2.4rem; height: 2.4rem; flex: none;
+  display: grid; place-items: center;
+  font: inherit; font-size: 1.3rem; font-weight: 700; line-height: 1;
+  border: 2px solid var(--kobalt); border-radius: 50%;
+  background: transparent; color: var(--kobalt); cursor: pointer;
+}
+.portionen button:hover:not(:disabled) { background: var(--kobalt-hell); }
+.portionen button:disabled { opacity: 0.35; cursor: default; }
+.portionen output { font-weight: 800; font-size: 1.3rem; color: var(--tinte); min-width: 1.5ch; text-align: center; }
+
 
 .zutaten ul { list-style: none; margin: 0; padding: 0; }
 .zutaten li {
@@ -481,3 +551,9 @@ a { color: inherit; }
   .planer { grid-template-columns: 1fr; }
   .tag { break-inside: avoid; border-color: #bbb; box-shadow: none; background: #fff; }
 }
+
+/* ---------- Bildnachweise ---------- */
+.nachweis-liste { list-style: none; margin: 0 0 var(--s8); padding: 0; display: grid; gap: var(--s3); max-width: 52rem; }
+.nachweis-liste li { display: flex; gap: var(--s4); align-items: center; padding-block: var(--s3); border-bottom: 1px solid var(--linie); font-size: 0.95rem; }
+.nachweis-liste img { width: 4.5rem; height: 4.5rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--kobalt); flex: none; }
+.nachweis-liste a, .fuss a { color: var(--kobalt); }

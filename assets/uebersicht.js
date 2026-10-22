@@ -32,10 +32,12 @@ function zeigeVorschlag(animieren) {
   letzterVorschlag = r.id;
   el.vorschlag.innerHTML = `
     <a href="${esc(r.seite)}" tabindex="-1" aria-hidden="true">${tellerHTML(r, animieren ? "dreht" : "")}</a>
-    <p class="vorschlag-label">Vorschlag für heute</p>
-    <h2><a href="${esc(r.seite)}">${esc(r.titel)}</a></h2>
-    <p class="vorschlag-info">${formatZeit(r.zeit)}, ${esc(r.schwierigkeit)}</p>
-    <button type="button" class="knopf zweit klein" id="neuer-vorschlag">Anderer Vorschlag</button>`;
+    <div class="vorschlag-text">
+      <p class="vorschlag-label">Vorschlag für heute</p>
+      <h2><a href="${esc(r.seite)}">${esc(r.titel)}</a></h2>
+      <p class="vorschlag-info">${formatZeit(r.zeit)}, ${esc(r.schwierigkeit)}</p>
+      <button type="button" class="knopf zweit klein" id="neuer-vorschlag">Anderer Vorschlag</button>
+    </div>`;
   document.getElementById("neuer-vorschlag").addEventListener("click", () => zeigeVorschlag(true));
 }
 

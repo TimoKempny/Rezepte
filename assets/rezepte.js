@@ -6,6 +6,7 @@
 // schwierigkeit: "leicht" | "mittel" | "aufwendig"
 // ernaehrung:    "vegan" | "vegetarisch" | "fleisch" | "fisch"
 // hinzugefuegt:  Datum (JJJJ-MM-TT), wird für "Neueste zuerst" genutzt
+// bild:          optional, quadratisches Foto (ca. 720 × 720) in assets/bilder/
 
 window.KATEGORIEN = {
   "Pasta":     "#E0A526",
@@ -22,6 +23,7 @@ window.REZEPTE = [
     id: "spaghetti-carbonara",
     titel: "Spaghetti Carbonara",
     seite: "rezepte/spaghetti-carbonara.html",
+    bild: "assets/bilder/spaghetti-carbonara.jpg",
     kategorie: "Pasta",
     zeit: 25,
     schwierigkeit: "leicht",
@@ -34,6 +36,7 @@ window.REZEPTE = [
     id: "linsen-dal",
     titel: "Rotes Linsen-Dal",
     seite: "rezepte/linsen-dal.html",
+    bild: "assets/bilder/linsen-dal.jpg",
     kategorie: "Curry",
     zeit: 35,
     schwierigkeit: "leicht",
@@ -46,6 +49,7 @@ window.REZEPTE = [
     id: "kaesespaetzle",
     titel: "Käsespätzle",
     seite: "rezepte/kaesespaetzle.html",
+    bild: "assets/bilder/kaesespaetzle.jpg",
     kategorie: "Klassiker",
     zeit: 50,
     schwierigkeit: "mittel",
@@ -58,6 +62,7 @@ window.REZEPTE = [
     id: "ofengemuese-feta",
     titel: "Ofengemüse mit Feta",
     seite: "rezepte/ofengemuese-feta.html",
+    bild: "assets/bilder/ofengemuese-feta.jpg",
     kategorie: "Ofen",
     zeit: 40,
     schwierigkeit: "leicht",
@@ -70,6 +75,7 @@ window.REZEPTE = [
     id: "haehnchen-curry",
     titel: "Hähnchen-Curry",
     seite: "rezepte/haehnchen-curry.html",
+    bild: "assets/bilder/haehnchen-curry.jpg",
     kategorie: "Curry",
     zeit: 35,
     schwierigkeit: "leicht",
@@ -82,6 +88,7 @@ window.REZEPTE = [
     id: "kuerbissuppe",
     titel: "Kürbissuppe mit Ingwer",
     seite: "rezepte/kuerbissuppe.html",
+    bild: "assets/bilder/kuerbissuppe.jpg",
     kategorie: "Suppe",
     zeit: 40,
     schwierigkeit: "leicht",
@@ -94,6 +101,7 @@ window.REZEPTE = [
     id: "shakshuka",
     titel: "Shakshuka",
     seite: "rezepte/shakshuka.html",
+    bild: "assets/bilder/shakshuka.jpg",
     kategorie: "Pfanne",
     zeit: 30,
     schwierigkeit: "leicht",
@@ -106,6 +114,7 @@ window.REZEPTE = [
     id: "rinderrouladen",
     titel: "Rinderrouladen",
     seite: "rezepte/rinderrouladen.html",
+    bild: "assets/bilder/rinderrouladen.jpg",
     kategorie: "Klassiker",
     zeit: 150,
     schwierigkeit: "aufwendig",
@@ -118,6 +127,7 @@ window.REZEPTE = [
     id: "pfannkuchen",
     titel: "Pfannkuchen mit Apfel",
     seite: "rezepte/pfannkuchen.html",
+    bild: "assets/bilder/pfannkuchen.jpg",
     kategorie: "Süßes",
     zeit: 25,
     schwierigkeit: "leicht",
