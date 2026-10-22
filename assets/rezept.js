@@ -12,7 +12,8 @@
   const anzeige = regler.querySelector("output");
   const weniger = regler.querySelector('[data-schritt="-1"]');
   const mehr = regler.querySelector('[data-schritt="1"]');
-  const MIN = 1, MAX = 24;
+  // Obergrenze mindestens doppelte Grundmenge, damit auch Rezepte mit 60 Stück verdoppelt werden können
+  const MIN = 1, MAX = Math.max(24, basis * 2);
 
   const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Becher: "Becher", Glas: "Gläser", Flasche: "Flaschen" };
   const BRUECHE = { 0.25: "¼", 0.5: "½", 0.75: "¾" };
