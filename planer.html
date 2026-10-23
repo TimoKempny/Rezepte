@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=13">
+  <link rel="stylesheet" href="assets/style.css?v=14">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/favicon-180.png">
-  <script src="assets/thema.js?v=13"></script>
+  <script src="assets/thema.js?v=14"></script>
 </head>
 <body>
   <header class="kopf">
@@ -37,6 +37,21 @@
           <legend>An welchen Tagen kochst du?</legend>
           <div class="tage" id="tage"></div>
         </fieldset>
+
+        <div class="feld">
+          <label for="portionen">Portionen pro Mahlzeit</label>
+          <select id="portionen">
+            <option value="0" selected>wie im Rezept</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+          </select>
+          <p class="hinweis">Danach richten sich die Mengen in der Einkaufsliste.</p>
+        </div>
 
         <div class="feld">
           <label for="zeit-woche">Kochzeit Mo bis Fr</label>
@@ -98,12 +113,23 @@
     </div>
   </main>
 
+  <dialog class="teilen-dialog" id="teilen-dialog" aria-labelledby="teilen-titel">
+    <h2 id="teilen-titel">Wochenplan teilen</h2>
+    <p class="hinweis">Mit Einkaufsliste und Links zu den Rezepten.</p>
+    <div class="teilen-wege">
+      <a class="knopf" id="teilen-whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="knopf" id="teilen-mail">E-Mail</a>
+      <button type="button" class="knopf zweit" id="teilen-kopieren">Text kopieren</button>
+    </div>
+    <form method="dialog"><button class="knopf zweit klein">Schließen</button></form>
+  </dialog>
+
   <footer class="fuss">
     <div class="huelle">Der Plan wird in diesem Browser gespeichert. <a href="bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="assets/rezepte.js?v=13"></script>
-  <script src="assets/gemeinsam.js?v=13"></script>
-  <script src="assets/planer.js?v=13"></script>
+  <script src="assets/rezepte.js?v=14"></script>
+  <script src="assets/gemeinsam.js?v=14"></script>
+  <script src="assets/planer.js?v=14"></script>
 </body>
 </html>

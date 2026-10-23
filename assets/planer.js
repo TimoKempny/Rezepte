@@ -28,15 +28,22 @@ const el = {
   fleischfreiWert: document.getElementById("fleischfrei-wert"),
   zweiTage: document.getElementById("zwei-tage"),
   zweiTageWert: document.getElementById("zwei-tage-wert"),
+  portionen: document.getElementById("portionen"),
   kategorien: document.getElementById("plan-kategorien"),
   abwechslung: document.getElementById("abwechslung"),
   woche: document.getElementById("woche"),
+  teilenDialog: document.getElementById("teilen-dialog"),
+  teilenWhatsapp: document.getElementById("teilen-whatsapp"),
+  teilenMail: document.getElementById("teilen-mail"),
+  teilenKopieren: document.getElementById("teilen-kopieren"),
 };
 
 // plan: { [tagIndex]: { id: string | null, fest: boolean, reste?: tagIndex } }
 // Ein Eintrag mit "reste" ist ein Reste-Tag: Er übernimmt Rezept und Festhalten vom Tag, an dem doppelt gekocht wird.
 let plan = null;
 let meldung = "";
+// Schlüssel der abgehakten Zeilen der Einkaufsliste
+let abgehakt = new Set();
 
 const rezeptMitId = (id) => rezepte.find((r) => r.id === id) || null;
 
@@ -86,6 +93,7 @@ function formularAufbauen() {
 function kriterienLesen() {
   return {
     tage: [...el.tage.querySelectorAll("input:checked")].map((i) => Number(i.value)),
+    portionen: Number(el.portionen.value),
     zeitWoche: Number(el.zeitWoche.value),
     zeitWochenende: Number(el.zeitWochenende.value),
     schwierigkeit: el.schwierigkeit.value,
@@ -99,6 +107,7 @@ function kriterienLesen() {
 
 function kriterienSetzen(k) {
   for (const box of el.tage.querySelectorAll("input")) box.checked = k.tage.includes(Number(box.value));
+  if (k.portionen !== undefined) el.portionen.value = k.portionen;
   el.zeitWoche.value = k.zeitWoche;
   el.zeitWochenende.value = k.zeitWochenende;
   el.schwierigkeit.value = k.schwierigkeit;
@@ -214,6 +223,7 @@ function erstellen() {
   }
 
   plan = neu;
+  abgehakt = new Set();
   meldung = meldungBauen(k, leer, doppelt, fehlendePaare);
   speichern(k);
   anzeigen();
@@ -285,6 +295,26 @@ function festhalten(tag) {
   anzeigen();
 }
 
+// ---------- Portionen ----------
+
+// Kochtag, dessen Reste es am nächsten geplanten Tag gibt
+const kochtFuerZweiTage = (tag) => {
+  const folgetag = naechsterTag(tag);
+  return folgetag !== undefined && plan[folgetag].reste === tag;
+};
+
+// Portionen, die an einem Kochtag gekocht werden (Reste-Tage kochen nicht)
+function portionenAm(tag) {
+  const r = rezeptMitId(plan[tag].id);
+  const proMahlzeit = Number(el.portionen.value) || r.portionen;
+  return kochtFuerZweiTage(tag) ? proMahlzeit * 2 : proMahlzeit;
+}
+
+// Kochtage mit Rezept: [{ tag, rezept, portionen }]
+const kochtage = () => geplanteTage()
+  .filter((t) => plan[t].reste === undefined && rezeptMitId(plan[t].id))
+  .map((t) => ({ tag: t, rezept: rezeptMitId(plan[t].id), portionen: portionenAm(t) }));
+
 // ---------- Anzeige ----------
 
 // Montag der Woche, für die geplant wird: heute, wenn Montag ist, sonst der kommende
@@ -331,14 +361,14 @@ function tagHTML(tag) {
   }
 
   const folgetag = naechsterTag(tag);
-  const zweiTage = folgetag !== undefined && plan[folgetag].reste === tag;
-  const portionen = zweiTage ? r.portionen * 2 : r.portionen;
-  const link = zweiTage ? `${r.seite}?portionen=${portionen}` : r.seite;
+  const zweiTage = kochtFuerZweiTage(tag);
+  const portionen = portionenAm(tag);
+  const link = portionen !== r.portionen ? `${r.seite}?portionen=${portionen}` : r.seite;
 
   const merkmale = [`<li>${formatZeit(r.zeit)}</li>`, `<li>${esc(r.kategorie)}</li>`];
   if (istFleischfrei(r)) merkmale.push(`<li>${esc(r.ernaehrung)}</li>`);
   if (zweiTage) merkmale.push(`<li class="zwei-tage">für 2 Tage</li>`);
-  merkmale.push(`<li class="nur-druck">${portionen} Portionen</li>`);
+  merkmale.push(`<li>${portionen} ${portionen === 1 ? "Portion" : "Portionen"}</li>`);
 
   let zweiTageKnopf = "";
   if (folgetag !== undefined) {
@@ -376,26 +406,232 @@ function anzeigen() {
 
   // Nur im Druck sichtbar: Kopf mit Zeitraum und Fußzeile mit Adresse der Seite
   const zeitraum = `${datumVon(0, { day: "numeric", month: "long" })} bis ${datumVon(6, { day: "numeric", month: "long", year: "numeric" })}`;
-  const adresse = location.protocol.startsWith("http") ? location.host + location.pathname.replace(/planer\.html$/, "") : "";
+  const adresse = seitenAdresse().replace(/^https?:\/\//, "");
 
   el.woche.innerHTML = `
     <header class="druck-kopf"><h2>Wochenplan</h2><p>${zeitraum}</p></header>
     <div class="woche-aktionen">
       <h2>Deine Woche</h2>
       <div>
+        <button type="button" class="knopf zweit klein" data-aktion="teilen">Teilen</button>
         <button type="button" class="knopf zweit klein" data-aktion="drucken">Drucken / PDF</button>
         <button type="button" class="knopf zweit klein" data-aktion="leeren">Plan leeren</button>
       </div>
     </div>
     ${meldung ? `<p class="woche-meldung">${esc(meldung)}</p>` : ""}
     ${tage.map(tagHTML).join("")}
-    ${adresse ? `<p class="druck-fuss">Alle Rezepte: ${esc(adresse)}</p>` : ""}`;
+    ${adresse ? `<p class="druck-fuss">Alle Rezepte: ${esc(adresse)}</p>` : ""}
+    <section class="einkauf" aria-labelledby="einkauf-titel">
+      <div class="einkauf-kopf">
+        <h2 id="einkauf-titel">Einkaufsliste</h2>
+        <p class="hinweis">${einkaufUntertitel()}</p>
+      </div>
+      <div id="einkauf-inhalt"><p class="hinweis">Zutaten werden geladen …</p></div>
+    </section>`;
+  einkaufAnzeigen();
+}
+
+function einkaufUntertitel() {
+  const tage = kochtage();
+  if (!tage.length) return "";
+  const summe = tage.reduce((n, k) => n + k.portionen, 0);
+  return `${tage.length} ${tage.length === 1 ? "Gericht" : "Gerichte"}, ${summe} Portionen zusammen. Abhaken, was schon im Schrank ist.`;
+}
+
+// ---------- Einkaufsliste ----------
+
+// Mengen in diesen Einheiten hat man meist im Vorrat: Sie stehen unter "Vorrat prüfen"
+const VORRAT_EINHEITEN = ["EL", "TL", "Prise", "Tropfen", "Schuss"];
+// Nicht auf die Liste
+const NICHT_KAUFEN = /^(lauwarmes |warmes |kaltes |heißes )?wasser$/i;
+const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Glas: "Gläser", Flasche: "Flaschen" };
+const BRUECHE = { 0.25: "¼", 0.5: "½", 0.75: "¾" };
+
+// Zutaten je Rezeptseite: id -> Promise<{ basis, zutaten: [{ menge, einheit, einzahl, mehrzahl }] }>
+const zutatenCache = new Map();
+
+function zutatenLaden(rezept) {
+  if (!zutatenCache.has(rezept.id)) {
+    const laden = fetch(rezept.seite)
+      .then((antwort) => {
+        if (!antwort.ok) throw new Error(antwort.status);
+        return antwort.text();
+      })
+      .then((html) => zutatenLesen(new DOMParser().parseFromString(html, "text/html"), rezept))
+      .catch((fehler) => {
+        zutatenCache.delete(rezept.id);
+        throw fehler;
+      });
+    zutatenCache.set(rezept.id, laden);
+  }
+  return zutatenCache.get(rezept.id);
+}
+
+// Liest die Zutatenliste einer Rezeptseite (Aufbau wie in rezepte/vorlage.html)
+function zutatenLesen(doc, rezept) {
+  const regler = doc.querySelector(".portionen[data-basis]");
+  const basis = regler ? Number(regler.dataset.basis) : rezept.portionen;
+  const zutaten = [...doc.querySelectorAll(".zutaten li")].map((li) => {
+    const b = li.querySelector("b");
+    const name = li.querySelector("[data-einzahl]");
+    const text = li.textContent.replace(b ? b.textContent : "", "").trim();
+    return {
+      menge: b && b.dataset.menge ? Number(b.dataset.menge) : null,
+      einheit: (b && b.dataset.einheit) || "",
+      einzahl: nameBereinigen(name ? name.dataset.einzahl : text),
+      mehrzahl: nameBereinigen(name ? name.dataset.mehrzahl : text),
+    };
+  }).filter((z) => z.einzahl && !NICHT_KAUFEN.test(z.einzahl));
+  return { basis, zutaten };
+}
+
+// "Bergkäse, gerieben" -> "Bergkäse", "Etwas Öl" -> "Öl"; "Salz, Pfeffer" bleibt
+function nameBereinigen(name) {
+  const ohne = name.replace(/,\s*\p{Ll}.*$/u, "").replace(/^etwas\s+/i, "").trim();
+  return ohne.charAt(0).toUpperCase() + ohne.slice(1);
+}
+
+// kg und l werden in g und ml zusammengezählt
+function einheitNormal(menge, einheit) {
+  if (einheit === "kg") return [menge * 1000, "g"];
+  if (einheit === "l") return [menge * 1000, "ml"];
+  return [menge, einheit];
+}
+
+function mengeText(wert, einheit) {
+  if (einheit === "g" || einheit === "ml") {
+    if (wert >= 1000) return `${(Math.ceil(wert / 100) / 10).toLocaleString("de-DE")} ${einheit === "g" ? "kg" : "l"}`;
+    const schritt = wert >= 200 ? 10 : wert >= 30 ? 5 : 1;
+    return `${Math.max(schritt, Math.ceil(wert / schritt) * schritt)} ${einheit}`;
+  }
+  const viertel = Math.max(0.25, Math.ceil(wert * 4 - 0.01) / 4);
+  const ganz = Math.floor(viertel);
+  const zahl = ganz ? `${ganz}${BRUECHE[viertel - ganz] || ""}` : BRUECHE[viertel];
+  const einheitText = viertel > 1 && EINHEIT_MEHRZAHL[einheit] ? EINHEIT_MEHRZAHL[einheit] : einheit;
+  return einheitText ? `${zahl} ${einheitText}` : zahl;
+}
+
+// Fasst die Zutaten aller Kochtage zusammen, umgerechnet auf die geplanten Portionen
+async function einkaufsliste() {
+  const tage = kochtage();
+  const daten = await Promise.all(tage.map((k) => zutatenLaden(k.rezept)));
+  const posten = new Map();
+
+  tage.forEach((k, i) => {
+    const { basis, zutaten } = daten[i];
+    const faktor = k.portionen / basis;
+    for (const z of zutaten) {
+      const schluessel = z.einzahl.toLowerCase();
+      if (!posten.has(schluessel)) posten.set(schluessel, { schluessel, einzahl: z.einzahl, mehrzahl: z.mehrzahl, mengen: new Map(), rezepte: new Set() });
+      const p = posten.get(schluessel);
+      p.rezepte.add(k.rezept.titel);
+      if (z.menge === null) continue;
+      const [menge, einheit] = einheitNormal(z.menge * faktor, z.einheit);
+      p.mengen.set(einheit, (p.mengen.get(einheit) || 0) + menge);
+    }
+  });
+
+  const liste = [...posten.values()].map((p) => {
+    const einheiten = [...p.mengen.keys()];
+    const stueck = p.mengen.get("") || 0;
+    return {
+      schluessel: p.schluessel,
+      name: stueck > 1 ? p.mehrzahl : p.einzahl,
+      menge: einheiten.map((e) => mengeText(p.mengen.get(e), e)).join(" + "),
+      rezepte: [...p.rezepte],
+      vorrat: einheiten.every((e) => VORRAT_EINHEITEN.includes(e)),
+    };
+  }).sort((a, b) => a.name.localeCompare(b.name, "de"));
+
+  return { kaufen: liste.filter((p) => !p.vorrat), vorrat: liste.filter((p) => p.vorrat) };
+}
+
+function postenHTML(p) {
+  return `<li${abgehakt.has(p.schluessel) ? ' class="erledigt"' : ""}>
+    <label>
+      <input type="checkbox" data-schluessel="${esc(p.schluessel)}" ${abgehakt.has(p.schluessel) ? "checked" : ""}>
+      <b>${esc(p.menge)}</b>
+      <span>${esc(p.name)}<small>${esc(p.rezepte.join(", "))}</small></span>
+    </label>
+  </li>`;
+}
+
+let einkaufLauf = 0;
+async function einkaufAnzeigen() {
+  const lauf = ++einkaufLauf;
+  const ziel = () => (lauf === einkaufLauf ? document.getElementById("einkauf-inhalt") : null);
+  if (!kochtage().length) {
+    ziel().innerHTML = `<p class="hinweis">Sobald Gerichte geplant sind, steht hier, was du einkaufen musst.</p>`;
+    return;
+  }
+  try {
+    const { kaufen, vorrat } = await einkaufsliste();
+    if (!ziel()) return;
+    ziel().innerHTML = `
+      <ul class="einkauf-liste">${kaufen.map(postenHTML).join("")}</ul>
+      ${vorrat.length ? `<h3>Vorrat prüfen</h3><ul class="einkauf-liste">${vorrat.map(postenHTML).join("")}</ul>` : ""}`;
+  } catch {
+    if (!ziel()) return;
+    ziel().innerHTML = `<p class="hinweis">Die Zutaten konnten nicht geladen werden. Die Einkaufsliste funktioniert nur, wenn die Seite über das Internet (oder einen lokalen Webserver) geöffnet ist.</p>`;
+  }
+}
+
+// ---------- Teilen ----------
+
+const seitenAdresse = () => (location.protocol.startsWith("http") ? new URL(".", location.href).href : "");
+
+async function teilenText() {
+  const basis = seitenAdresse();
+  const zeilen = [`Wochenplan ${datumVon(0, { day: "numeric", month: "long" })} bis ${datumVon(6, { day: "numeric", month: "long", year: "numeric" })}`, ""];
+
+  for (const tag of geplanteTage()) {
+    const e = plan[tag];
+    const r = rezeptMitId(e.id);
+    const kopf = `${TAGE[tag].kurz}, ${datumVon(tag, { day: "numeric", month: "numeric" })}`;
+    if (!r) zeilen.push(`${kopf}: noch offen`);
+    else if (e.reste !== undefined) zeilen.push(`${kopf}: Reste vom ${TAGE[e.reste].lang} (${r.titel})`);
+    else {
+      const portionen = portionenAm(tag);
+      zeilen.push(`${kopf}: ${r.titel} (${portionen} ${portionen === 1 ? "Portion" : "Portionen"})`);
+      if (basis) zeilen.push(`  ${basis}${portionen !== r.portionen ? `${r.seite}?portionen=${portionen}` : r.seite}`);
+    }
+  }
+
+  try {
+    const { kaufen, vorrat } = await einkaufsliste();
+    const zeile = (p) => `- ${p.menge ? `${p.menge} ` : ""}${p.name}`;
+    const offen = (p) => !abgehakt.has(p.schluessel);
+    if (kaufen.some(offen)) zeilen.push("", "Einkaufsliste", ...kaufen.filter(offen).map(zeile));
+    if (vorrat.some(offen)) zeilen.push("", "Vorrat prüfen", ...vorrat.filter(offen).map(zeile));
+  } catch {
+    // Ohne Zutaten wird nur der Plan geteilt
+  }
+  return zeilen.join("\n");
+}
+
+async function teilen() {
+  const text = await teilenText();
+  const titel = "Wochenplan";
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: titel, text });
+      return;
+    } catch (fehler) {
+      if (fehler.name === "AbortError") return;
+      // Sonst auf die Auswahl unten ausweichen
+    }
+  }
+  el.teilenWhatsapp.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  el.teilenMail.href = `mailto:?subject=${encodeURIComponent(titel)}&body=${encodeURIComponent(text)}`;
+  el.teilenKopieren.dataset.text = text;
+  el.teilenKopieren.textContent = "Text kopieren";
+  el.teilenDialog.showModal();
 }
 
 // ---------- Speicher ----------
 
 function speichern(k) {
-  speicherSchreiben(SPEICHER, { kriterien: k, plan });
+  speicherSchreiben(SPEICHER, { kriterien: k, plan, abgehakt: [...abgehakt] });
 }
 
 function laden() {
@@ -403,6 +639,7 @@ function laden() {
   if (!gespeichert) return;
   if (gespeichert.kriterien) kriterienSetzen(gespeichert.kriterien);
   if (gespeichert.plan) plan = gespeichert.plan;
+  if (gespeichert.abgehakt) abgehakt = new Set(gespeichert.abgehakt);
 }
 
 // ---------- Ereignisse ----------
@@ -410,6 +647,11 @@ function laden() {
 el.form.addEventListener("submit", (e) => { e.preventDefault(); erstellen(); });
 el.fleischfrei.addEventListener("input", reglerAnzeigen);
 el.zweiTage.addEventListener("input", reglerAnzeigen);
+// Portionen ändern nur Mengen und Links, der Plan bleibt
+el.portionen.addEventListener("change", () => {
+  speichern(kriterienLesen());
+  if (plan) anzeigen();
+});
 el.kategorien.addEventListener("click", (e) => {
   const knopf = e.target.closest("button");
   if (!knopf) return;
@@ -423,13 +665,31 @@ el.woche.addEventListener("click", (e) => {
     case "wuerfeln": neuWuerfeln(tag); break;
     case "festhalten": festhalten(tag); break;
     case "zwei-tage": zweiTageUmschalten(tag); break;
+    case "teilen": teilen(); break;
     case "drucken": window.print(); break;
     case "leeren":
       plan = null;
+      abgehakt = new Set();
       meldung = "";
       speichern(kriterienLesen());
       anzeigen();
       break;
+  }
+});
+el.woche.addEventListener("change", (e) => {
+  const box = e.target.closest("input[data-schluessel]");
+  if (!box) return;
+  if (box.checked) abgehakt.add(box.dataset.schluessel);
+  else abgehakt.delete(box.dataset.schluessel);
+  box.closest("li").classList.toggle("erledigt", box.checked);
+  speichern(kriterienLesen());
+});
+el.teilenKopieren.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(el.teilenKopieren.dataset.text);
+    el.teilenKopieren.textContent = "Kopiert";
+  } catch {
+    el.teilenKopieren.textContent = "Kopieren nicht möglich";
   }
 });
 
