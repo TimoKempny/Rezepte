@@ -496,6 +496,35 @@ a { color: inherit; }
   display: grid; justify-items: center; gap: var(--s3); color: var(--leise);
 }
 
+/* Einkaufsliste unter dem Wochenplan */
+.einkauf {
+  margin-top: var(--s5); padding: var(--s5);
+  background: var(--flaeche); border: 1px solid var(--linie); border-radius: 1rem;
+}
+.einkauf-kopf { margin-bottom: var(--s4); }
+.einkauf-kopf h2 { font-size: 1.5rem; }
+.einkauf-kopf .hinweis { margin-top: var(--s1); }
+.einkauf h3 { font-size: 1rem; color: var(--leise); margin: var(--s5) 0 var(--s2); }
+.einkauf-liste { list-style: none; margin: 0; padding: 0; columns: 2 20rem; column-gap: var(--s6); }
+.einkauf-liste li { break-inside: avoid; border-bottom: 1px solid var(--linie); }
+.einkauf-liste label { display: flex; gap: var(--s3); align-items: baseline; padding-block: var(--s2); cursor: pointer; }
+.einkauf-liste input { width: 1.1rem; height: 1.1rem; accent-color: var(--haupt-text); flex: none; align-self: center; }
+.einkauf-liste b { flex: none; min-width: 5.5rem; color: var(--haupt-text); }
+.einkauf-liste span { font-family: var(--schrift-text); min-width: 0; }
+.einkauf-liste small { display: block; font-family: var(--schrift-ui); font-size: 0.8rem; color: var(--leise); }
+.einkauf-liste .erledigt b, .einkauf-liste .erledigt span { text-decoration: line-through; color: var(--leise); }
+
+.teilen-dialog {
+  width: min(26rem, calc(100% - 2rem)); padding: var(--s5);
+  border: 1px solid var(--linie); border-radius: 1rem;
+  background: var(--flaeche); color: var(--tinte);
+}
+.teilen-dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+.teilen-dialog h2 { font-size: 1.4rem; }
+.teilen-dialog .hinweis { margin-top: var(--s1); }
+.teilen-wege { display: grid; gap: var(--s2); margin-block: var(--s5) var(--s4); }
+.teilen-dialog form { display: flex; justify-content: flex-end; }
+
 /* ---------- Rezeptseite ---------- */
 .rezept { padding-bottom: var(--s8); }
 .zurueck { color: var(--haupt-text); font-weight: 600; text-decoration: none; }
@@ -658,6 +687,15 @@ a { color: inherit; }
   .tag.reste .teller { opacity: 0.55; }
 
   .druck-fuss { display: block; margin-top: 4mm; font-size: 8pt; color: var(--leise); }
+
+  /* Einkaufsliste auf eigener Seite */
+  .einkauf { break-before: page; margin: 0; padding: 0; border: 0; background: none; }
+  .einkauf-kopf { padding-bottom: 3mm; border-bottom: 2.5pt solid var(--haupt-text); margin-bottom: 3mm; }
+  .einkauf-kopf h2 { font-size: 22pt; font-weight: 800; }
+  .einkauf-kopf .hinweis { display: none; }
+  .einkauf-liste { columns: 2; column-gap: 10mm; }
+  .einkauf-liste label { padding-block: 1.6mm; }
+  .einkauf-liste small { font-size: 7.5pt; }
 }
 
 /* ---------- Bildnachweise ---------- */
