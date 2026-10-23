@@ -13,6 +13,11 @@ const TAGE = [
   { kurz: "So", lang: "Sonntag", wochenende: true },
 ];
 
+// Kategorien, die kein Hauptgericht sind: im Planer standardmäßig abgewählt
+const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate"];
+// Erhöhen, wenn sich die Standardauswahl ändert: gespeicherte Kategorien werden dann einmal verworfen
+const KATEGORIEN_STAND = 2;
+
 const el = {
   form: document.getElementById("kriterien"),
   tage: document.getElementById("tage"),
@@ -75,7 +80,7 @@ function formularAufbauen() {
 
   const vorhanden = Object.keys(window.KATEGORIEN).filter((k) => rezepte.some((r) => r.kategorie === k));
   el.kategorien.innerHTML = vorhanden.map((k) =>
-    `<button type="button" class="chip" data-wert="${esc(k)}" aria-pressed="true" style="--punkt:${window.KATEGORIEN[k]}">${esc(k)}</button>`).join("");
+    `<button type="button" class="chip" data-wert="${esc(k)}" aria-pressed="${!KEIN_HAUPTGERICHT.includes(k)}" style="--punkt:${window.KATEGORIEN[k]}">${esc(k)}</button>`).join("");
 }
 
 function kriterienLesen() {
@@ -86,6 +91,7 @@ function kriterienLesen() {
     schwierigkeit: el.schwierigkeit.value,
     fleischfrei: Number(el.fleischfrei.value),
     kategorien: [...el.kategorien.querySelectorAll('[aria-pressed="true"]')].map((b) => b.dataset.wert),
+    kategorienStand: KATEGORIEN_STAND,
     zweiTage: Number(el.zweiTage.value),
     abwechslung: el.abwechslung.checked,
   };
@@ -99,7 +105,10 @@ function kriterienSetzen(k) {
   el.fleischfrei.value = k.fleischfrei;
   if (k.zweiTage !== undefined) el.zweiTage.value = k.zweiTage;
   el.abwechslung.checked = k.abwechslung;
-  for (const b of el.kategorien.children) b.setAttribute("aria-pressed", String(k.kategorien.includes(b.dataset.wert)));
+  // Ältere gespeicherte Auswahl (vor der aktuellen Standardauswahl) nicht übernehmen
+  if (k.kategorienStand === KATEGORIEN_STAND) {
+    for (const b of el.kategorien.children) b.setAttribute("aria-pressed", String(k.kategorien.includes(b.dataset.wert)));
+  }
 }
 
 function reglerAnzeigen() {
