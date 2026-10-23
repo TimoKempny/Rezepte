@@ -62,5 +62,7 @@
     setzen(neu);
   });
 
-  setzen(basis);
+  // Der Wochenplaner verlinkt bei Gerichten für zwei Tage mit ?portionen=…
+  const ausLink = Number(new URLSearchParams(location.search).get("portionen"));
+  setzen(ausLink >= MIN && ausLink <= MAX ? Math.round(ausLink) : basis);
 })();

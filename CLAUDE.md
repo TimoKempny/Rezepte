@@ -13,7 +13,8 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
   `assets/bilder/<id>-breit.jpg` 16:9 ca. 1800 × 1012, JPEG Qualität ~75 (scharfer Hintergrund im Kopfbereich der
   Rezeptseite, kein runder Teller dort). Fremde Fotos nur mit freier Lizenz und Eintrag in `bildnachweise.html`.
 - **Eintrag in `assets/rezepte.js`** mit `id`, `titel`, `seite`, `bild`, `kategorie`, `zeit`, `schwierigkeit`,
-  `ernaehrung`, `portionen`, `beschreibung`, `hinzugefuegt`. Übersicht und Wochenplaner lesen nur diese Liste.
+  `ernaehrung`, `portionen`, `beschreibung`, `hinzugefuegt`, optional `zweiTage: true` (lässt sich gut aufwärmen,
+  der Wochenplaner bevorzugt es für Reste). Übersicht und Wochenplaner lesen nur diese Liste.
 - Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Wochenplaner"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
@@ -21,7 +22,7 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=11`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=12`).
 
 ## Gestaltung
 
