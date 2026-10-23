@@ -7,6 +7,7 @@
 // ernaehrung:    "vegan" | "vegetarisch" | "fleisch" | "fisch"
 // hinzugefuegt:  Datum (JJJJ-MM-TT), wird für "Neueste zuerst" genutzt
 // bild:          optional, quadratisches Foto (ca. 720 × 720) in assets/bilder/
+// zweiTage:      optional true, wenn sich das Gericht gut aufwärmen lässt (Wochenplaner bevorzugt es für Reste)
 
 window.KATEGORIEN = {
   "Pasta":     "#E0A526",
@@ -62,6 +63,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Rigatoni in Tomaten-Sahne-Soße mit Kirschtomaten und Basilikum, mit Mozzarella überbacken.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "gebratene-ente",
@@ -101,6 +103,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Lange eingekochtes Ragù, selbstgemachte Béchamel und eine goldbraune Käsekruste.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "brauhaus-gulasch",
@@ -114,6 +117,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Herzhaftes Schweinegulasch, mit Bier geschmort und mit Crème fraîche verfeinert.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "mie-nudeln-kokossosse",
@@ -140,6 +144,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Im Ofen geschmorter Rinderbraten mit Rotweinsoße, klassisch mit Klößen und Rotkohl.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "spaghetti-schinken-sahne",
@@ -192,6 +197,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Nudeln und Brokkoli garen direkt in Sahne und Wasser, dann mit Käse überbacken.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "krautsalat-griechisch",
@@ -257,6 +263,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Polnischer Krauteintopf mit Sauerkraut, Weißkraut, Gulasch, Speck, Wurst und Waldpilzen.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "bruzzelfleisch",
@@ -296,6 +303,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Rotes Kokos-Curry mit mariniertem Hähnchen, Paprika, Bambus und einem Löffel Erdnussbutter.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "mozzarella-haehnchen",
@@ -322,6 +330,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Veganer Eintopf mit Sojaschnetzeln, Champignons, Paprika, Mais und Ajvar.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "djuvec-reis-cevapcici",
@@ -348,6 +357,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Schneller Eintopf mit Hackbällchen, Kartoffeln, Möhren und Erbsen.",
     hinzugefuegt: "2026-10-22",
+    zweiTage: true,
   },
   {
     id: "gnocchi-lauch-speck",

@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=11">
+  <link rel="stylesheet" href="assets/style.css?v=12">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/favicon-180.png">
-  <script src="assets/thema.js?v=11"></script>
+  <script src="assets/thema.js?v=12"></script>
 </head>
 <body>
   <header class="kopf">
@@ -73,6 +73,12 @@
           <input id="fleischfrei" type="range" min="0" max="7" step="1" value="3">
         </div>
 
+        <div class="feld">
+          <label for="zwei-tage">Gerichte für zwei Tage <span class="feld-wert" id="zwei-tage-wert"></span></label>
+          <input id="zwei-tage" type="range" min="0" max="3" step="1" value="1">
+          <p class="hinweis">Doppelt kochen, am nächsten Tag gibt es Reste. Bevorzugt werden Gerichte, die sich gut aufwärmen lassen.</p>
+        </div>
+
         <fieldset>
           <legend>Kategorien</legend>
           <div class="chips" id="plan-kategorien"></div>
@@ -95,8 +101,8 @@
     <div class="huelle">Der Plan wird in diesem Browser gespeichert. <a href="bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="assets/rezepte.js?v=11"></script>
-  <script src="assets/gemeinsam.js?v=11"></script>
-  <script src="assets/planer.js?v=11"></script>
+  <script src="assets/rezepte.js?v=12"></script>
+  <script src="assets/gemeinsam.js?v=12"></script>
+  <script src="assets/planer.js?v=12"></script>
 </body>
 </html>

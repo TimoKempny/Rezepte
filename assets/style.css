@@ -13,6 +13,7 @@
   --akzent: #CEFEE0;
   --akzent-tief: #3E9C70;
   --akzent-hell: #E8FFF1;
+  --auf-akzent: #1F3D2E;
   --teller-innen: #FFFFFF;
   --teaser: #FEE0CE;
   --auf-teaser: #2A211C;
@@ -44,6 +45,7 @@
     --akzent: #B9CD8A;
     --akzent-tief: #B9CD8A;
     --akzent-hell: #2A3022;
+    --auf-akzent: #1F2614;
     --teller-innen: #EDEDED;
     --teaser: #404040;
     --auf-teaser: #F2F2F2;
@@ -64,6 +66,7 @@
   --akzent: #B9CD8A;
   --akzent-tief: #B9CD8A;
   --akzent-hell: #2A3022;
+  --auf-akzent: #1F2614;
   --teller-innen: #EDEDED;
   --teaser: #404040;
   --auf-teaser: #F2F2F2;
@@ -473,6 +476,14 @@ a { color: inherit; }
 .tag-info .merkmale { margin-top: var(--s2); }
 .tag-aktion { grid-area: aktion; display: flex; gap: var(--s2); flex-wrap: wrap; }
 .tag-leer .tag-info p { color: var(--leise); font-size: 0.95rem; }
+
+/* Reste-Tag: gehört zum Kochtag davor */
+.tag.reste { background: var(--grund); border-style: dashed; }
+.tag.reste .teller { opacity: 0.7; }
+.tag.reste h3 { font-weight: 600; }
+.tag-hinweis { color: var(--leise); font-size: 0.92rem; margin-top: var(--s1); }
+.merkmale li.zwei-tage { background: var(--akzent); color: var(--auf-akzent); }
+.knopf.zweit[aria-pressed="true"] { background: var(--haupt); border-color: var(--haupt); color: var(--auf-haupt); }
 .tag-leer .teller { --speise: var(--linie); }
 
 .woche-meldung {
@@ -603,6 +614,7 @@ a { color: inherit; }
     --akzent: #CEFEE0;
     --akzent-tief: #3E9C70;
     --akzent-hell: #E8FFF1;
+  --auf-akzent: #1F3D2E;
     --teller-innen: #FFFFFF;
     --teaser: #FEE0CE;
     --auf-teaser: #2A211C;
@@ -642,6 +654,8 @@ a { color: inherit; }
   .tag-info .merkmale { margin-top: 1.5mm; }
   .merkmale li { font-size: 8pt; }
   .merkmale .nur-druck { display: block; }
+  .tag.reste { border-style: solid; }
+  .tag.reste .teller { opacity: 0.55; }
 
   .druck-fuss { display: block; margin-top: 4mm; font-size: 8pt; color: var(--leise); }
 }
