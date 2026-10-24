@@ -14,7 +14,7 @@ const TAGE = [
 ];
 
 // Kategorien, die kein Hauptgericht sind: im Planer standardmäßig abgewählt
-const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate"];
+const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate", "Getränke"];
 // Erhöhen, wenn sich die Standardauswahl ändert: gespeicherte Kategorien werden dann einmal verworfen
 const KATEGORIEN_STAND = 2;
 
