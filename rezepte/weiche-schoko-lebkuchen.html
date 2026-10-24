@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weiche Schoko-Lebkuchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css?v=15">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png">
+  <script src="../assets/thema.js?v=15"></script>
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="../index.html"><span class="marke-teller" aria-hidden="true"></span>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="../index.html">Alle Rezepte</a>
+        <a href="../planer.html">Wochenplaner</a>
+        <button type="button" class="thema-knopf" id="thema-knopf"><svg class="mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="thema-text">Dunkel</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="rezept">
+    <section class="rezept-buehne">
+      <img class="buehne-bild" src="../assets/bilder/weiche-schoko-lebkuchen-breit.jpg" alt="" width="1800" height="1012" fetchpriority="high">
+      <div class="huelle">
+        <a class="zurueck" href="../index.html">Zurück zur Übersicht</a>
+
+        <div class="rezept-kopf">
+          <div>
+            <h1>Weiche Schoko-Lebkuchen</h1>
+            <p class="rezept-intro">Weiche Lebkuchen mit Haselnüssen, Mandeln und Nuss-Nougat-Creme auf Backoblaten, noch warm mit Zuckerguss bestrichen. Eine Portion entspricht einem Lebkuchen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="huelle">
+
+      <dl class="fakten">
+        <div><dt>Zeit</dt><dd>35 Min.</dd></div>
+        <div><dt>Schwierigkeit</dt><dd>leicht</dd></div>
+        <div><dt>Kategorie</dt><dd>Süßgebäck</dd></div>
+        <div><dt>Ernährung</dt><dd>vegetarisch</dd></div>
+      </dl>
+
+      <div class="rezept-raster">
+        <section class="zutaten">
+          <h2>Zutaten</h2>
+          <div class="portionen" data-basis="20">
+            <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
+            <span><output aria-live="polite">20</output> Portionen</span>
+            <button type="button" data-schritt="1" aria-label="Eine Portion mehr">+</button>
+          </div>
+          <h3>Für die Lebkuchen</h3>
+          <ul>
+            <li><b data-menge="4">4</b><span data-einzahl="Ei (Größe S, oder 3 Eier Größe M)" data-mehrzahl="Eier (Größe S, oder 3 Eier Größe M)">Eier (Größe S, oder 3 Eier Größe M)</span></li>
+            <li><b data-menge="140" data-einheit="g">140 g</b>brauner Zucker</li>
+            <li><b data-menge="2" data-einheit="Packung">2 Packungen</b>Vanillezucker</li>
+            <li><b data-menge="240" data-einheit="g">240 g</b>Dinkelmehl Type 630</li>
+            <li><b data-menge="4" data-einheit="TL">4 TL</b>Weinstein-Backpulver</li>
+            <li><b data-menge="3" data-einheit="EL">3 EL</b>Nuss-Nougat-Creme</li>
+            <li><b data-menge="150" data-einheit="g">150 g</b>gemahlene Haselnüsse</li>
+            <li><b data-menge="100" data-einheit="g">100 g</b>gemahlene Mandeln</li>
+            <li><b data-menge="1" data-einheit="TL">1 TL</b>Zimt</li>
+            <li><b data-menge="3" data-einheit="TL">3 TL</b>Lebkuchengewürz</li>
+            <li><b data-menge="1" data-einheit="EL">1 EL</b>Backkakao</li>
+            <li><b data-menge="20">20</b><span data-einzahl="Backoblate (7 cm)" data-mehrzahl="Backoblaten (7 cm)">Backoblaten (7 cm)</span></li>
+          </ul>
+          <h3>Für den Zuckerguss</h3>
+          <ul>
+            <li><b data-menge="150" data-einheit="g">150 g</b>Puderzucker</li>
+            <li><b data-menge="1.5" data-einheit="EL">1½ EL</b>Wasser (1–2 EL)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Zubereitung</h2>
+          <ol class="schritte">
+            <li>Die Eier mit dem Zucker und dem Vanillezucker 2–3 Minuten schaumig rühren. Die restlichen Zutaten dazugeben und gut unterrühren. Die Masse ist etwas klebrig, man kann auch mit Handschuhen weiterarbeiten.</li>
+            <li>Ein Backblech mit Backpapier auslegen und die Oblaten darauf verteilen.</li>
+            <li>Je einen pflaumengroßen Klecks auf die Oblaten geben und die Oberfläche mit nassen Fingern glattstreichen. Einen großen Rand braucht es nicht, die Masse darf beim Backen ruhig etwas über den Rand gehen.</li>
+            <li>Bei 160 °C Ober-/Unterhitze etwa 14 Minuten backen.</li>
+            <li>Den Zuckerguss anrühren und die warmen Lebkuchen damit bestreichen.</li>
+          </ol>
+          <p class="tipp"><strong>Glutenfrei:</strong> Geht auch glutenfrei: Dann Mehl von Schär (Kuchen &amp; Kekse) nehmen und je eine TL-Spitze Xanthan und Flohsamenschalenpulver dazugeben.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fuss">
+    <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
+  </footer>
+
+  <script src="../assets/rezept.js?v=15"></script>
+</body>
+</html>
