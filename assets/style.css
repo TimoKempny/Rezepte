@@ -241,8 +241,9 @@ a { color: inherit; }
   border-radius: 1.2rem;
   box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6);
 }
+.vorschlaege { display: grid; gap: var(--s4); }
 @media (min-width: 52rem) {
-  .vorschlag { justify-self: end; width: min(26rem, 100%); }
+  .vorschlaege { justify-self: end; width: min(26rem, 100%); }
 }
 .vorschlag a { text-decoration: none; }
 .vorschlag .teller { width: 100%; --rand: 5px; }

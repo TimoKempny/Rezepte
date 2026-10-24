@@ -1,6 +1,10 @@
 // Hilfsfunktionen für Übersicht und Wochenplaner
 
 const SCHWIERIGKEITEN = ["leicht", "mittel", "aufwendig"];
+// Kategorien, die kein Hauptgericht sind: im Planer standardmäßig abgewählt, nicht in „Was koche ich heute?“
+const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate", "Getränke"];
+// Kategorien für „Was backe ich heute?“
+const BACKEN = ["Süßgebäck"];
 
 function esc(text) {
   return String(text).replace(/[&<>"']/g, (z) => ({

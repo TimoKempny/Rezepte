@@ -18,27 +18,32 @@ const el = {
   zuruecksetzen: document.getElementById("zuruecksetzen"),
   raster: document.getElementById("raster"),
   leer: document.getElementById("leer"),
-  vorschlag: document.getElementById("vorschlag"),
   heroText: document.getElementById("hero-text"),
 };
 
 // ---------- Tagesvorschlag ----------
 
-let letzterVorschlag = null;
+const vorschlaege = [
+  { el: document.getElementById("vorschlag-kochen"), label: "Was koche ich heute?",
+    rezepte: rezepte.filter((r) => !KEIN_HAUPTGERICHT.includes(r.kategorie)), letzter: null },
+  { el: document.getElementById("vorschlag-backen"), label: "Was backe ich heute?",
+    rezepte: rezepte.filter((r) => BACKEN.includes(r.kategorie)), letzter: null },
+];
 
-function zeigeVorschlag(animieren) {
-  const auswahl = rezepte.filter((r) => r.id !== letzterVorschlag);
-  const r = zufall(auswahl.length ? auswahl : rezepte);
-  letzterVorschlag = r.id;
-  el.vorschlag.innerHTML = `
+function zeigeVorschlag(v, animieren) {
+  if (!v.rezepte.length) { v.el.hidden = true; return; }
+  const auswahl = v.rezepte.filter((r) => r.id !== v.letzter);
+  const r = zufall(auswahl.length ? auswahl : v.rezepte);
+  v.letzter = r.id;
+  v.el.innerHTML = `
     <a href="${esc(r.seite)}" tabindex="-1" aria-hidden="true">${tellerHTML(r, animieren ? "dreht" : "")}</a>
     <div class="vorschlag-text">
-      <p class="vorschlag-label">Vorschlag für heute</p>
+      <p class="vorschlag-label">${v.label}</p>
       <h2><a href="${esc(r.seite)}">${esc(r.titel)}</a></h2>
       <p class="vorschlag-info">${formatZeit(r.zeit)}, ${esc(r.schwierigkeit)}</p>
-      <button type="button" class="knopf zweit klein" id="neuer-vorschlag">Anderer Vorschlag</button>
+      <button type="button" class="knopf zweit klein">Anderer Vorschlag</button>
     </div>`;
-  document.getElementById("neuer-vorschlag").addEventListener("click", () => zeigeVorschlag(true));
+  v.el.querySelector("button").addEventListener("click", () => zeigeVorschlag(v, true));
 }
 
 // ---------- Filter ----------
@@ -135,5 +140,5 @@ document.getElementById("leer-zuruecksetzen").addEventListener("click", zuruecks
 
 el.heroText.textContent = `${rezepte.length} erprobte Rezepte aus unserer Küche. Filtere nach Zeit, Kategorie und Ernährung oder lass dir eins vorschlagen.`;
 kategorienAufbauen();
-zeigeVorschlag(true);
+for (const v of vorschlaege) zeigeVorschlag(v, true);
 anzeigen();
