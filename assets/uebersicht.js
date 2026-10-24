@@ -46,6 +46,28 @@ function zeigeVorschlag(v, animieren) {
   v.el.querySelector("button").addEventListener("click", () => zeigeVorschlag(v, true));
 }
 
+// ---------- Wechselnde Hintergrundbilder ----------
+
+const HERO_INTERVALL = 7000;
+
+function heroWechsel() {
+  const bilder = [...document.querySelectorAll(".hero-hintergrund")];
+  if (bilder.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // Weitere Bilder erst nach dem Seitenaufbau laden, damit das erste schnell erscheint
+  for (const b of bilder) if (b.dataset.src) b.src = b.dataset.src;
+  let aktiv = 0;
+  setInterval(() => {
+    if (document.hidden) return;
+    // Nur zu Bildern wechseln, die schon geladen sind
+    const naechstes = bilder.findIndex((b, i) => i > aktiv && b.complete && b.naturalWidth);
+    const ziel = naechstes >= 0 ? naechstes : 0;
+    if (ziel === aktiv) return;
+    bilder[aktiv].classList.remove("aktiv");
+    bilder[ziel].classList.add("aktiv");
+    aktiv = ziel;
+  }, HERO_INTERVALL);
+}
+
 // ---------- Filter ----------
 
 function kategorienAufbauen() {
@@ -142,3 +164,5 @@ el.heroText.textContent = `${rezepte.length} erprobte Rezepte aus unserer Küche
 kategorienAufbauen();
 for (const v of vorschlaege) zeigeVorschlag(v, true);
 anzeigen();
+if (document.readyState === "complete") heroWechsel();
+else addEventListener("load", heroWechsel);
