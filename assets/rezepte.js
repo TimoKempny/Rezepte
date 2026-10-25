@@ -8,6 +8,9 @@
 // hinzugefuegt:  Datum (JJJJ-MM-TT), wird für "Neueste zuerst" genutzt
 // bild:          optional, quadratisches Foto (ca. 720 × 720) in assets/bilder/
 // zweiTage:      optional true, wenn sich das Gericht gut aufwärmen lässt (Wochenplaner bevorzugt es für Reste)
+// zutaten:       Schlüssel aus window.ZUTATEN für „Was hab ich da?“. Nur Hauptzutaten: keine Gewürze, kein Salz,
+//                Pfeffer, Wasser, Vanillezucker, keine frischen Kräuter, Garnitur oder Fett für die Form.
+//                Entfällt bei Getränken und Teigen & Grundrezepten.
 
 window.KATEGORIEN = {
   "Pasta":     "#E0A526",
@@ -25,6 +28,59 @@ window.KATEGORIEN = {
   "Getränke":             "#3E8FA8",
 };
 
+// Zutatenkatalog für „Was hab ich da?“ auf der Übersicht. Gewürze, Salz, Pfeffer und Wasser gelten immer als
+// vorhanden und stehen deshalb nicht hier. Die Gruppe mit "vorausgewaehlt" ist beim ersten Besuch angekreuzt,
+// die mit "weitere" steht eingeklappt unter „Weitere Zutaten“.
+window.ZUTATEN = [
+  { gruppe: "Hab ich meistens da", vorausgewaehlt: true, zutaten: {
+    oel: "Öl", zucker: "Zucker",
+  } },
+  { gruppe: "Kühlschrank", zutaten: {
+    eier: "Eier", milch: "Milch", butter: "Butter / Margarine", sahne: "Sahne", schmand: "Schmand / Crème fraîche",
+    buttermilch: "Buttermilch", joghurt: "Joghurt", quark: "Quark", frischkaese: "Frischkäse", mascarpone: "Mascarpone",
+    reibekaese: "Reibekäse (Gouda, Emmentaler …)", parmesan: "Parmesan", mozzarella: "Mozzarella",
+    schinken: "Schinken / Speck", mayonnaise: "Mayonnaise", blaetterteig: "Blätterteig", gnocchi: "Gnocchi",
+    tortillas: "Tortillas",
+  } },
+  { gruppe: "Fleisch", zutaten: {
+    haehnchen: "Hähnchen", pute: "Pute", hackfleisch: "Hackfleisch", schwein: "Schweinefleisch",
+    rind: "Rindfleisch", ente: "Ente", wurst: "Räucherwurst",
+  } },
+  { gruppe: "Gemüse", zutaten: {
+    zwiebeln: "Zwiebeln", knoblauch: "Knoblauch", fruehlingszwiebeln: "Frühlingszwiebeln", kartoffeln: "Kartoffeln",
+    suesskartoffeln: "Süßkartoffeln", karotten: "Möhren", paprika: "Paprika", tomaten: "Tomaten (frisch)",
+    zucchini: "Zucchini", brokkoli: "Brokkoli", pilze: "Champignons", lauch: "Lauch", weisskohl: "Weißkohl",
+    gurke: "Gurke", radieschen: "Radieschen", sellerie: "Sellerie", "rote-bete": "Rote Bete", avocado: "Avocado",
+    salat: "Blattsalat", ingwer: "Ingwer", erbsen: "Erbsen (TK)",
+  } },
+  { gruppe: "Obst", zutaten: {
+    aepfel: "Äpfel", bananen: "Bananen", zitronen: "Zitronen / Limetten", beeren: "Beeren (auch TK)",
+    pflaumen: "Pflaumen", rhabarber: "Rhabarber",
+  } },
+  { gruppe: "Vorrat", zutaten: {
+    mehl: "Mehl", roggenmehl: "Roggenmehl", griess: "Hartweizengrieß", staerke: "Speisestärke",
+    backpulver: "Backpulver", hefe: "Hefe", haferflocken: "Haferflocken", nudeln: "Nudeln",
+    asianudeln: "Asia-Nudeln", reis: "Reis", linsen: "Rote Linsen", bohnen: "Bohnen (Dose)",
+    kichererbsen: "Kichererbsen", mais: "Mais (Dose)", dosentomaten: "Dosentomaten / Passata",
+    tomatenmark: "Tomatenmark", bruehe: "Brühe / Fond", sauerkraut: "Sauerkraut", kokosmilch: "Kokosmilch",
+    sojasosse: "Sojasoße", honig: "Honig / Sirup", essig: "Essig", semmelbroesel: "Semmelbrösel / Panko",
+    saaten: "Saaten (Sesam, Leinsamen)", wein: "Rotwein", bier: "Bier", kaffee: "Kaffee",
+  } },
+  { gruppe: "Süßes & Backen", zutaten: {
+    kakao: "Kakao", schokolade: "Schokolade", nuesse: "Nüsse / Mandeln", erdnussbutter: "Erdnussbutter / Nussmus",
+    nussnougat: "Nuss-Nougat-Creme", kokosraspel: "Kokosraspel", marmelade: "Marmelade", kekse: "Kekse / Löffelbiskuits",
+    rosinen: "Rosinen", cornflakes: "Cornflakes",
+  } },
+  { gruppe: "Spezielles", weitere: true, zutaten: {
+    sauerteig: "Sauerteig (Anstellgut)", ajvar: "Ajvar", tahin: "Tahin", currypaste: "Thai-Currypaste",
+    fischsosse: "Fischsoße", austernsosse: "Austernsoße", hoisin: "Hoisinsoße", sriracha: "Sriracha",
+    miso: "Misopaste", sojaschnetzel: "Sojaschnetzel", sojasprossen: "Sojasprossen", bambussprossen: "Bambussprossen",
+    kirschen: "Sauerkirschen (Glas)", apfelsaft: "Apfelsaft", puddingpulver: "Puddingpulver", mohnback: "Mohnback",
+    kondensmilch: "Kondensmilch", gelatine: "Gelatine", marshmallows: "Marshmallows", schokokuesse: "Schokoküsse",
+    baiser: "Baiser", oblaten: "Backoblaten",
+  } },
+];
+
 window.REZEPTE = [
   {
     id: "kaesespaetzle",
@@ -38,6 +94,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Selbstgemachte Spätzle, Bergkäse und reichlich Röstzwiebeln.",
     hinzugefuegt: "2026-10-05",
+    zutaten: ["mehl", "eier", "reibekaese", "zwiebeln", "butter"],
   },
   {
     id: "hummus",
@@ -51,6 +108,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Cremiger Kichererbsen-Dip mit Tahin, Zitrone und Knoblauch.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["kichererbsen", "oel", "tahin", "zitronen", "knoblauch"],
   },
   {
     id: "nudelauflauf-tomate-mozzarella",
@@ -65,6 +123,7 @@ window.REZEPTE = [
     beschreibung: "Rigatoni in Tomaten-Sahne-Soße mit Kirschtomaten und Basilikum, mit Mozzarella überbacken.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["nudeln", "zwiebeln", "knoblauch", "tomaten", "dosentomaten", "sahne", "parmesan", "mozzarella"],
   },
   {
     id: "gebratene-ente",
@@ -78,6 +137,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Mit Äpfeln und Pflaumen gefüllt, im Bräter geschmort und zum Schluss knusprig gebraten.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["ente", "aepfel"],
   },
   {
     id: "schlesische-kloesschen",
@@ -91,6 +151,7 @@ window.REZEPTE = [
     portionen: 8,
     beschreibung: "Kleine Kartoffelklöße mit Mulde in der Mitte, die die Soße auffängt.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["kartoffeln", "staerke", "eier"],
   },
   {
     id: "lasagne",
@@ -105,6 +166,7 @@ window.REZEPTE = [
     beschreibung: "Lange eingekochtes Ragù, selbstgemachte Béchamel und eine goldbraune Käsekruste.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["oel", "hackfleisch", "zwiebeln", "knoblauch", "tomatenmark", "dosentomaten", "milch", "butter", "mehl", "nudeln", "reibekaese"],
   },
   {
     id: "brauhaus-gulasch",
@@ -119,6 +181,7 @@ window.REZEPTE = [
     beschreibung: "Herzhaftes Schweinegulasch, mit Bier geschmort und mit Crème fraîche verfeinert.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["schwein", "zwiebeln", "knoblauch", "karotten", "bier", "bruehe", "schmand", "tomatenmark"],
   },
   {
     id: "mie-nudeln-kokossosse",
@@ -132,6 +195,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Mie-Nudeln in cremiger Kokos-Erdnuss-Soße mit Frühlingszwiebeln.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["asianudeln", "zwiebeln", "knoblauch", "fruehlingszwiebeln", "oel", "kokosmilch", "sojasosse", "erdnussbutter", "fischsosse", "austernsosse", "nuesse"],
   },
   {
     id: "rinderbraten",
@@ -146,6 +210,7 @@ window.REZEPTE = [
     beschreibung: "Im Ofen geschmorter Rinderbraten mit Rotweinsoße, klassisch mit Klößen und Rotkohl.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["rind", "knoblauch", "zwiebeln", "wein", "bruehe", "oel", "karotten", "sellerie", "lauch", "tomatenmark"],
   },
   {
     id: "spaghetti-schinken-sahne",
@@ -159,6 +224,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Alles aus einem Topf: Die Spaghetti garen direkt in der Schinken-Sahne-Soße.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["nudeln", "schinken", "sahne", "milch", "knoblauch", "oel", "bruehe", "parmesan"],
   },
   {
     id: "flammkuchen",
@@ -172,6 +238,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Dünner Teig ohne Hefe mit Schmand, Zwiebeln und Speck, bei 250 °C gebacken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "oel", "schmand", "zwiebeln", "schinken"],
   },
   {
     id: "haehnchenspiesse-gewuerzreis",
@@ -185,6 +252,7 @@ window.REZEPTE = [
     portionen: 5,
     beschreibung: "In Joghurt-Zitronen-Marinade eingelegt, gegrillt und mit Kurkuma-Zimt-Reis serviert.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["haehnchen", "joghurt", "oel", "zitronen", "knoblauch", "zwiebeln", "reis", "butter"],
   },
   {
     id: "brokkoli-nudelauflauf-schinken",
@@ -199,6 +267,7 @@ window.REZEPTE = [
     beschreibung: "Nudeln und Brokkoli garen direkt in Sahne und Wasser, dann mit Käse überbacken.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["nudeln", "brokkoli", "schinken", "zwiebeln", "schmand", "milch", "sahne", "reibekaese"],
   },
   {
     id: "krautsalat-griechisch",
@@ -212,6 +281,7 @@ window.REZEPTE = [
     portionen: 8,
     beschreibung: "Fein geraspelter Weißkohl in süß-saurem Sud, der einen Tag lang durchzieht.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["weisskohl", "zwiebeln", "zucker", "oel", "essig"],
   },
   {
     id: "gebackene-suesskartoffeln",
@@ -225,6 +295,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Ganze Süßkartoffeln aus dem Ofen mit cremiger Avocado-Paprika-Füllung und Mandeln.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["suesskartoffeln", "avocado", "schmand", "frischkaese", "zwiebeln", "knoblauch", "zitronen", "paprika", "nuesse", "oel"],
   },
   {
     id: "udon-champignons-haehnchen",
@@ -238,6 +309,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Gebratene Udon in Miso-Butter mit schwarzem Knoblauch, Champignons und Hähnchenbrust.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["asianudeln", "pilze", "haehnchen", "knoblauch", "zwiebeln", "butter", "miso", "bruehe", "oel"],
   },
   {
     id: "gnocchi-salbeibutter",
@@ -251,6 +323,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Selbstgemachte Kartoffel-Gnocchi, in Nussbutter mit frischem Salbei geschwenkt.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["kartoffeln", "griess", "mehl", "butter"],
   },
   {
     id: "bigos",
@@ -265,6 +338,7 @@ window.REZEPTE = [
     beschreibung: "Polnischer Krauteintopf mit Sauerkraut, Weißkraut, Gulasch, Speck, Wurst und Waldpilzen.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["sauerkraut", "weisskohl", "schwein", "schinken", "wurst", "zwiebeln", "pilze", "tomatenmark"],
   },
   {
     id: "bruzzelfleisch",
@@ -278,6 +352,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Fleisch, Zwiebeln, Schinken und Käse senkrecht geschichtet und in Sahne im Ofen gegart.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["schwein", "zwiebeln", "schinken", "reibekaese", "sahne"],
   },
   {
     id: "kaese-krautfleckerl",
@@ -291,6 +366,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Farfalle mit geschmortem Weißkohl, knusprigen Schinkenwürfeln, Emmentaler und Röstzwiebeln.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["nudeln", "weisskohl", "zwiebeln", "schinken", "reibekaese"],
   },
   {
     id: "thai-curry-huhn-erdnuss",
@@ -305,6 +381,7 @@ window.REZEPTE = [
     beschreibung: "Rotes Kokos-Curry mit mariniertem Hähnchen, Paprika, Bambus und einem Löffel Erdnussbutter.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["haehnchen", "oel", "sojasosse", "ingwer", "currypaste", "erdnussbutter", "kokosmilch", "paprika", "fruehlingszwiebeln", "bambussprossen", "fischsosse", "reis", "zucker"],
   },
   {
     id: "mozzarella-haehnchen",
@@ -318,6 +395,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Angebratene Hähnchenbrust mit Cocktailtomaten in Basilikum-Sahnesauce, mit Mozzarella überbacken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["haehnchen", "oel", "tomaten", "sahne", "frischkaese", "mozzarella"],
   },
   {
     id: "paprikatopf",
@@ -332,6 +410,7 @@ window.REZEPTE = [
     beschreibung: "Veganer Eintopf mit Sojaschnetzeln, Champignons, Paprika, Mais und Ajvar.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["bruehe", "sojaschnetzel", "pilze", "zwiebeln", "paprika", "oel", "tomatenmark", "wein", "dosentomaten", "ajvar", "mais", "sahne"],
   },
   {
     id: "djuvec-reis-cevapcici",
@@ -345,6 +424,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Würzige Hackfleischröllchen mit rotem Tomaten-Paprika-Reis.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hackfleisch", "knoblauch", "eier", "reis", "zwiebeln", "paprika", "ajvar", "dosentomaten", "oel"],
   },
   {
     id: "wikingertopf",
@@ -359,6 +439,7 @@ window.REZEPTE = [
     beschreibung: "Schneller Eintopf mit Hackbällchen, Kartoffeln, Möhren und Erbsen.",
     hinzugefuegt: "2026-10-22",
     zweiTage: true,
+    zutaten: ["kartoffeln", "hackfleisch", "karotten", "erbsen", "oel", "mehl", "bruehe"],
   },
   {
     id: "gnocchi-lauch-speck",
@@ -372,6 +453,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Gnocchi in cremiger Soße aus Speck, Lauch, Brühe und Sauerrahm.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["zwiebeln", "lauch", "gnocchi", "schinken", "knoblauch", "schmand", "bruehe"],
   },
   {
     id: "gebratene-nudeln-haehnchen",
@@ -385,6 +467,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Gebratene Nudeln wie vom China-Imbiss, mit Hähnchen, Ei, Karotten, Lauch und Sojasprossen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["asianudeln", "haehnchen", "oel", "eier", "karotten", "zwiebeln", "sojasprossen", "lauch", "sojasosse", "zucker"],
   },
   {
     id: "burritos-reis-linsen",
@@ -398,6 +481,7 @@ window.REZEPTE = [
     portionen: 3,
     beschreibung: "Weizentortillas mit Hackfleisch, Reis, roten Linsen, Mais und Kidneybohnen, kurz überbacken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["tortillas", "hackfleisch", "paprika", "zwiebeln", "mais", "bohnen", "tomatenmark", "reibekaese", "reis", "linsen", "oel"],
   },
   {
     id: "mexikanische-burritos",
@@ -411,6 +495,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Mit Crème fraîche bestrichene Tortillas, gefüllt mit würzigem Hackfleisch, Paprika und Mais, überbacken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["dosentomaten", "mais", "paprika", "zwiebeln", "oel", "hackfleisch", "tomatenmark", "tortillas", "schmand", "reibekaese"],
   },
   {
     id: "putengeschnetzeltes",
@@ -424,6 +509,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Pute in Sahnesoße mit Lauchzwiebeln, als Grundrezept oder mit Brokkoli, Apfel, Curry oder Champignons.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["pute", "fruehlingszwiebeln", "oel", "sojasosse", "sahne"],
   },
   {
     id: "haehnchenschnitzel-currydip",
@@ -437,6 +523,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Knusprige Panko-Schnitzel mit Ofenkartoffeln, Karotten-Dill-Salat und Joghurt-Curry-Dip.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["haehnchen", "mayonnaise", "semmelbroesel", "kartoffeln", "joghurt", "karotten", "honig", "mehl", "oel"],
   },
   {
     id: "haehnchen-gemuese-pfanne",
@@ -450,6 +537,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Hähnchen mit Zucchini, Paprika und Champignons in Crème-fraîche-Soße mit Basilikum.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["haehnchen", "zucchini", "paprika", "pilze", "zwiebeln", "knoblauch", "schmand", "bruehe", "oel"],
   },
   {
     id: "gong-bao-chicken",
@@ -463,6 +551,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Sichuan-Klassiker mit Hähnchenwürfeln, Erdnüssen, Sellerie und würzig-süß-saurer Sauce.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["haehnchen", "sojasosse", "fruehlingszwiebeln", "sellerie", "nuesse", "ingwer", "knoblauch", "bruehe", "essig", "honig", "oel", "zucker"],
   },
   {
     id: "hoisin-rinderhack-bowl",
@@ -476,6 +565,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Rinderhack in Hoisinsoße mit Reis, scharfem Karotten-Radieschen-Salat, Gurken und Erdnüssen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hackfleisch", "reis", "hoisin", "gurke", "radieschen", "karotten", "sriracha", "nuesse", "mayonnaise", "essig"],
   },
   {
     id: "pizzateig",
@@ -580,6 +670,7 @@ window.REZEPTE = [
     portionen: 20,
     beschreibung: "Haferflocken, Banane, Mandeln und Kokos, mit Honig gesüßt und in Riegel geschnitten.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["bananen", "honig", "zitronen", "saaten", "haferflocken", "nuesse", "kokosraspel"],
   },
   {
     id: "ein-teig-fuenf-plaetzchen",
@@ -593,6 +684,7 @@ window.REZEPTE = [
     portionen: 60,
     beschreibung: "Ein Mürbeteig, fünf Sorten: Spitzbuben, Engelsaugen, Spekulatius, Vanillekipferl und Schoko-Orangen-Kekse.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "butter", "zucker", "eier", "marmelade", "nuesse", "schokolade"],
   },
   {
     id: "schoko-kokos-wuerfel",
@@ -606,6 +698,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Boden aus Schokokeksen mit goldbraunem Kokosbelag, in Würfel geschnitten.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["kekse", "butter", "kondensmilch", "eier", "zucker", "mehl", "backpulver", "kokosraspel"],
   },
   {
     id: "schoko-marshmallow-kuchen",
@@ -619,6 +712,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Saftiger Schoko-Napfkuchen mit Buttermilch und luftiger Marshmallow-Glasur.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["butter", "zucker", "eier", "schokolade", "buttermilch", "mehl", "backpulver", "marshmallows", "milch"],
   },
   {
     id: "schokoladen-souffle",
@@ -632,6 +726,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Luftiges Schokoladen-Soufflé aus dem Ofen mit warmer Schokoladencreme.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["schokolade", "milch", "butter", "eier", "staerke", "zucker"],
   },
   {
     id: "quarkbaellchen",
@@ -645,6 +740,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Frittierte Bällchen aus Quark-Rührteig, außen goldbraun und innen fluffig.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "quark", "zucker", "backpulver", "eier", "oel"],
   },
   {
     id: "apfelkuchen-apfelsaft-pudding",
@@ -658,6 +754,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Mürbeteigboden mit Apfelstücken in Vanillepudding, der mit Apfelsaft statt Milch gekocht wird.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["zucker", "eier", "butter", "mehl", "backpulver", "aepfel", "apfelsaft", "puddingpulver"],
   },
   {
     id: "cornflake-softies",
@@ -671,6 +768,7 @@ window.REZEPTE = [
     portionen: 8,
     beschreibung: "Weiche Kekse aus nur drei Zutaten: Banane, Cornflakes und Nussmus.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["bananen", "cornflakes", "erdnussbutter"],
   },
   {
     id: "schnellste-muffins",
@@ -684,6 +782,7 @@ window.REZEPTE = [
     portionen: 14,
     beschreibung: "Alle Zutaten in eine Schüssel, drei Minuten rühren, ab in den Ofen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "zucker", "eier", "milch", "backpulver", "oel"],
   },
   {
     id: "karottenkuchen",
@@ -697,6 +796,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Saftiger Möhren-Mandel-Kuchen mit Zimt und Frischkäse-Frosting.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["karotten", "mehl", "backpulver", "zucker", "oel", "eier", "nuesse", "frischkaese"],
   },
   {
     id: "pizzamuffins",
@@ -710,6 +810,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Blätterteig-Muffins mit Schmand, Schinken und Käse, ideal für spontanen Besuch.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["blaetterteig", "eier", "schmand", "schinken", "reibekaese"],
   },
   {
     id: "dinkelbrot",
@@ -723,6 +824,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Saftiges Vollkornbrot ohne Kneten aus der Kastenform, mit vier Varianten.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "honig", "mehl", "essig", "haferflocken"],
   },
   {
     id: "magisches-baguette",
@@ -736,6 +838,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Baguette ohne Kneten und ohne Küchenmaschine, nur verrühren und gehen lassen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "zucker", "mehl"],
   },
   {
     id: "bauernbrot-natursauerteig",
@@ -749,6 +852,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Kräftiges Roggenbrot mit selbst angesetztem Sauerteig und Brotgewürz, mit Dampf gebacken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["sauerteig", "roggenmehl", "mehl"],
   },
   {
     id: "weisser-laib",
@@ -762,6 +866,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Einfaches Weißbrot, kreuzweise eingeschnitten und mit Butter bestrichen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "mehl"],
   },
   {
     id: "toastbrot",
@@ -775,6 +880,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Selbstgebackenes Toastbrot aus der Kastenform mit Milch, Ei und Vorteig.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["milch", "zucker", "hefe", "mehl", "butter", "eier"],
   },
   {
     id: "buttermilchbrot",
@@ -788,6 +894,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Runder Laib aus Weizen, Vollkornschrot und Roggen mit Buttermilch und Haferflocken.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "roggenmehl", "hefe", "zucker", "buttermilch", "milch", "haferflocken"],
   },
   {
     id: "sesam-buttermilch-brot",
@@ -801,6 +908,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Kastenbrot mit Buttermilch und Sesam im Teig und auf der Kruste.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "zucker", "buttermilch", "mehl", "saaten"],
   },
   {
     id: "wasserwecken",
@@ -814,6 +922,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Knusprige ovale Brötchen mit Salzwasser bestrichen und längs eingeschnitten.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "hefe", "oel"],
   },
   {
     id: "speckbroetchen",
@@ -827,6 +936,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Herzhafte Brötchen mit ausgelassenem Räucherspeck und Buttermilch im Teig.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["schinken", "mehl", "hefe", "zucker", "buttermilch"],
   },
   {
     id: "rosinenbroetchen",
@@ -840,6 +950,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Weiche, süße Hefebrötchen mit reichlich Rosinen.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["mehl", "hefe", "zucker", "milch", "butter", "rosinen"],
   },
   {
     id: "butterhoernchen",
@@ -853,6 +964,7 @@ window.REZEPTE = [
     portionen: 15,
     beschreibung: "Zarte Hefehörnchen mit Sahne und viel Butter.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "sahne", "zucker", "mehl", "butter", "eier"],
   },
   {
     id: "sesambrezeln",
@@ -866,6 +978,7 @@ window.REZEPTE = [
     portionen: 6,
     beschreibung: "Weiche Hefebrezeln mit Eigelb bestrichen und mit Sesam bestreut.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "milch", "mehl", "butter", "eier", "zucker", "saaten"],
   },
   {
     id: "quarkbrot",
@@ -879,6 +992,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Ovales Weißbrot mit Quark im Teig und einer Kruste aus Kaffee.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["hefe", "milch", "butter", "quark", "mehl"],
   },
   {
     id: "provenzalisches-brot",
@@ -892,6 +1006,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Kastenbrot mit Kräuterfrischkäse, Zwiebeln, Haferflocken und Kräutern der Provence.",
     hinzugefuegt: "2026-10-22",
+    zutaten: ["zwiebeln", "butter", "hefe", "zucker", "buttermilch", "mehl", "haferflocken", "frischkaese"],
   },
   {
     id: "sauerteigbrot",
@@ -905,6 +1020,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Helles Weizen- oder Dinkelbrot mit aktivem Sauerteig, im heißen Topf gebacken.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["sauerteig", "mehl"],
   },
   {
     id: "zimtschnecken-frischkaese",
@@ -918,6 +1034,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Fluffige Hefeschnecken mit Zimtbutter, in der Form gebacken und mit Frischkäse glasiert.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["milch", "butter", "mehl", "zucker", "hefe", "frischkaese"],
   },
   {
     id: "einfaches-dinkelbrot",
@@ -931,6 +1048,7 @@ window.REZEPTE = [
     portionen: 16,
     beschreibung: "Halb hell, halb Vollkorn, mit Buttermilch und wenig Hefe über Nacht im Kühlschrank gegangen.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "hefe", "buttermilch"],
   },
   {
     id: "sauerteig-bauernbrot-ohne-hefe",
@@ -944,6 +1062,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Großes Weizen-Roggen-Brot nur mit Sauerteig, im Dutch Oven gebacken.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "roggenmehl", "sauerteig"],
   },
   {
     id: "sauerteig-anstellgut",
@@ -970,6 +1089,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Italienisches Fladenbrot mit Olivenöl, Meersalz und Rosmarin.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "zucker", "hefe", "oel"],
   },
   {
     id: "rhabarber-streusel-kuchen",
@@ -983,6 +1103,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Hefeboden mit Vanillecreme-Ringen, Rhabarber und Vanillestreuseln.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "milch", "zucker", "butter", "eier", "hefe", "zitronen", "staerke", "semmelbroesel", "rhabarber"],
   },
   {
     id: "weiche-schoko-lebkuchen",
@@ -996,6 +1117,7 @@ window.REZEPTE = [
     portionen: 20,
     beschreibung: "Saftige Lebkuchen auf Oblaten mit Nüssen, Nuss-Nougat-Creme und Zuckerguss.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["eier", "zucker", "mehl", "backpulver", "nussnougat", "nuesse", "kakao", "oblaten"],
   },
   {
     id: "sauerteigcracker",
@@ -1009,6 +1131,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Dünne Cracker aus Resten vom Anstellgut, mit Saaten und Salz.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["sauerteig", "mehl", "oel", "saaten"],
   },
   {
     id: "schokoladen-cookies",
@@ -1022,6 +1145,7 @@ window.REZEPTE = [
     portionen: 30,
     beschreibung: "Dunkle Kakao-Cookies mit Schokotröpfchen, außen knusprig, innen weich.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["eier", "zucker", "butter", "mehl", "kakao", "backpulver", "schokolade"],
   },
   {
     id: "tuerkischer-schokoladenkuchen",
@@ -1035,6 +1159,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Saftiger Kakaokuchen mit Gläsern abgemessen, der Guss kommt aus demselben Teig.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["eier", "zucker", "milch", "oel", "kakao", "backpulver", "mehl"],
   },
   {
     id: "keksreste-kuchen",
@@ -1048,6 +1173,7 @@ window.REZEPTE = [
     portionen: 9,
     beschreibung: "Schokoladiger Rührkuchen aus übrig gebliebenen Weihnachtskeksen.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["kekse", "milch", "zucker", "eier", "mehl", "backpulver", "kakao"],
   },
   {
     id: "brombeer-quark-schnecken",
@@ -1061,6 +1187,7 @@ window.REZEPTE = [
     portionen: 20,
     beschreibung: "Hefeschnecken mit Quarkcreme, Brombeeren und Raspelschokolade aus der Springform.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "hefe", "milch", "zucker", "butter", "eier", "beeren", "quark", "griess", "schokolade"],
   },
   {
     id: "pflaumen-streusel-schnecken",
@@ -1074,6 +1201,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Große Hefeschnecken mit Pflaumen und weißer Schokolade unter Butterstreuseln.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "hefe", "milch", "zucker", "butter", "eier", "pflaumen", "schokolade"],
   },
   {
     id: "apfeltarte",
@@ -1087,6 +1215,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Mürbeteig mit Apfelspalten, braunem Zucker und Zimt-Haferflocken-Streuseln.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "zucker", "butter", "haferflocken", "zitronen", "aepfel"],
   },
   {
     id: "mohnschnecken",
@@ -1100,6 +1229,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Hefeschnecken mit Mohnfüllung, gehackten Cashews und Cranberrys und Zitronenglasur.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "hefe", "milch", "zucker", "butter", "eier", "mohnback", "nuesse"],
   },
   {
     id: "moehren-schoko-kuchen",
@@ -1113,6 +1243,7 @@ window.REZEPTE = [
     portionen: 10,
     beschreibung: "Saftiger Schokoladenkuchen mit geraspelten Möhren und Walnüssen.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["karotten", "nuesse", "mehl", "backpulver", "kakao", "butter", "zucker", "eier", "milch"],
   },
   {
     id: "hefezopf",
@@ -1126,6 +1257,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Großer, fluffiger Hefezopf mit Zitrone, zweifach gedreht und mit Hagelzucker.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "milch", "zucker", "hefe", "butter", "eier"],
   },
   {
     id: "zitronenschnecken",
@@ -1139,6 +1271,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Sommerliche Hefeschnecken mit Lemoncurd-Quark-Füllung und Zitronenglasur.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["hefe", "zucker", "mehl", "eier", "milch", "butter", "zitronen", "staerke", "quark"],
   },
   {
     id: "feuerwehrkuchen",
@@ -1152,6 +1285,7 @@ window.REZEPTE = [
     portionen: 12,
     beschreibung: "Mürbeteig mit Kirschfüllung, Zimt-Mandel-Streuseln und Sahne.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "butter", "zucker", "eier", "backpulver", "kirschen", "staerke", "nuesse", "sahne"],
   },
   {
     id: "masala-chai",
@@ -1204,6 +1338,7 @@ window.REZEPTE = [
     portionen: 3,
     beschreibung: "Süßsauer eingelegte Möhren, Gurke, Radieschen und Zwiebel für Banh mi und Bowls.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["zwiebeln", "karotten", "gurke", "radieschen", "essig", "honig", "knoblauch"],
   },
   {
     id: "wuerzpaste-gemuesereste",
@@ -1230,6 +1365,7 @@ window.REZEPTE = [
     portionen: 1,
     beschreibung: "Kleine Hefekugeln in Butter und Zimtzucker gewälzt, im Gugelhupf gebacken, zum Abzupfen.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "milch", "zucker", "hefe", "butter", "nuesse", "semmelbroesel"],
   },
   {
     id: "ulmer-brot",
@@ -1243,6 +1379,7 @@ window.REZEPTE = [
     portionen: 16,
     beschreibung: "Saftiger Kastenkuchen mit Kakao, Zimt, Kaffee und Zitrusabrieb, in Würfeln serviert.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "butter", "zucker", "eier", "milch", "backpulver", "kakao", "kaffee", "zitronen", "nussnougat"],
   },
   {
     id: "cheesy-quesadillas",
@@ -1256,6 +1393,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Knusprige Tortillas mit Hack, Bohnen und Gouda, dazu Bohnensalat, Joghurt und Limette.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["tortillas", "bohnen", "tomatenmark", "zwiebeln", "reibekaese", "zitronen", "joghurt", "hackfleisch", "tomaten", "oel"],
   },
   {
     id: "putenbrust-pflaumen-sriracha",
@@ -1269,6 +1407,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Putenbrust aus dem Ofen mit süß-scharfer Soße, Käse-Ofenkartoffeln und Rote-Bete-Salat.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["pute", "kartoffeln", "parmesan", "oel", "knoblauch", "marmelade", "sriracha", "sojasosse", "rote-bete", "salat"],
   },
   {
     id: "schokoravioli",
@@ -1282,6 +1421,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Kakao-Nudelteig mit Füllung aus weißer Schokolade, Mascarpone und Obst.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "kakao", "zucker", "eier", "oel", "schokolade", "mascarpone"],
   },
   {
     id: "schnelles-schokodessert",
@@ -1295,6 +1435,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Zartbittercreme aus Zuckersirup, Eigelb und Crème double, im Glas fest geworden.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["schokolade", "zucker", "eier", "sahne", "kekse"],
   },
   {
     id: "mokkacreme",
@@ -1308,6 +1449,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Luftige Schoko-Kaffee-Creme mit Sahne, dazu Amarettini.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["schokolade", "kaffee", "gelatine", "sahne", "kekse"],
   },
   {
     id: "suesse-pierogi",
@@ -1321,6 +1463,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Polnische Teigtaschen mit süßer Quark- oder Heidelbeerfüllung, in Wasser gegart.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "oel", "eier", "quark", "zucker", "beeren", "marmelade", "semmelbroesel"],
   },
   {
     id: "tiramisu",
@@ -1334,6 +1477,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Mascarponecreme mit Eischnee und Amaretto, in Kaffee getunkte Löffelbiskuits.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mascarpone", "kekse", "zucker", "eier", "kaffee", "kakao"],
   },
   {
     id: "baiser-himbeertraum",
@@ -1347,6 +1491,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Geschichtet aus Quark-Sahne mit Schokoküssen, Baiser und gefrorenen Himbeeren.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["quark", "sahne", "schokokuesse", "beeren", "baiser"],
   },
   {
     id: "waffeln",
@@ -1360,6 +1505,7 @@ window.REZEPTE = [
     portionen: 20,
     beschreibung: "Fluffige Waffeln mit Eischnee für das Waffeleisen, reicht für eine große Runde.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["butter", "zucker", "eier", "mehl", "backpulver", "milch"],
   },
   {
     id: "amerikanische-pancakes",
@@ -1373,6 +1519,7 @@ window.REZEPTE = [
     portionen: 2,
     beschreibung: "Dicke, saftige Pancakes mit Joghurt im Teig, dazu Ahornsirup.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["eier", "milch", "joghurt", "mehl", "backpulver", "zucker", "oel"],
   },
   {
     id: "buttermilch-pancakes",
@@ -1386,5 +1533,6 @@ window.REZEPTE = [
     portionen: 3,
     beschreibung: "Neutraler Grundteig mit Buttermilch, süß oder herzhaft, mit vielen Varianten.",
     hinzugefuegt: "2026-10-24",
+    zutaten: ["mehl", "backpulver", "buttermilch", "eier"],
   },
 ];

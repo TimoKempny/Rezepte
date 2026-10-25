@@ -348,6 +348,46 @@ a { color: inherit; }
   text-decoration: underline; text-underline-offset: 3px;
 }
 
+/* ---------- Was hab ich da? ---------- */
+.vorrat {
+  border: 2px solid var(--linie); border-radius: var(--rund);
+  background: var(--grund);
+}
+.vorrat[open] { border-color: var(--haupt-tief); }
+.vorrat > summary {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s3);
+  padding: var(--s3) var(--s4); cursor: pointer; list-style: none;
+}
+.vorrat > summary::-webkit-details-marker { display: none; }
+.vorrat > summary::before {
+  content: "+"; display: inline-grid; place-items: center; align-self: center;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  background: var(--haupt); color: var(--auf-haupt); font-weight: 700;
+}
+.vorrat[open] > summary::before { content: "−"; }
+.vorrat > summary:focus-visible { outline: 2px solid var(--haupt-text); outline-offset: 2px; border-radius: var(--rund); }
+.vorrat-titel { font-weight: 700; font-size: 1.1rem; }
+.vorrat-status { color: var(--haupt-text); font-weight: 600; font-size: 0.92rem; }
+.vorrat-inhalt { display: grid; gap: var(--s4); justify-items: start; padding: 0 var(--s4) var(--s4); }
+.vorrat-hinweis { color: var(--leise); font-size: 0.92rem; max-width: 70ch; }
+#vorrat-gruppen, #vorrat-weitere { display: grid; gap: var(--s4); }
+.vorrat-gruppe h3 { font-size: 0.95rem; margin-bottom: var(--s2); }
+.vorrat .chip { font-size: 0.9rem; min-height: 2rem; }
+.vorrat-mehr > summary { font-weight: 600; color: var(--haupt-text); cursor: pointer; margin-bottom: var(--s3); }
+
+.raster-titel { grid-column: 1 / -1; margin-bottom: calc(-1 * var(--s4)); }
+.raster-titel h2 { font-size: 1.4rem; letter-spacing: -0.01em; }
+.raster-titel span { color: var(--leise); font-weight: 600; }
+.raster-titel:not(:first-child) { margin-top: var(--s4); }
+
+.fehlt { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); font-size: 0.85rem; }
+.fehlt span { color: var(--leise); font-weight: 600; }
+.fehlt ul { list-style: none; margin: 0; padding: 0; display: contents; }
+.fehlt li {
+  font-weight: 600; padding: 0 var(--s2); border-radius: 999px;
+  border: 1px dashed var(--leise); color: var(--tinte);
+}
+
 /* ---------- Rezeptraster ---------- */
 .sammlung { padding-block: var(--s7) var(--s8); }
 .raster {
