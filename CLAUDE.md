@@ -15,7 +15,7 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 - **Eintrag in `assets/rezepte.js`** mit `id`, `titel`, `seite`, `bild`, `kategorie`, `zeit`, `schwierigkeit`,
   `ernaehrung`, `portionen`, `beschreibung`, `hinzugefuegt`, optional `zweiTage: true` (lässt sich gut aufwärmen,
   der Wochenplaner bevorzugt es für Reste). Übersicht und Wochenplaner lesen nur diese Liste.
-- Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Kaffee"),
+- Kopfzeile mit Logo (Inline-SVG `marke-logo`, wie das Favicon) und Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Kaffee"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
 
@@ -29,7 +29,7 @@ SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=21`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=22`).
 
 ## Gestaltung
 
@@ -38,7 +38,7 @@ Tokens in `assets/style.css`, nie direkt im Code. Rollen:
 
 - `--haupt` Flächen (Tellerrand, Knöpfe, aktive Filter, Teaser), Schrift darauf `--auf-haupt`
 - `--haupt-text` Links, Mengen, Fokus (lesbare Variante der Hauptfarbe), `--haupt-hell` dezente Hover-Flächen
-- `--akzent` / `--akzent-tief` / `--akzent-hell` festgehaltene Tage, Tipps, Logo-Mitte
+- `--akzent` / `--akzent-tief` / `--akzent-hell` festgehaltene Tage, Tipps
 
 Palette (vom Nutzer vorgegeben): Hell Hauptfarbe `#FEE0CE`, Akzent `#CEFEE0`; Dunkel Hauptfarbe `#404040`,
 Akzent `#B9CD8A` (im Dunkel-Design ist der Akzent zugleich `--haupt-text`). Das dunkle Design ist zweimal definiert

@@ -190,7 +190,10 @@ function karteHTML(k) {
         <span>Gekauft am ${esc(datumText(k.datum))}</span>
         ${link ? `<a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(linkName(link))}</a>` : ""}
       </p>
-      ${token() ? `<button type="button" class="textlink kaffee-loeschen" data-id="${esc(k.id)}">Löschen</button>` : ""}
+      ${token() ? `<p class="kaffee-verwalten">
+        <button type="button" class="textlink kaffee-bearbeiten" data-id="${esc(k.id)}">Bearbeiten</button>
+        <button type="button" class="textlink kaffee-loeschen" data-id="${esc(k.id)}">Löschen</button>
+      </p>` : ""}
     </div>
   </li>`;
 }
@@ -290,7 +293,7 @@ zugangForm.addEventListener("submit", async (e) => {
   }
 });
 
-// Neuer Kaffee
+// Neuer oder bearbeiteter Kaffee
 const form = document.getElementById("kaffee-form");
 const formMeldung = document.getElementById("kaffee-meldung");
 const preisFeld = document.getElementById("k-preis");
@@ -298,6 +301,7 @@ const mengeFeld = document.getElementById("k-menge");
 const preisKgText = document.getElementById("k-preis-kg");
 const ratingFeld = document.getElementById("k-rating");
 let fotoDatei = null;
+let bearbeitet = null; // Eintrag, der gerade bearbeitet wird; null bei einem neuen Kaffee
 const bildVorschau = document.getElementById("k-bild-vorschau");
 const speichernKnopf = document.getElementById("k-speichern");
 
@@ -336,7 +340,7 @@ form.querySelectorAll("[data-foto]").forEach((feld) => {
     if (!feld.files[0]) return;
     fotoDatei = feld.files[0];
     feld.value = "";
-    if (bildVorschau.src) URL.revokeObjectURL(bildVorschau.src);
+    if (bildVorschau.src.startsWith("blob:")) URL.revokeObjectURL(bildVorschau.src);
     bildVorschau.src = URL.createObjectURL(fotoDatei);
     bildVorschau.hidden = false;
   });
@@ -357,20 +361,52 @@ function linkName(url) {
   return istKarte ? "Auf der Karte" : host;
 }
 
+function formularOeffnen(eintrag = null) {
+  form.reset();
+  bearbeitet = eintrag;
+  fotoDatei = null;
+  const feld = (name) => form.elements[name];
+  document.getElementById("kaffee-dialog-titel").textContent = eintrag ? "Kaffee bearbeiten" : "Kaffee eintragen";
+  feld("datum").value = new Date().toLocaleDateString("sv-SE");
+  if (eintrag) {
+    feld("name").value = eintrag.name;
+    feld("roester").value = eintrag.roester || "";
+    feld("rating").value = eintrag.rating;
+    feld("preis").value = eintrag.preisProKg;
+    feld("menge").value = "1000";
+    feld("link").value = eintrag.link || "";
+    feld("datum").value = eintrag.datum;
+    feld("notiz").value = eintrag.notiz || "";
+    PROFIL.forEach((p) => { feld(p.schluessel).value = (eintrag.profil || {})[p.schluessel] || 3; });
+    form.querySelectorAll('[name="noten"]').forEach((k) => { k.checked = (eintrag.noten || []).includes(k.value); });
+  }
+  ratingFeld.dispatchEvent(new Event("input"));
+  PROFIL.forEach((p) => { document.getElementById(`k-${p.schluessel}-wert`).textContent = feld(p.schluessel).value; });
+  if (bildVorschau.src.startsWith("blob:")) URL.revokeObjectURL(bildVorschau.src);
+  bildVorschau.hidden = !eintrag;
+  if (eintrag) {
+    delete bildVorschau.dataset.versucht;
+    bildVorschau.src = eintrag.bild;
+  }
+  speichernKnopf.textContent = eintrag ? "Änderungen speichern" : "Speichern";
+  preisAnzeigen();
+  meldung(formMeldung, "");
+  kaffeeDialog.showModal();
+}
+
+// Gerade hochgeladene Fotos sind auf GitHub Pages noch nicht da
+bildVorschau.addEventListener("error", () => {
+  if (!bearbeitet || bildVorschau.dataset.versucht) return;
+  bildVorschau.dataset.versucht = "1";
+  bildVorschau.src = `https://raw.githubusercontent.com/${REPO}/${ZWEIG}/${bearbeitet.bild}`;
+});
+
 document.getElementById("neu-knopf").addEventListener("click", () => {
   if (!token()) {
     zugangOeffnen("Zum Eintragen braucht dieser Browser zuerst einen Zugang.");
     return;
   }
-  form.reset();
-  fotoDatei = null;
-  document.getElementById("k-datum").value = new Date().toLocaleDateString("sv-SE");
-  ratingFeld.dispatchEvent(new Event("input"));
-  PROFIL.forEach((p) => document.getElementById(`k-${p.schluessel}-wert`).textContent = "3");
-  bildVorschau.hidden = true;
-  preisAnzeigen();
-  meldung(formMeldung, "");
-  kaffeeDialog.showModal();
+  formularOeffnen();
 });
 
 // Foto verkleinern: längste Seite höchstens 1000 px, JPEG
@@ -408,14 +444,20 @@ form.addEventListener("submit", async (e) => {
     return;
   }
   const link = linkUrl ? linkUrl.href : "";
-  if (!fotoDatei) {
+  if (!fotoDatei && !bearbeitet) {
     meldung(formMeldung, "Bitte ein Foto der Verpackung aufnehmen oder auswählen.", true);
     return;
   }
 
   const datum = String(daten.get("datum"));
-  const id = kennung(String(daten.get("name")), datum);
+  const id = bearbeitet ? bearbeitet.id : kennung(String(daten.get("name")), datum);
+  // Ein neues Foto bekommt beim Bearbeiten einen neuen Dateinamen, sonst zeigt der Browser-Cache noch das alte
+  const bild = !fotoDatei ? bearbeitet.bild
+    : bearbeitet ? `assets/bilder/kaffee/${id}-${Date.now().toString(36)}.jpg`
+    : `assets/bilder/kaffee/${id}.jpg`;
+  const altesBild = bearbeitet && fotoDatei ? bearbeitet.bild : null;
   const eintrag = {
+    ...bearbeitet,
     id,
     name: String(daten.get("name")).trim(),
     roester: String(daten.get("roester")).trim(),
@@ -423,7 +465,7 @@ form.addEventListener("submit", async (e) => {
     preisProKg: preisProKg(),
     link,
     datum,
-    bild: `assets/bilder/kaffee/${id}.jpg`,
+    bild,
     notiz: String(daten.get("notiz")).trim(),
     profil: Object.fromEntries(PROFIL.map((p) => [p.schluessel, Number(daten.get(p.schluessel))])),
     noten: daten.getAll("noten").map(String),
@@ -431,14 +473,21 @@ form.addEventListener("submit", async (e) => {
 
   speichernKnopf.disabled = true;
   try {
-    meldung(formMeldung, "Foto wird hochgeladen …");
-    const foto = await bildVerkleinern(fotoDatei);
-    await github(eintrag.bild, {
-      method: "PUT",
-      body: JSON.stringify({ message: `Kaffee: Foto für ${eintrag.name}`, branch: ZWEIG, content: foto }),
-    });
+    if (fotoDatei) {
+      meldung(formMeldung, "Foto wird hochgeladen …");
+      const foto = await bildVerkleinern(fotoDatei);
+      await github(eintrag.bild, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Kaffee: Foto für ${eintrag.name}`, branch: ZWEIG, content: foto }),
+      });
+    }
     meldung(formMeldung, "Eintrag wird gespeichert …");
-    kaffees = await datenAendern((alle) => [...alle, eintrag], `Kaffee: ${eintrag.name} eingetragen`);
+    kaffees = bearbeitet
+      ? await datenAendern((alle) => alle.some((k) => k.id === id)
+        ? alle.map((k) => (k.id === id ? eintrag : k))
+        : [...alle, eintrag], `Kaffee: ${eintrag.name} bearbeitet`)
+      : await datenAendern((alle) => [...alle, eintrag], `Kaffee: ${eintrag.name} eingetragen`);
+    if (altesBild) await fotoLoeschen(altesBild, eintrag.name);
     kaffeeDialog.close();
     zeigen();
   } catch (fehler) {
@@ -450,8 +499,27 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// Löschen
+// Ein übrig gebliebenes Foto stört nicht, deshalb ohne Fehlermeldung
+async function fotoLoeschen(pfad, name) {
+  try {
+    const foto = await github(`${pfad}?ref=${ZWEIG}`);
+    await github(pfad, {
+      method: "DELETE",
+      body: JSON.stringify({ message: `Kaffee: Foto von ${name} gelöscht`, branch: ZWEIG, sha: foto.sha }),
+    });
+  } catch {
+    // Foto bleibt im Repository liegen
+  }
+}
+
+// Bearbeiten und Löschen
 liste.addEventListener("click", async (e) => {
+  const bearbeiten = e.target.closest(".kaffee-bearbeiten");
+  if (bearbeiten) {
+    const eintrag = kaffees.find((k) => k.id === bearbeiten.dataset.id);
+    if (eintrag) formularOeffnen(eintrag);
+    return;
+  }
   const knopf = e.target.closest(".kaffee-loeschen");
   if (!knopf) return;
   const eintrag = kaffees.find((k) => k.id === knopf.dataset.id);
@@ -461,15 +529,7 @@ liste.addEventListener("click", async (e) => {
   knopf.textContent = "Wird gelöscht …";
   try {
     kaffees = await datenAendern((alle) => alle.filter((k) => k.id !== eintrag.id), `Kaffee: ${eintrag.name} gelöscht`);
-    try {
-      const foto = await github(`${eintrag.bild}?ref=${ZWEIG}`);
-      await github(eintrag.bild, {
-        method: "DELETE",
-        body: JSON.stringify({ message: `Kaffee: Foto von ${eintrag.name} gelöscht`, branch: ZWEIG, sha: foto.sha }),
-      });
-    } catch {
-      // Eintrag ist weg, ein übrig gebliebenes Foto stört nicht
-    }
+    await fotoLoeschen(eintrag.bild, eintrag.name);
     zeigen();
   } catch (fehler) {
     knopf.disabled = false;

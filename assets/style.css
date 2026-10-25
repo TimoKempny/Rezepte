@@ -124,11 +124,8 @@ a { color: inherit; }
   font-weight: 800; font-size: 1.25rem; text-decoration: none;
   letter-spacing: -0.01em;
 }
-.marke-teller {
-  width: 1.6rem; height: 1.6rem; border-radius: 50%;
-  border: 4px solid var(--haupt-text);
-  background: radial-gradient(circle, var(--akzent-tief) 0 38%, var(--teller-innen) 40%);
-}
+/* Logo wie das Favicon, per currentColor in der lesbaren Hauptfarbe des aktiven Designs */
+.marke-logo { width: 2rem; height: 2rem; flex: none; color: var(--haupt-text); }
 .kopf nav { display: flex; align-items: center; gap: var(--s1); flex-wrap: wrap; }
 .kopf nav a, .thema-knopf {
   font: inherit; font-weight: 600; font-size: 1rem; line-height: 1.5;
@@ -758,7 +755,8 @@ a { color: inherit; }
 .kaffee-notiz { font-family: var(--schrift-text); color: var(--leise); font-size: 0.95rem; }
 .kaffee-fuss { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); justify-content: space-between; color: var(--leise); font-size: 0.88rem; }
 .kaffee-fuss a { color: var(--haupt-text); font-weight: 600; }
-.kaffee-loeschen { justify-self: start; font-size: 0.85rem; }
+.kaffee-verwalten { display: flex; gap: var(--s4); font-size: 0.85rem; }
+.kaffee-verwalten .textlink { font-size: inherit; }
 
 .kaffee-dialog { width: min(34rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); }
 .kaffee-dialog .kaffee-form { display: grid; gap: var(--s4); margin-top: var(--s4); }
