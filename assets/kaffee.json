@@ -1,28 +1,5 @@
 [
   {
-    "id": "test-2026-10-25-3wd0",
-    "name": "Test",
-    "roester": "Test",
-    "rating": 7,
-    "preisProKg": 9.99,
-    "link": "https://www.roastmarked.com/",
-    "datum": "2026-10-25",
-    "bild": "assets/bilder/kaffee/test-2026-10-25-3wd0.jpg",
-    "notiz": "",
-    "profil": {
-      "aroma": 3,
-      "saeure": 3,
-      "suesse": 4,
-      "koerper": 3,
-      "bitterkeit": 3,
-      "nachgeschmack": 1
-    },
-    "noten": [
-      "Zitrus",
-      "Fermentiert"
-    ]
-  },
-  {
     "id": "afro-choco-2026-10-25-9g9d",
     "name": "Afro Choco",
     "roester": "Soso",
