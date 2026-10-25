@@ -50,5 +50,28 @@
     "notiz": "",
     "profil": null,
     "noten": []
+  },
+  {
+    "id": "afro-brasil-2026-10-17-zqig",
+    "name": "Afro Brasil",
+    "roester": "Kaffeewerk",
+    "rating": 8,
+    "preisProKg": 47.2,
+    "link": "https://maps.app.goo.gl/gp6rb2bBVhCCJHbc7",
+    "datum": "2026-10-17",
+    "bild": "assets/bilder/kaffee/afro-brasil-2026-10-17-zqig.jpg",
+    "notiz": "",
+    "profil": {
+      "aroma": 4,
+      "saeure": 1,
+      "suesse": 2,
+      "koerper": 4,
+      "bitterkeit": 1,
+      "nachgeschmack": 3
+    },
+    "noten": [
+      "Nussig",
+      "Schokolade & Kakao"
+    ]
   }
 ]
