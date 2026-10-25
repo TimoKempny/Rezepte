@@ -188,7 +188,7 @@ function karteHTML(k) {
       ${k.notiz ? `<p class="kaffee-notiz">${esc(k.notiz)}</p>` : ""}
       <p class="kaffee-fuss">
         <span>Gekauft am ${esc(datumText(k.datum))}</span>
-        ${link ? `<a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(link.hostname.replace(/^www\./, ""))}</a>` : ""}
+        ${link ? `<a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(linkName(link))}</a>` : ""}
       </p>
       ${token() ? `<button type="button" class="textlink kaffee-loeschen" data-id="${esc(k.id)}">Löschen</button>` : ""}
     </div>
@@ -297,7 +297,7 @@ const preisFeld = document.getElementById("k-preis");
 const mengeFeld = document.getElementById("k-menge");
 const preisKgText = document.getElementById("k-preis-kg");
 const ratingFeld = document.getElementById("k-rating");
-const bildFeld = document.getElementById("k-bild");
+let fotoDatei = null;
 const bildVorschau = document.getElementById("k-bild-vorschau");
 const speichernKnopf = document.getElementById("k-speichern");
 
@@ -330,12 +330,32 @@ ratingFeld.addEventListener("input", () => {
   document.getElementById("k-rating-wert").textContent = `${ratingFeld.value} / 10`;
 });
 
-bildFeld.addEventListener("change", () => {
-  const datei = bildFeld.files[0];
-  if (bildVorschau.src) URL.revokeObjectURL(bildVorschau.src);
-  bildVorschau.hidden = !datei;
-  if (datei) bildVorschau.src = URL.createObjectURL(datei);
+// Kamera und Galerie füllen dasselbe Foto
+form.querySelectorAll("[data-foto]").forEach((feld) => {
+  feld.addEventListener("change", () => {
+    if (!feld.files[0]) return;
+    fotoDatei = feld.files[0];
+    feld.value = "";
+    if (bildVorschau.src) URL.revokeObjectURL(bildVorschau.src);
+    bildVorschau.src = URL.createObjectURL(fotoDatei);
+    bildVorschau.hidden = false;
+  });
 });
+
+// Erster http(s)-Link im Text, damit auch geteilte Maps-Texte („Name … https://maps.app.goo.gl/…“) passen
+function linkAusText(text) {
+  const treffer = text.match(/https?:\/\/\S+/);
+  return treffer ? sichererLink(treffer[0]) : null;
+}
+
+function linkName(url) {
+  const host = url.hostname.replace(/^www\./, "");
+  const istKarte = /^maps\.(app\.goo\.gl|google\.|apple\.com)/.test(host)
+    || (host === "goo.gl" && url.pathname.startsWith("/maps"))
+    || (/^google\./.test(host) && url.pathname.startsWith("/maps"))
+    || /openstreetmap\.org$/.test(host);
+  return istKarte ? "Auf der Karte" : host;
+}
 
 document.getElementById("neu-knopf").addEventListener("click", () => {
   if (!token()) {
@@ -343,6 +363,7 @@ document.getElementById("neu-knopf").addEventListener("click", () => {
     return;
   }
   form.reset();
+  fotoDatei = null;
   document.getElementById("k-datum").value = new Date().toLocaleDateString("sv-SE");
   ratingFeld.dispatchEvent(new Event("input"));
   PROFIL.forEach((p) => document.getElementById(`k-${p.schluessel}-wert`).textContent = "3");
@@ -380,9 +401,15 @@ function kennung(name, datum) {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const daten = new FormData(form);
-  const link = String(daten.get("link")).trim();
-  if (link && !sichererLink(link)) {
-    meldung(formMeldung, "Der Link muss mit http:// oder https:// beginnen.", true);
+  const linkText = String(daten.get("link")).trim();
+  const linkUrl = linkText ? linkAusText(linkText) : null;
+  if (linkText && !linkUrl) {
+    meldung(formMeldung, "Im Link-Feld steht keine Adresse mit http:// oder https://.", true);
+    return;
+  }
+  const link = linkUrl ? linkUrl.href : "";
+  if (!fotoDatei) {
+    meldung(formMeldung, "Bitte ein Foto der Verpackung aufnehmen oder auswählen.", true);
     return;
   }
 
@@ -405,7 +432,7 @@ form.addEventListener("submit", async (e) => {
   speichernKnopf.disabled = true;
   try {
     meldung(formMeldung, "Foto wird hochgeladen …");
-    const foto = await bildVerkleinern(bildFeld.files[0]);
+    const foto = await bildVerkleinern(fotoDatei);
     await github(eintrag.bild, {
       method: "PUT",
       body: JSON.stringify({ message: `Kaffee: Foto für ${eintrag.name}`, branch: ZWEIG, content: foto }),

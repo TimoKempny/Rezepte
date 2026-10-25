@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=20">
+  <link rel="stylesheet" href="assets/style.css?v=21">
   <link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/favicon-180.png?v=2">
-  <script src="assets/thema.js?v=20"></script>
+  <script src="assets/thema.js?v=21"></script>
 </head>
 <body>
   <header class="kopf">
@@ -98,16 +98,24 @@
       </div>
       <div class="feld">
         <label for="k-link">Link zum Laden</label>
-        <input id="k-link" name="link" type="url" placeholder="https://…">
+        <input id="k-link" name="link" type="text" inputmode="url" autocomplete="off" placeholder="Shop oder Google/Apple Maps">
+        <p class="hinweis">Aus „Teilen“ in Maps kannst du den ganzen Text einfügen, der Link wird herausgesucht.</p>
       </div>
       <div class="feld">
         <label for="k-datum">Kaufdatum</label>
         <input id="k-datum" name="datum" type="date" required>
       </div>
       <div class="feld">
-        <label for="k-bild">Foto der Verpackung</label>
-        <input id="k-bild" name="bild" type="file" accept="image/*" required>
-        <img class="bild-vorschau" id="k-bild-vorschau" alt="" hidden>
+        <span class="feld-name" id="k-bild-label">Foto der Verpackung</span>
+        <div class="bild-wahl" role="group" aria-labelledby="k-bild-label">
+          <label class="knopf zweit klein foto-kamera">
+            <input type="file" accept="image/*" capture="environment" data-foto>Foto aufnehmen
+          </label>
+          <label class="knopf zweit klein">
+            <input type="file" accept="image/*" data-foto>Bild auswählen
+          </label>
+        </div>
+        <img class="bild-vorschau" id="k-bild-vorschau" alt="Vorschau des Fotos" hidden>
       </div>
       <div class="feld">
         <label for="k-notiz">Notiz</label>
@@ -145,7 +153,7 @@
     <div class="huelle">Tasting-Profil nach dem Cupping-Formular und dem Coffee Taster’s Flavor Wheel der Specialty Coffee Association (SCA). <a href="bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="assets/gemeinsam.js?v=20"></script>
-  <script src="assets/kaffee.js?v=20"></script>
+  <script src="assets/gemeinsam.js?v=21"></script>
+  <script src="assets/kaffee.js?v=21"></script>
 </body>
 </html>
