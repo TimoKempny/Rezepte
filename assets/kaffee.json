@@ -37,5 +37,18 @@
     "notiz": "",
     "profil": null,
     "noten": []
+  },
+  {
+    "id": "tropicalia-2026-10-24-swk2",
+    "name": "Tropicalia",
+    "roester": "",
+    "rating": null,
+    "preisProKg": 99999,
+    "link": "https://www.amazon.com/",
+    "datum": "2026-10-24",
+    "bild": "assets/bilder/kaffee/tropicalia-2026-10-24-swk2.jpg",
+    "notiz": "",
+    "profil": null,
+    "noten": []
   }
 ]
