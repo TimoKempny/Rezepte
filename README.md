@@ -5,6 +5,8 @@ Statische Website ohne Build-Schritt, veröffentlicht über GitHub Pages: https:
 
 - `index.html`: Übersicht mit Suche, Filtern (Kategorie, Kochzeit, Ernährung, Schwierigkeit) und Sortierung
 - `planer.html`: Wochenplaner, der nach Kriterien einen Kochplan zusammenstellt
+- `kaffee.html`: getrunkene Kaffees mit Bewertung, Tasting-Profil, Preis pro kg/500 g/250 g/125 g, Foto, Laden und Kaufdatum.
+  Eintragen direkt auf der Seite, einmalig mit GitHub-Token (Fine-grained, nur dieses Repo, Contents: Read and write)
 - `rezepte/`: eine HTML-Seite pro Rezept, mit Portionsrechner
 - `assets/rezepte.js`: zentrale Liste mit den Eckdaten aller Rezepte
 - `assets/bilder/`: Fotos (Nachweise in `bildnachweise.html`)

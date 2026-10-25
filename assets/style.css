@@ -145,6 +145,8 @@ a { color: inherit; }
 @media (max-width: 36rem) {
   .thema-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .thema-knopf { padding-inline: var(--s2); }
+  .kopf nav { gap: 0; }
+  .kopf nav a { padding-inline: var(--s2); font-size: 0.95rem; }
 }
 .thema-knopf .sonne, .thema-knopf[data-dunkel="true"] .mond { display: none; }
 .thema-knopf[data-dunkel="true"] .sonne { display: block; }
@@ -707,3 +709,83 @@ a { color: inherit; }
 .nachweis-liste li { display: flex; gap: var(--s4); align-items: center; padding-block: var(--s3); border-bottom: 1px solid var(--linie); font-size: 0.95rem; }
 .nachweis-liste img { width: 4.5rem; height: 4.5rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--haupt); flex: none; }
 .nachweis-liste a, .fuss a { color: var(--haupt-text); }
+
+/* ---------- Kaffee ---------- */
+.kaffee-kopf { display: flex; flex-wrap: wrap; gap: var(--s4); justify-content: space-between; align-items: flex-end; }
+.kaffee-aktionen { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+.kaffee-leiste { display: flex; flex-wrap: wrap; gap: var(--s3); justify-content: space-between; align-items: center; }
+.kaffee-noten-filter { margin-block: var(--s4) var(--s5); }
+
+.kaffee-raster {
+  list-style: none; margin: 0; padding: 0 0 var(--s8);
+  display: grid; gap: var(--s5);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+}
+.kaffee-raster .leer { grid-column: 1 / -1; }
+.kaffee-karte {
+  display: grid; grid-template-rows: auto 1fr;
+  background: var(--flaeche); border: 1px solid var(--linie); border-radius: 1rem; overflow: hidden;
+}
+.kaffee-bild { position: relative; aspect-ratio: 4 / 3; background: var(--haupt-hell); border-bottom: 6px solid var(--haupt); }
+.kaffee-bild img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Bewertung als kleiner Emaille-Teller */
+.kaffee-rating {
+  position: absolute; right: var(--s3); bottom: calc(-1 * var(--s6));
+  width: 4rem; height: 4rem; border-radius: 50%;
+  border: 5px solid var(--haupt); background: var(--flaeche); color: var(--tinte);
+  display: grid; place-items: center; align-content: center;
+  font-weight: 800; font-size: 1.4rem; line-height: 1;
+}
+.kaffee-rating small { font-size: 0.7rem; font-weight: 600; }
+.kaffee-text { display: grid; gap: var(--s3); align-content: start; padding: var(--s4) var(--s4) var(--s5); }
+.kaffee-text h2 { font-size: 1.3rem; letter-spacing: -0.01em; padding-right: 4.5rem; }
+.kaffee-roester { color: var(--leise); margin-top: calc(-1 * var(--s2)); }
+.rating-leiste { display: flex; gap: 3px; }
+.rating-leiste i { flex: 1; height: 0.4rem; border-radius: 999px; background: var(--linie); }
+.rating-leiste i.voll { background: var(--haupt-text); }
+
+.kaffee-preise { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s1); margin: 0; }
+.kaffee-preise div { display: grid; padding: var(--s1) var(--s2); border-radius: var(--rund); background: var(--grund); }
+.kaffee-preise .preis-kg { background: var(--haupt-hell); }
+.kaffee-preise dt { font-size: 0.78rem; color: var(--leise); }
+.kaffee-preise dd { margin: 0; font-weight: 700; font-size: 0.92rem; color: var(--haupt-text); white-space: nowrap; }
+
+.profil-netz { width: 100%; max-width: 19rem; justify-self: center; overflow: visible; }
+.profil-netz .netz { fill: none; stroke: var(--linie); stroke-width: 0.8; }
+.profil-netz .werte { fill: var(--akzent); fill-opacity: 0.7; stroke: var(--akzent-tief); stroke-width: 1.6; stroke-linejoin: round; }
+.profil-netz text { font-family: var(--schrift-ui); font-size: 7.5px; fill: var(--leise); }
+
+.kaffee-notiz { font-family: var(--schrift-text); color: var(--leise); font-size: 0.95rem; }
+.kaffee-fuss { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); justify-content: space-between; color: var(--leise); font-size: 0.88rem; }
+.kaffee-fuss a { color: var(--haupt-text); font-weight: 600; }
+.kaffee-loeschen { justify-self: start; font-size: 0.85rem; }
+
+.kaffee-dialog { width: min(34rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); }
+.kaffee-dialog .kaffee-form { display: grid; gap: var(--s4); margin-top: var(--s4); }
+.kaffee-form input:not([type="range"]):not([type="checkbox"]):not([type="file"]), .kaffee-form textarea, .kaffee-form select {
+  font: inherit; width: 100%; box-sizing: border-box;
+  padding: var(--s2) var(--s3); min-height: 2.6rem;
+  border: 2px solid var(--linie); border-radius: var(--rund);
+  background: var(--grund); color: var(--tinte);
+}
+.kaffee-form textarea { resize: vertical; }
+.kaffee-form input:focus, .kaffee-form textarea:focus, .kaffee-form select:focus { outline: none; border-color: var(--haupt-text); }
+.kaffee-form input[type="range"] { width: 100%; accent-color: var(--haupt-text); }
+.kaffee-form .hinweis a { color: var(--haupt-text); }
+.preis-eingabe { display: grid; grid-template-columns: 1fr auto 7rem; gap: var(--s2); align-items: center; }
+.bild-vorschau { max-width: 10rem; max-height: 10rem; border-radius: var(--rund); border: 3px solid var(--haupt); object-fit: cover; }
+.profil-eingabe { border: 0; margin: 0; padding: 0; }
+.profil-eingabe legend { font-weight: 700; padding: 0; margin-bottom: var(--s2); }
+.profil-eingabe legend .hinweis { font-weight: 400; margin-left: var(--s2); }
+#k-profil { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--s2) var(--s4); }
+.noten-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+.noten-wahl span {
+  display: inline-block; padding: var(--s1) var(--s3); border-radius: 999px; cursor: pointer;
+  border: 2px solid var(--linie); font-size: 0.9rem; font-weight: 600;
+}
+.noten-wahl input:checked + span { border-color: var(--haupt); background: var(--haupt); color: var(--auf-haupt); }
+.noten-wahl input:focus-visible + span { outline: 3px solid var(--haupt-text); outline-offset: 2px; }
+.kaffee-meldung:empty { display: none; }
+.kaffee-meldung { color: var(--leise); }
+.kaffee-meldung.fehler { color: var(--haupt-text); font-weight: 600; }
+.dialog-knoepfe { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: flex-end; }

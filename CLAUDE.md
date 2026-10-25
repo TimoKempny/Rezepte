@@ -15,14 +15,21 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 - **Eintrag in `assets/rezepte.js`** mit `id`, `titel`, `seite`, `bild`, `kategorie`, `zeit`, `schwierigkeit`,
   `ernaehrung`, `portionen`, `beschreibung`, `hinzugefuegt`, optional `zweiTage: true` (lässt sich gut aufwärmen,
   der Wochenplaner bevorzugt es für Reste). Übersicht und Wochenplaner lesen nur diese Liste.
-- Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Wochenplaner"),
+- Kopfzeile mit Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Kaffee"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
+
+## Kaffee
+
+`kaffee.html` liest `assets/kaffee.json` (Fotos in `assets/bilder/kaffee/`). Neue Einträge schreibt die Seite selbst
+über die GitHub-Contents-API (Fine-grained Token im `localStorage`, Schlüssel `github-token`); die Datei nicht von Hand
+umformatieren. Tasting-Profil nach SCA-Cupping-Formular (sechs Werte 1–5), Geschmacksnoten nach den Hauptgruppen des
+SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=19`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=20`).
 
 ## Gestaltung
 
