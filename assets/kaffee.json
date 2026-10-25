@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "test-2026-10-25-uwu2",
+    "name": "Test",
+    "roester": "Test",
+    "rating": 6,
+    "preisProKg": 9.99,
+    "link": "https://www.amazon.de",
+    "datum": "2026-10-25",
+    "bild": "assets/bilder/kaffee/test-2026-10-25-uwu2.jpg",
+    "notiz": "",
+    "profil": {
+      "aroma": 3,
+      "saeure": 5,
+      "suesse": 5,
+      "koerper": 3,
+      "bitterkeit": 4,
+      "nachgeschmack": 3
+    },
+    "noten": [
+      "Zitrus",
+      "Karamell & süß",
+      "Röstig"
+    ]
+  }
+]
