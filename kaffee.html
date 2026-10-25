@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=22">
+  <link rel="stylesheet" href="assets/style.css?v=23">
   <link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/favicon-180.png?v=2">
-  <script src="assets/thema.js?v=22"></script>
+  <script src="assets/thema.js?v=23"></script>
 </head>
 <body>
   <header class="kopf">
@@ -70,6 +70,11 @@
         <label for="k-roester">Rösterei</label>
         <input id="k-roester" name="roester" maxlength="80" placeholder="optional">
       </div>
+      <label class="schalter">
+        <input type="checkbox" id="k-probiert" name="probiert" checked>
+        <span>Schon probiert <span class="hinweis">Ohne Haken bleiben Bewertung und Tasting-Profil offen und lassen sich später nachtragen.</span></span>
+      </label>
+      <div class="bewertung-felder" id="k-bewertung">
       <div class="feld">
         <label for="k-rating">Bewertung <span class="feld-wert" id="k-rating-wert">7 / 10</span></label>
         <input id="k-rating" name="rating" type="range" min="1" max="10" step="1" value="7">
@@ -82,10 +87,11 @@
         <legend>Geschmacksnoten</legend>
         <div class="chips" id="k-noten"></div>
       </fieldset>
+      </div>
       <div class="feld">
         <span class="feld-name" id="k-preis-label">Preis</span>
         <div class="preis-eingabe" role="group" aria-labelledby="k-preis-label">
-          <input id="k-preis" name="preis" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="12,90" aria-label="Preis in Euro">
+          <input id="k-preis" name="preis" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="optional" aria-label="Preis in Euro">
           <span>€ für</span>
           <select id="k-menge" name="menge" aria-label="Packungsgröße">
             <option value="1000">1 kg</option>
@@ -98,12 +104,12 @@
       </div>
       <div class="feld">
         <label for="k-link">Link zum Laden</label>
-        <input id="k-link" name="link" type="text" inputmode="url" autocomplete="off" placeholder="Shop oder Google/Apple Maps">
+        <input id="k-link" name="link" type="text" inputmode="url" autocomplete="off" placeholder="optional, Shop oder Google/Apple Maps">
         <p class="hinweis">Aus „Teilen“ in Maps kannst du den ganzen Text einfügen, der Link wird herausgesucht.</p>
       </div>
       <div class="feld">
         <label for="k-datum">Kaufdatum</label>
-        <input id="k-datum" name="datum" type="date" required>
+        <input id="k-datum" name="datum" type="date">
       </div>
       <div class="feld">
         <span class="feld-name" id="k-bild-label">Foto der Verpackung</span>
@@ -153,7 +159,7 @@
     <div class="huelle">Tasting-Profil nach dem Cupping-Formular und dem Coffee Taster’s Flavor Wheel der Specialty Coffee Association (SCA). <a href="bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="assets/gemeinsam.js?v=22"></script>
-  <script src="assets/kaffee.js?v=22"></script>
+  <script src="assets/gemeinsam.js?v=23"></script>
+  <script src="assets/kaffee.js?v=23"></script>
 </body>
 </html>

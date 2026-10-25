@@ -2,6 +2,8 @@
 //
 // Eintrag: { id, name, roester, rating (1–10), preisProKg, link, datum (JJJJ-MM-TT), bild, notiz,
 //           profil: { aroma, saeure, suesse, koerper, bitterkeit, nachgeschmack } (je 1–5), noten: [...] }
+// Pflicht ist nur der Name. Noch nicht probiert: rating und profil sind null; fehlender Preis null,
+// fehlendes Datum, Foto oder Link als leerer Text
 // Fotos liegen in assets/bilder/kaffee/<id>.jpg
 //
 // Tasting-Profil nach dem SCA-Cupping-Formular (Aroma, Säure, Süße, Körper, Nachgeschmack; Bitterkeit
@@ -32,6 +34,9 @@ const sortierung = document.getElementById("kaffee-sortierung");
 const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
 let kaffees = [];
 let notenFilter = [];
+let nurOffen = false;
+
+const probiert = (k) => typeof k.rating === "number";
 
 // ---------- GitHub ----------
 
@@ -117,17 +122,29 @@ async function laden() {
 
 function sortiert() {
   const art = sortierung.value;
-  const kopie = kaffees.filter((k) => notenFilter.every((n) => (k.noten || []).includes(n)));
-  const neueste = (a, b) => b.datum.localeCompare(a.datum);
-  if (art === "rating") kopie.sort((a, b) => b.rating - a.rating || neueste(a, b));
-  else if (art === "preis") kopie.sort((a, b) => a.preisProKg - b.preisProKg);
-  else if (art === "preis-ab") kopie.sort((a, b) => b.preisProKg - a.preisProKg);
-  else if (art === "name") kopie.sort((a, b) => a.name.localeCompare(b.name, "de"));
-  else if (art === "alt") kopie.sort((a, b) => a.datum.localeCompare(b.datum));
-  else if (art.startsWith("profil-")) {
-    const wert = (k) => (k.profil || {})[art.slice(7)] || 0;
-    kopie.sort((a, b) => wert(b) - wert(a) || b.rating - a.rating);
-  } else kopie.sort(neueste);
+  const kopie = kaffees.filter((k) => notenFilter.every((n) => (k.noten || []).includes(n))
+    && (!nurOffen || !probiert(k)));
+  // Fehlende Werte (kein Preis, kein Datum, noch nicht probiert) kommen immer ans Ende
+  const nach = (wert, aufsteigend = false) => (a, b) => {
+    const x = wert(a), y = wert(b);
+    if (x == null || y == null) return (x == null) - (y == null);
+    return aufsteigend ? (x > y) - (x < y) : (x < y) - (x > y);
+  };
+  const datum = (k) => k.datum || null;
+  const preis = (k) => k.preisProKg || null;
+  const rating = (k) => (probiert(k) ? k.rating : null);
+  const reihenfolge = {
+    neu: nach(datum),
+    alt: nach(datum, true),
+    rating: (a, b) => nach(rating)(a, b) || nach(datum)(a, b),
+    preis: nach(preis, true),
+    "preis-ab": nach(preis),
+    name: (a, b) => a.name.localeCompare(b.name, "de"),
+  };
+  if (art.startsWith("profil-")) {
+    const wert = (k) => (k.profil ? k.profil[art.slice(7)] : null);
+    kopie.sort((a, b) => nach(wert)(a, b) || nach(rating)(a, b));
+  } else kopie.sort(reihenfolge[art] || reihenfolge.neu);
   return kopie;
 }
 
@@ -169,27 +186,34 @@ function sichererLink(adresse) {
 
 function karteHTML(k) {
   const link = k.link && sichererLink(k.link);
+  const bewertet = probiert(k);
   const punkte = Array.from({ length: 10 }, (_, i) => `<i${i < k.rating ? ' class="voll"' : ""}></i>`).join("");
   return `<li class="kaffee-karte">
     <div class="kaffee-bild">
-      <img src="${esc(k.bild)}" alt="Verpackung von ${esc(k.name)}" loading="lazy" data-roh="${esc(k.bild)}">
-      <span class="kaffee-rating" title="Bewertung">${k.rating}<small>/10</small></span>
+      ${k.bild
+        ? `<img src="${esc(k.bild)}" alt="Verpackung von ${esc(k.name)}" loading="lazy" data-roh="${esc(k.bild)}">`
+        : `<span class="kaffee-platzhalter" aria-hidden="true">${esc(k.name.charAt(0))}</span>`}
+      ${bewertet
+        ? `<span class="kaffee-rating" title="Bewertung">${k.rating}<small>/10</small></span>`
+        : `<span class="kaffee-rating offen" title="Noch nicht probiert">?</span>`}
     </div>
     <div class="kaffee-text">
       <h2>${esc(k.name)}</h2>
       ${k.roester ? `<p class="kaffee-roester">${esc(k.roester)}</p>` : ""}
-      <div class="rating-leiste" role="img" aria-label="${k.rating} von 10 Punkten">${punkte}</div>
-      <dl class="kaffee-preise">
+      ${bewertet
+        ? `<div class="rating-leiste" role="img" aria-label="${k.rating} von 10 Punkten">${punkte}</div>`
+        : `<ul class="merkmale"><li class="offen">Noch nicht probiert</li></ul>`}
+      ${k.preisProKg ? `<dl class="kaffee-preise">
         <div class="preis-kg"><dt>1 kg</dt><dd>${euro.format(k.preisProKg)}</dd></div>
         ${PACKUNGEN.map((g) => `<div><dt>${g} g</dt><dd>${euro.format(k.preisProKg * g / 1000)}</dd></div>`).join("")}
-      </dl>
-      ${k.profil ? profilSVG(k.profil) : ""}
+      </dl>` : ""}
+      ${bewertet && k.profil ? profilSVG(k.profil) : ""}
       ${k.noten && k.noten.length ? `<ul class="merkmale">${k.noten.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       ${k.notiz ? `<p class="kaffee-notiz">${esc(k.notiz)}</p>` : ""}
-      <p class="kaffee-fuss">
-        <span>Gekauft am ${esc(datumText(k.datum))}</span>
+      ${k.datum || link ? `<p class="kaffee-fuss">
+        ${k.datum ? `<span>Gekauft am ${esc(datumText(k.datum))}</span>` : "<span></span>"}
         ${link ? `<a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(linkName(link))}</a>` : ""}
-      </p>
+      </p>` : ""}
       ${token() ? `<p class="kaffee-verwalten">
         <button type="button" class="textlink kaffee-bearbeiten" data-id="${esc(k.id)}">Bearbeiten</button>
         <button type="button" class="textlink kaffee-loeschen" data-id="${esc(k.id)}">Löschen</button>
@@ -209,12 +233,12 @@ function zeigen() {
     return;
   }
   const sichtbar = sortiert();
-  anzahl.innerHTML = notenFilter.length
+  anzahl.innerHTML = notenFilter.length || nurOffen
     ? `<strong>${sichtbar.length}</strong> von ${kaffees.length} Kaffees`
     : `<strong>${kaffees.length}</strong> ${kaffees.length === 1 ? "Kaffee" : "Kaffees"}`;
   liste.innerHTML = sichtbar.length
     ? sichtbar.map(karteHTML).join("")
-    : `<li class="leer"><h2>Kein Kaffee mit diesen Noten</h2><p>Nimm eine Geschmacksnote aus dem Filter heraus.</p></li>`;
+    : `<li class="leer"><h2>Kein passender Kaffee</h2><p>Nimm einen Filter heraus.</p></li>`;
 }
 
 // Neue Fotos sind auf GitHub Pages erst nach dem Veröffentlichen da, bis dahin direkt aus dem Repository
@@ -231,14 +255,15 @@ document.getElementById("sortierung-profil").innerHTML = PROFIL
   .map((p) => `<option value="profil-${p.schluessel}">${p.name}</option>`).join("");
 
 const filterLeiste = document.getElementById("noten-filter");
-filterLeiste.innerHTML = NOTEN
-  .map((n) => `<button type="button" class="chip ohne-punkt" aria-pressed="false" data-note="${esc(n)}">${esc(n)}</button>`).join("");
+filterLeiste.innerHTML = `<button type="button" class="chip ohne-punkt" aria-pressed="false" data-offen>Noch nicht probiert</button>`
+  + NOTEN.map((n) => `<button type="button" class="chip ohne-punkt" aria-pressed="false" data-note="${esc(n)}">${esc(n)}</button>`).join("");
 filterLeiste.addEventListener("click", (e) => {
   const chip = e.target.closest(".chip");
   if (!chip) return;
   const an = chip.getAttribute("aria-pressed") !== "true";
   chip.setAttribute("aria-pressed", String(an));
-  notenFilter = an ? [...notenFilter, chip.dataset.note] : notenFilter.filter((n) => n !== chip.dataset.note);
+  if ("offen" in chip.dataset) nurOffen = an;
+  else notenFilter = an ? [...notenFilter, chip.dataset.note] : notenFilter.filter((n) => n !== chip.dataset.note);
   zeigen();
 });
 
@@ -330,6 +355,10 @@ document.getElementById("k-noten").innerHTML = NOTEN.map((n) => `<label class="n
   <input type="checkbox" name="noten" value="${esc(n)}"><span>${esc(n)}</span>
 </label>`).join("");
 
+const probiertFeld = document.getElementById("k-probiert");
+const bewertungFelder = document.getElementById("k-bewertung");
+probiertFeld.addEventListener("change", () => { bewertungFelder.hidden = !probiertFeld.checked; });
+
 ratingFeld.addEventListener("input", () => {
   document.getElementById("k-rating-wert").textContent = `${ratingFeld.value} / 10`;
 });
@@ -371,20 +400,22 @@ function formularOeffnen(eintrag = null) {
   if (eintrag) {
     feld("name").value = eintrag.name;
     feld("roester").value = eintrag.roester || "";
-    feld("rating").value = eintrag.rating;
-    feld("preis").value = eintrag.preisProKg;
+    feld("probiert").checked = probiert(eintrag);
+    if (probiert(eintrag)) feld("rating").value = eintrag.rating;
+    feld("preis").value = eintrag.preisProKg || "";
     feld("menge").value = "1000";
     feld("link").value = eintrag.link || "";
-    feld("datum").value = eintrag.datum;
+    feld("datum").value = eintrag.datum || "";
     feld("notiz").value = eintrag.notiz || "";
     PROFIL.forEach((p) => { feld(p.schluessel).value = (eintrag.profil || {})[p.schluessel] || 3; });
     form.querySelectorAll('[name="noten"]').forEach((k) => { k.checked = (eintrag.noten || []).includes(k.value); });
   }
+  bewertungFelder.hidden = !probiertFeld.checked;
   ratingFeld.dispatchEvent(new Event("input"));
   PROFIL.forEach((p) => { document.getElementById(`k-${p.schluessel}-wert`).textContent = feld(p.schluessel).value; });
   if (bildVorschau.src.startsWith("blob:")) URL.revokeObjectURL(bildVorschau.src);
-  bildVorschau.hidden = !eintrag;
-  if (eintrag) {
+  bildVorschau.hidden = !(eintrag && eintrag.bild);
+  if (eintrag && eintrag.bild) {
     delete bildVorschau.dataset.versucht;
     bildVorschau.src = eintrag.bild;
   }
@@ -444,31 +475,29 @@ form.addEventListener("submit", async (e) => {
     return;
   }
   const link = linkUrl ? linkUrl.href : "";
-  if (!fotoDatei && !bearbeitet) {
-    meldung(formMeldung, "Bitte ein Foto der Verpackung aufnehmen oder auswählen.", true);
-    return;
-  }
 
-  const datum = String(daten.get("datum"));
-  const id = bearbeitet ? bearbeitet.id : kennung(String(daten.get("name")), datum);
+  const datum = String(daten.get("datum") || "");
+  const bewertet = probiertFeld.checked;
+  const id = bearbeitet ? bearbeitet.id
+    : kennung(String(daten.get("name")), datum || new Date().toLocaleDateString("sv-SE"));
   // Ein neues Foto bekommt beim Bearbeiten einen neuen Dateinamen, sonst zeigt der Browser-Cache noch das alte
-  const bild = !fotoDatei ? bearbeitet.bild
+  const bild = !fotoDatei ? (bearbeitet ? bearbeitet.bild || "" : "")
     : bearbeitet ? `assets/bilder/kaffee/${id}-${Date.now().toString(36)}.jpg`
     : `assets/bilder/kaffee/${id}.jpg`;
-  const altesBild = bearbeitet && fotoDatei ? bearbeitet.bild : null;
+  const altesBild = bearbeitet && fotoDatei ? bearbeitet.bild : "";
   const eintrag = {
     ...bearbeitet,
     id,
     name: String(daten.get("name")).trim(),
     roester: String(daten.get("roester")).trim(),
-    rating: Number(daten.get("rating")),
-    preisProKg: preisProKg(),
+    rating: bewertet ? Number(daten.get("rating")) : null,
+    preisProKg: preisProKg() || null,
     link,
     datum,
     bild,
     notiz: String(daten.get("notiz")).trim(),
-    profil: Object.fromEntries(PROFIL.map((p) => [p.schluessel, Number(daten.get(p.schluessel))])),
-    noten: daten.getAll("noten").map(String),
+    profil: bewertet ? Object.fromEntries(PROFIL.map((p) => [p.schluessel, Number(daten.get(p.schluessel))])) : null,
+    noten: bewertet ? daten.getAll("noten").map(String) : [],
   };
 
   speichernKnopf.disabled = true;
@@ -529,7 +558,7 @@ liste.addEventListener("click", async (e) => {
   knopf.textContent = "Wird gelöscht …";
   try {
     kaffees = await datenAendern((alle) => alle.filter((k) => k.id !== eintrag.id), `Kaffee: ${eintrag.name} gelöscht`);
-    await fotoLoeschen(eintrag.bild, eintrag.name);
+    if (eintrag.bild) await fotoLoeschen(eintrag.bild, eintrag.name);
     zeigen();
   } catch (fehler) {
     knopf.disabled = false;

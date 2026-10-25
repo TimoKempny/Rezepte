@@ -725,6 +725,16 @@ a { color: inherit; }
 }
 .kaffee-bild { position: relative; aspect-ratio: 4 / 3; background: var(--haupt-hell); border-bottom: 6px solid var(--haupt); }
 .kaffee-bild img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.kaffee-platzhalter {
+  display: grid; place-items: center; height: 100%;
+  font-weight: 800; font-size: 4rem; color: var(--haupt-text); opacity: 0.35;
+}
+.kaffee-rating.offen { font-size: 1.6rem; color: var(--leise); }
+.merkmale li.offen { background: var(--akzent); color: var(--auf-akzent); }
+.bewertung-felder { display: grid; gap: var(--s4); }
+.kaffee-form .schalter > span { font-weight: 600; }
+.kaffee-form .schalter .hinweis { display: block; font-weight: 400; }
+.bewertung-felder[hidden] { display: none; }
 /* Bewertung als kleiner Emaille-Teller */
 .kaffee-rating {
   position: absolute; right: var(--s3); bottom: calc(-1 * var(--s6));
