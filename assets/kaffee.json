@@ -3,13 +3,20 @@
     "id": "brasilien-santos-2026-10-24-miv6",
     "name": "Brasilien Santos",
     "roester": "MOKKA Tübingen",
-    "rating": null,
+    "rating": 7,
     "preisProKg": 32,
     "link": "https://maps.app.goo.gl/FYMKEc5VUZhDeTZi8",
     "datum": "2026-10-24",
     "bild": "assets/bilder/kaffee/brasilien-santos-2026-10-24-miv6.jpg",
     "notiz": "",
-    "profil": null,
+    "profil": {
+      "aroma": 2,
+      "saeure": 1,
+      "suesse": 3,
+      "koerper": 1,
+      "bitterkeit": 2,
+      "nachgeschmack": 2
+    },
     "noten": []
   },
   {
