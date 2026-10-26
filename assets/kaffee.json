@@ -23,13 +23,20 @@
     "id": "colombia-excelsior-2026-10-24-nnkg",
     "name": "Colombia Excelsior",
     "roester": "MOKKA Tübingen",
-    "rating": null,
+    "rating": 7,
     "preisProKg": 32,
     "link": "https://maps.app.goo.gl/FYMKEc5VUZhDeTZi8",
     "datum": "2026-10-24",
     "bild": "assets/bilder/kaffee/colombia-excelsior-2026-10-24-nnkg.jpg",
     "notiz": "",
-    "profil": null,
+    "profil": {
+      "aroma": 3,
+      "saeure": 1,
+      "suesse": 2,
+      "koerper": 2,
+      "bitterkeit": 2,
+      "nachgeschmack": 2
+    },
     "noten": []
   },
   {
