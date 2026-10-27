@@ -1553,7 +1553,7 @@ window.REZEPTE = [
     portionen: 4,
     beschreibung: "Dünn gedrückte Rinderhack-Patties mit krosser Kruste, Schmelzkäse, Zwiebeln, Gürkchen und Burgersoße.",
     hinzugefuegt: "2026-10-27",
-    zutaten: ["burgerbuns", "hackfleisch", "zwiebeln", "schmelzkaese", "gewuerzgurken", "butter", "oel", "mayonnaise", "ketchup", "senf"],
+    zutaten: ["burgerbuns", "hackfleisch", "zwiebeln", "schmelzkaese", "gewuerzgurken", "oel", "mayonnaise", "ketchup", "senf"],
   },
   {
     id: "fischstaebchen-krautsalat",
