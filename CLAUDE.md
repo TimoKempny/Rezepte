@@ -18,7 +18,7 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 - **`zutaten`** im selben Eintrag (außer bei Getränken und Teigen & Grundrezepten): Schlüssel aus `window.ZUTATEN`
   (Katalog oben in `assets/rezepte.js`) für „Was hab ich da?“ auf der Übersicht. Nur Hauptzutaten, keine Gewürze,
   kein Salz/Pfeffer/Wasser, keine Garnitur oder frischen Kräuter. Fehlt eine Zutat im Katalog, dort ergänzen.
-- Kopfzeile mit Logo (Inline-SVG `marke-logo`, wie das Favicon) und Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Kaffee"),
+- Kopfzeile mit Logo (Inline-SVG `marke-logo`, wie das Favicon) und Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Einkauf"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
 
@@ -29,10 +29,17 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 umformatieren. Tasting-Profil nach SCA-Cupping-Formular (sechs Werte 1–5), Geschmacksnoten nach den Hauptgruppen des
 SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 
+## Einkaufsliste
+
+`einkaufsliste.html` mit `assets/einkauf.js` (ES-Modul, Firebase-SDK von gstatic): gemeinsame Liste in Firestore unter
+`listen/{schluessel}/eintraege`, Live-Abgleich und Offline-Cache. Zugang über den zufälligen Schlüssel im Link
+(`#liste=…`, danach im `localStorage`); er gehört nie ins Repo. Regeln in `firestore.rules`, bei Änderungen in der
+Firebase-Konsole neu einfügen. Der Wochenplaner übergibt Zutaten über `localStorage` (`einkaufsliste-import`).
+
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=27`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=29`).
 
 ## Gestaltung
 

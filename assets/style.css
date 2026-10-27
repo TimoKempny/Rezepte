@@ -544,7 +544,10 @@ a { color: inherit; }
   margin-top: var(--s5); padding: var(--s5);
   background: var(--flaeche); border: 1px solid var(--linie); border-radius: 1rem;
 }
-.einkauf-kopf { margin-bottom: var(--s4); }
+.einkauf-kopf {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: var(--s3); margin-bottom: var(--s4);
+}
 .einkauf-kopf h2 { font-size: 1.5rem; }
 .einkauf-kopf .hinweis { margin-top: var(--s1); }
 .einkauf h3 { font-size: 1rem; color: var(--leise); margin: var(--s5) 0 var(--s2); }
@@ -556,6 +559,34 @@ a { color: inherit; }
 .einkauf-liste span { font-family: var(--schrift-text); min-width: 0; }
 .einkauf-liste small { display: block; font-family: var(--schrift-ui); font-size: 0.8rem; color: var(--leise); }
 .einkauf-liste .erledigt b, .einkauf-liste .erledigt span { text-decoration: line-through; color: var(--leise); }
+
+/* Gemeinsame Einkaufsliste (einkaufsliste.html) */
+.liste-seite { max-width: 48rem; padding-bottom: var(--s8); }
+.liste-neu, .liste-bearbeiten { display: flex; gap: var(--s2); }
+.liste-bearbeiten { flex: 1; flex-wrap: wrap; padding-block: var(--s2); }
+.liste-neu input, .liste-bearbeiten input {
+  flex: 1; min-width: 0; min-height: 2.75rem; padding: var(--s2) var(--s3);
+  font: inherit; color: var(--tinte); background: var(--grund);
+  border: 1px solid var(--linie); border-radius: var(--rund);
+}
+.liste-bearbeiten input { flex-basis: 12rem; }
+.liste-neu input:focus, .liste-bearbeiten input:focus { outline: none; border-color: var(--haupt-text); }
+.liste-meldung { min-height: 1.5rem; margin-block: var(--s2); color: var(--haupt-text); font-weight: 600; font-size: 0.95rem; }
+.einkauf-liste.geteilt { columns: auto; }
+.einkauf-liste.geteilt li { display: flex; align-items: center; gap: var(--s1); }
+.einkauf-liste.geteilt label { flex: 1; min-width: 0; }
+.einkauf-liste.geteilt input[type="checkbox"] { width: 1.35rem; height: 1.35rem; }
+.einkauf-liste.geteilt b { min-width: 4.5rem; }
+.einkauf-liste.geteilt b:empty { min-width: 0; }
+.eintrag-knopf {
+  flex: none; display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  border: 0; border-radius: 999px; background: transparent; color: var(--leise); cursor: pointer;
+}
+.eintrag-knopf:hover { background: var(--haupt-hell); color: var(--tinte); }
+.eintrag-knopf svg { width: 1.15rem; height: 1.15rem; }
+.liste-aktionen { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s5); }
+.liste-status { margin-top: var(--s3); }
+#liste-start .knopf { margin-top: var(--s2); }
 
 .teilen-dialog {
   width: min(26rem, calc(100% - 2rem)); padding: var(--s5);
@@ -735,7 +766,7 @@ a { color: inherit; }
   .einkauf { break-before: page; margin: 0; padding: 0; border: 0; background: none; }
   .einkauf-kopf { padding-bottom: 3mm; border-bottom: 2.5pt solid var(--haupt-text); margin-bottom: 3mm; }
   .einkauf-kopf h2 { font-size: 22pt; font-weight: 800; }
-  .einkauf-kopf .hinweis { display: none; }
+  .einkauf-kopf .hinweis, .einkauf-kopf .knopf { display: none; }
   .einkauf-liste { columns: 2; column-gap: 10mm; }
   .einkauf-liste label { padding-block: 1.6mm; }
   .einkauf-liste small { font-size: 7.5pt; }

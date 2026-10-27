@@ -421,8 +421,11 @@ function anzeigen() {
     ${adresse ? `<p class="druck-fuss">Alle Rezepte: ${esc(adresse)}</p>` : ""}
     <section class="einkauf" aria-labelledby="einkauf-titel">
       <div class="einkauf-kopf">
-        <h2 id="einkauf-titel">Einkaufsliste</h2>
-        <p class="hinweis">${einkaufUntertitel()}</p>
+        <div>
+          <h2 id="einkauf-titel">Einkaufsliste</h2>
+          <p class="hinweis">${einkaufUntertitel()}</p>
+        </div>
+        ${kochtage().length ? `<button type="button" class="knopf klein" data-aktion="uebernehmen">In gemeinsame Liste übernehmen</button>` : ""}
       </div>
       <div id="einkauf-inhalt"><p class="hinweis">Zutaten werden geladen …</p></div>
     </section>`;
@@ -574,6 +577,21 @@ async function einkaufAnzeigen() {
   }
 }
 
+// Übergibt die noch nicht abgehakten Zutaten an die gemeinsame Einkaufsliste (einkaufsliste.html liest sie beim Öffnen)
+async function uebernehmen() {
+  try {
+    const { kaufen, vorrat } = await einkaufsliste();
+    const posten = [...kaufen, ...vorrat]
+      .filter((p) => !abgehakt.has(p.schluessel))
+      .map((p) => ({ name: p.name, menge: p.menge, rezepte: p.rezepte.join(", ") }));
+    speicherSchreiben("einkaufsliste-import", posten);
+    location.href = "einkaufsliste.html";
+  } catch {
+    meldung = "Die Zutaten konnten nicht geladen werden.";
+    anzeigen();
+  }
+}
+
 // ---------- Teilen ----------
 
 const seitenAdresse = () => (location.protocol.startsWith("http") ? new URL(".", location.href).href : "");
@@ -664,6 +682,7 @@ el.woche.addEventListener("click", (e) => {
     case "festhalten": festhalten(tag); break;
     case "zwei-tage": zweiTageUmschalten(tag); break;
     case "teilen": teilen(); break;
+    case "uebernehmen": uebernehmen(); break;
     case "drucken": window.print(); break;
     case "leeren":
       plan = null;

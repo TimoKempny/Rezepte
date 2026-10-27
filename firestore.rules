@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// Regeln für die Einkaufsliste (einkaufsliste.html). In der Firebase-Konsole unter Firestore → Regeln einfügen.
+// Zugriff hat, wer den zufälligen Listen-Schlüssel aus dem Link kennt. Listen lassen sich nicht auflisten,
+// und Einträge dürfen nur die erwarteten Felder in sinnvoller Größe haben.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /listen/{liste}/eintraege/{eintrag} {
+      allow read, delete: if liste.size() >= 20;
+      allow create, update: if liste.size() >= 20
+        && request.resource.data.keys().hasOnly(['name', 'menge', 'schluessel', 'rezepte', 'quelle', 'erledigt', 'zeit'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 200
+        && request.resource.data.menge is string && request.resource.data.menge.size() <= 100
+        && request.resource.data.schluessel is string && request.resource.data.schluessel.size() <= 200
+        && request.resource.data.rezepte is string && request.resource.data.rezepte.size() <= 300
+        && request.resource.data.quelle in ['hand', 'plan']
+        && request.resource.data.erledigt is bool
+        && request.resource.data.zeit is number;
+    }
+  }
+}
