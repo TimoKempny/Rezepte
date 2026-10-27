@@ -14,7 +14,7 @@ const TAGE = [
 ];
 
 // Erhöhen, wenn sich die Standardauswahl ändert: gespeicherte Kategorien werden dann einmal verworfen
-const KATEGORIEN_STAND = 3;
+const KATEGORIEN_STAND = 4;
 
 const el = {
   form: document.getElementById("kriterien"),
