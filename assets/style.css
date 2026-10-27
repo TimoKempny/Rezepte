@@ -393,7 +393,8 @@ a { color: inherit; }
 .raster {
   list-style: none; margin: 0; padding: 0;
   display: grid; gap: var(--s7) var(--s5);
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, …): Lange Wörter im Titel dürfen die Spalte nicht über den Bildschirm hinaus verbreitern */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 @media (min-width: 40rem) {
   .raster { grid-template-columns: repeat(auto-fill, minmax(14.5rem, 1fr)); gap: var(--s7) var(--s5); }
@@ -405,13 +406,13 @@ a { color: inherit; }
   .teller span { font-size: 2rem; }
 }
 .rezept-karte {
-  display: grid; gap: var(--s3);
+  display: grid; gap: var(--s3); grid-template-columns: minmax(0, 1fr);
   text-decoration: none;
 }
 .rezept-karte .teller { width: 72%; transition: transform 0.25s ease; }
 .rezept-karte:hover .teller { transform: rotate(-12deg); }
 @media (prefers-reduced-motion: reduce) { .rezept-karte:hover .teller { transform: none; } }
-.rezept-karte h3 { font-size: 1.3rem; letter-spacing: -0.01em; margin-top: var(--s2); }
+.rezept-karte h3 { font-size: 1.3rem; letter-spacing: -0.01em; margin-top: var(--s2); -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
 .rezept-karte:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .rezept-karte p { color: var(--leise); font-family: var(--schrift-text); font-size: 0.98rem; line-height: 1.55; }
 
