@@ -36,10 +36,18 @@ SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 (`#liste=…`, danach im `localStorage`); er gehört nie ins Repo. Regeln in `firestore.rules`, bei Änderungen in der
 Firebase-Konsole neu einfügen. Der Wochenplaner übergibt Zutaten über `localStorage` (`einkaufsliste-import`).
 
+## Web-App (PWA)
+
+`manifest.webmanifest` und App-Symbole `assets/app-*.png` (aus dem Favicon) machen die Seite installierbar. Jede Seite
+braucht im `<head>` nach dem `apple-touch-icon` die Zeilen für Manifest, `theme-color` und `apple-mobile-web-app-title`
+(wie in `rezepte/vorlage.html`); `thema.js` setzt die Statusleistenfarbe aus `--flaeche` und meldet `sw.js` an.
+`sw.js` arbeitet „Netz zuerst“ (offline die zuletzt gespeicherte Fassung), deshalb braucht es dort keine Versionsnummer.
+Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
+
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=29`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=30`).
 
 ## Gestaltung
 
