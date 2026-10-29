@@ -18,6 +18,9 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 - **`zutaten`** im selben Eintrag (außer bei Getränken und Teigen & Grundrezepten): Schlüssel aus `window.ZUTATEN`
   (Katalog oben in `assets/rezepte.js`) für „Was hab ich da?“ auf der Übersicht. Nur Hauptzutaten, keine Gewürze,
   kein Salz/Pfeffer/Wasser, keine Garnitur oder frischen Kräuter. Fehlt eine Zutat im Katalog, dort ergänzen.
+- **Küchentimer**: `<script src="../assets/timer.js">` nach `rezept.js`. Er erkennt Zeitangaben in `.schritte li`
+  selbst („etwa 20 Minuten“, „10–13 Minuten“, „1 Stunde“) und macht sie zu Timer-Knöpfen; Zeiten deshalb als Ziffern
+  mit „Minuten“/„Stunden“ schreiben. Angaben wie „5 Minuten vor Ende“ oder „alle 10 Minuten“ lässt er aus.
 - Kopfzeile mit Logo (Inline-SVG `marke-logo`, wie das Favicon) und Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Einkauf"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
@@ -47,7 +50,7 @@ Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=32`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=33`).
 
 ## Gestaltung
 

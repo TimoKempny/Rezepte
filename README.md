@@ -11,7 +11,7 @@ Statische Website ohne Build-Schritt, veröffentlicht über GitHub Pages: https:
   Zugang über einen geheimen Link („Liste teilen“), Zutaten lassen sich aus dem Wochenplaner übernehmen
 - `kaffee.html`: getrunkene Kaffees mit Bewertung, Tasting-Profil, Preis pro kg/500 g/250 g/125 g, Foto, Laden und Kaufdatum.
   Eintragen direkt auf der Seite, einmalig mit GitHub-Token (Fine-grained, nur dieses Repo, Contents: Read and write)
-- `rezepte/`: eine HTML-Seite pro Rezept, mit Portionsrechner
+- `rezepte/`: eine HTML-Seite pro Rezept, mit Portionsrechner und Küchentimer (Zeitangaben in den Schritten antippen)
 - `assets/rezepte.js`: zentrale Liste mit den Eckdaten aller Rezepte, Kategorien und dem Zutatenkatalog
 - `assets/bilder/`: Fotos (Nachweise in `bildnachweise.html`)
 
