@@ -26,6 +26,18 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(netzZuerst(e, anfrage));
 });
 
+// Tipp auf die Mitteilung eines fertigen Küchentimers: offene Rezeptseite nach vorn holen
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  e.waitUntil((async () => {
+    const fenster = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    const ziel = e.notification.data?.url;
+    const offen = fenster.find((f) => f.url === ziel) || fenster[0];
+    if (offen) return offen.focus();
+    if (ziel) return self.clients.openWindow(ziel);
+  })());
+});
+
 async function netzZuerst(e, anfrage) {
   const cache = await caches.open(CACHE);
   const netz = fetch(anfrage).then((antwort) => {
