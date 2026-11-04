@@ -306,6 +306,7 @@ a { color: inherit; }
 .chip.ohne-punkt::before { display: none; }
 .chip:hover { border-color: var(--haupt-text); }
 .chip[aria-pressed="true"] { border-color: var(--haupt); background: var(--haupt); color: var(--auf-haupt); }
+.zutaten .varianten { margin-bottom: var(--s3); }
 
 .regler {
   display: grid; gap: var(--s4);

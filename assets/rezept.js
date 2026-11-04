@@ -66,3 +66,28 @@
   const ausLink = Number(new URLSearchParams(location.search).get("portionen"));
   setzen(ausLink >= MIN && ausLink <= MAX ? Math.round(ausLink) : basis);
 })();
+
+// Varianten-Umschalter (z. B. con/sin Carne):
+//   <div class="chips varianten" role="group" aria-label="Variante">
+//     <button type="button" class="chip ohne-punkt" data-variante="con" aria-pressed="true">…</button> …
+//   Elemente mit data-nur="con" (auch mehrere: data-nur="con sin") sind nur in dieser Variante sichtbar.
+//   ?variante=… im Link wählt die Variante vor; Übersicht und Wochenplaner verlinken so auf Einträge derselben Seite.
+(function () {
+  const knoepfe = [...document.querySelectorAll("[data-variante]")];
+  if (!knoepfe.length) return;
+  const namen = knoepfe.map((k) => k.dataset.variante);
+
+  function waehlen(variante) {
+    for (const k of knoepfe) k.setAttribute("aria-pressed", String(k.dataset.variante === variante));
+    for (const e of document.querySelectorAll("[data-nur]")) e.hidden = !e.dataset.nur.split(" ").includes(variante);
+    const titel = document.querySelector("h1");
+    if (titel) document.title = titel.innerText.replace(/\s+/g, " ").trim();
+    const url = new URL(location.href);
+    url.searchParams.set("variante", variante);
+    history.replaceState(null, "", url);
+  }
+
+  for (const k of knoepfe) k.addEventListener("click", () => waehlen(k.dataset.variante));
+  const ausLink = new URLSearchParams(location.search).get("variante");
+  waehlen(namen.includes(ausLink) ? ausLink : namen[0]);
+})();

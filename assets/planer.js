@@ -56,6 +56,9 @@ let meldung = "";
 let abgehakt = new Set();
 
 const rezeptMitId = (id) => rezepte.find((r) => r.id === id) || null;
+// Link zur Rezeptseite, bei abweichender Portionenzahl mit ?portionen=… (seite kann schon ?variante=… enthalten)
+const rezeptLink = (r, portionen) =>
+  portionen && portionen !== r.portionen ? `${r.seite}${r.seite.includes("?") ? "&" : "?"}portionen=${portionen}` : r.seite;
 
 const geplanteTage = () => (plan ? Object.keys(plan).map(Number).sort((a, b) => a - b) : []);
 const naechsterTag = (tag) => geplanteTage().find((t) => t > tag);
@@ -415,7 +418,7 @@ function tagHTML(tag) {
   const folgetag = naechsterTag(tag);
   const zweiTage = kochtFuerZweiTage(tag);
   const portionen = portionenAm(tag);
-  const link = portionen !== r.portionen ? `${r.seite}?portionen=${portionen}` : r.seite;
+  const link = rezeptLink(r, portionen);
 
   const merkmale = [`<li>${formatZeit(r.zeit)}</li>`, `<li>${esc(r.kategorie)}</li>`];
   if (istFleischfrei(r)) merkmale.push(`<li>${esc(r.ernaehrung)}</li>`);
@@ -526,7 +529,12 @@ function zutatenLaden(rezept) {
 function zutatenLesen(doc, rezept) {
   const regler = doc.querySelector(".portionen[data-basis]");
   const basis = regler ? Number(regler.dataset.basis) : rezept.portionen;
-  const zutaten = [...doc.querySelectorAll(".zutaten li")].map((li) => {
+  // Seiten mit Varianten: nur die Zutaten der Variante aus dem Link (sonst der ersten)
+  const ersteVariante = doc.querySelector("[data-variante]");
+  const variante = new URLSearchParams(rezept.seite.split("?")[1] || "").get("variante") || (ersteVariante && ersteVariante.dataset.variante);
+  const zutaten = [...doc.querySelectorAll(".zutaten li")]
+    .filter((li) => !li.dataset.nur || li.dataset.nur.split(" ").includes(variante))
+    .map((li) => {
     const b = li.querySelector("b");
     const name = li.querySelector("[data-einzahl]");
     const text = li.textContent.replace(b ? b.textContent : "", "").trim();
@@ -663,7 +671,7 @@ async function teilenText() {
     else {
       const portionen = portionenAm(tag);
       zeilen.push(`${kopf}: ${r.titel} (${portionen} ${portionen === 1 ? "Portion" : "Portionen"})`);
-      if (basis) zeilen.push(`  ${basis}${portionen !== r.portionen ? `${r.seite}?portionen=${portionen}` : r.seite}`);
+      if (basis) zeilen.push(`  ${basis}${rezeptLink(r, portionen)}`);
     }
   }
 

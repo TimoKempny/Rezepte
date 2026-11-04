@@ -24,6 +24,11 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 - Kopfzeile mit Logo (Inline-SVG `marke-logo`, wie das Favicon) und Themen-Umschalter (`thema.js` im `<head>`, Knopf in der Navigation rechts neben "Einkauf"),
   Favicon-Links und Fußzeile wie in den bestehenden Seiten.
 - Kopfbereich `rezept-buehne` mit dem breiten Foto als Hintergrund (`buehne-bild`) hinter Titel und Beschreibung.
+- **Varianten** (z. B. Chili con/sin Carne): Knöpfe `<div class="chips varianten">` mit `data-variante="…"` über dem
+  Portionsrechner; Elemente mit `data-nur="…"` (Zutaten, Schritte, Teile von Titel und Fakten) zeigt `rezept.js` nur in
+  dieser Variante, `?variante=…` wählt sie vor. Unterscheiden sich die Varianten in `ernaehrung`, bekommt jede einen
+  eigenen Eintrag in `assets/rezepte.js` mit `seite: "rezepte/….html?variante=…"`; der Wochenplaner liest dann nur deren
+  Zutaten.
 
 ## Kaffee
 
@@ -50,7 +55,7 @@ Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=34`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=35`).
 
 ## Gestaltung
 

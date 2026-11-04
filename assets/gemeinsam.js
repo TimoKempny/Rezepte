@@ -2,7 +2,7 @@
 
 const SCHWIERIGKEITEN = ["leicht", "mittel", "aufwendig"];
 // Kategorien, die kein Hauptgericht sind: im Planer standardmäßig abgewählt, nicht in „Was koche ich heute?“
-const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate", "Getränke"];
+const KEIN_HAUPTGERICHT = ["Brot & Brötchen", "Teige & Grundrezepte", "Süßgebäck", "Nachtisch", "Beilagen & Salate", "Getränke", "Salatsoßen"];
 // Kategorien für „Was backe ich heute?“
 const BACKEN = ["Süßgebäck"];
 
