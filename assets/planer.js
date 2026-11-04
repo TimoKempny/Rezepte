@@ -22,6 +22,19 @@ const ARTEN = [
 const artVon = (r) => (r ? ARTEN.find((a) => a.passt(r)) : undefined);
 const ARTEN_MAX = 7;
 
+// Zusätze, die man zu jedem Tag dazunehmen kann (Reihenfolge wie beim Essen).
+// Salat: Salate aus „Beilagen & Salate“ oder Blattsalat mit einer Salatsoße.
+// skaliert: true, wenn sich die Menge nach „Portionen pro Mahlzeit“ richtet (Brot und Kuchen bleiben wie im Rezept).
+const EXTRAS = [
+  { art: "salat", name: "Salat",
+    passt: (r) => (r.kategorie === "Beilagen & Salate" && /salat/i.test(r.titel) && r.ernaehrung !== "fleisch") || r.kategorie === "Salatsoßen",
+    skaliert: () => true },
+  { art: "brot", name: "Brot", passt: (r) => r.kategorie === "Brot & Brötchen", skaliert: () => false },
+  { art: "nachtisch", name: "Nachtisch", passt: (r) => r.kategorie === "Nachtisch" || r.kategorie === "Süßgebäck",
+    skaliert: (r) => r.kategorie === "Nachtisch" },
+];
+const extraTitel = (r) => (r.kategorie === "Salatsoßen" ? `Blattsalat mit ${r.titel}` : r.titel);
+
 // Erhöhen, wenn sich die Standardauswahl ändert: gespeicherte Kategorien werden dann einmal verworfen
 const KATEGORIEN_STAND = 4;
 
@@ -48,7 +61,7 @@ const el = {
   teilenKopieren: document.getElementById("teilen-kopieren"),
 };
 
-// plan: { [tagIndex]: { id: string | null, fest: boolean, reste?: tagIndex } }
+// plan: { [tagIndex]: { id: string | null, fest: boolean, reste?: tagIndex, extras?: { salat?: id, brot?: id, nachtisch?: id } } }
 // Ein Eintrag mit "reste" ist ein Reste-Tag: Er übernimmt Rezept und Festhalten vom Tag, an dem doppelt gekocht wird.
 let plan = null;
 let meldung = "";
@@ -200,6 +213,51 @@ function auswaehlen(pool, vermeideIds, vermeideKategorien) {
   return { rezept, doppelt: vermeideIds.has(rezept.id) };
 }
 
+// ---------- Zusätze (Salat, Brot, Nachtisch) ----------
+
+// IDs eines Zusatzes, die in der Woche schon vorkommen (außer an einem Tag)
+function extraIdsInWoche(art, aktuellerPlan, ausserTag) {
+  return new Set(Object.entries(aktuellerPlan || {})
+    .filter(([t, e]) => Number(t) !== ausserTag && e.extras && e.extras[art])
+    .map(([, e]) => e.extras[art]));
+}
+
+// Zufälliger Zusatz; meidet Doppelungen in der Woche, solange es geht, und nie das bisherige Rezept
+function extraWaehlen(art, vermeiden, bisher) {
+  const pool = rezepte.filter(EXTRAS.find((x) => x.art === art).passt).filter((r) => r.id !== bisher);
+  const frisch = pool.filter((r) => !vermeiden.has(r.id));
+  const auswahl = frisch.length ? frisch : pool;
+  return auswahl.length ? zufall(auswahl).id : bisher || null;
+}
+
+function extraUmschalten(tag, art) {
+  const e = plan[tag];
+  e.extras = e.extras || {};
+  if (e.extras[art]) delete e.extras[art];
+  else {
+    const id = extraWaehlen(art, extraIdsInWoche(art, plan, tag));
+    if (id) e.extras[art] = id;
+  }
+  if (!Object.keys(e.extras).length) delete e.extras;
+  speichern(kriterienLesen());
+  anzeigen();
+}
+
+function extraWuerfeln(tag, art) {
+  const e = plan[tag];
+  const neu = extraWaehlen(art, extraIdsInWoche(art, plan, tag), e.extras[art]);
+  if (neu === e.extras[art]) meldung = `Für ${TAGE[tag].lang} gibt es keine andere Auswahl.`;
+  else { e.extras[art] = neu; meldung = ""; }
+  speichern(kriterienLesen());
+  anzeigen();
+}
+
+// Portionen eines Zusatzes: Salat und Nachtisch richten sich nach „Portionen pro Mahlzeit“, Brot und Kuchen nicht
+function extraPortionen(art, r) {
+  const proMahlzeit = Number(el.portionen.value);
+  return proMahlzeit && EXTRAS.find((x) => x.art === art).skaliert(r) ? proMahlzeit : r.portionen;
+}
+
 function erstellen() {
   const k = kriterienLesen();
   const neu = {};
@@ -273,6 +331,17 @@ function erstellen() {
     if (wahl.doppelt) doppelt++;
   }
 
+  // Zusätze: Welche Arten ein Tag hatte, bleibt; nicht festgehaltene Tage bekommen neue Rezepte
+  for (const tag of k.tage) {
+    const alt = plan && plan[tag];
+    if (!neu[tag] || neu[tag].fest || !alt || !alt.extras) continue;
+    neu[tag].extras = {};
+    for (const art of Object.keys(alt.extras)) {
+      const id = extraWaehlen(art, extraIdsInWoche(art, neu, tag), alt.extras[art]);
+      if (id) neu[tag].extras[art] = id;
+    }
+  }
+
   plan = neu;
   abgehakt = new Set();
   meldung = meldungBauen(k, { leer, doppelt, fehlendePaare, ueberbucht, verfehlt: [...verfehlt] });
@@ -304,7 +373,8 @@ function neuWuerfeln(tag) {
   const wahl = auswaehlen(pool, andere, meiden);
 
   if (wahl.rezept) {
-    plan[tag] = { id: wahl.rezept.id, fest: false };
+    const extras = plan[tag].extras;
+    plan[tag] = { id: wahl.rezept.id, fest: false, ...(extras ? { extras } : {}) };
     meldung = "";
   } else if (plan[tag].reste !== undefined) {
     // Reste-Tag ohne Alternative: bleibt beim Rezept, kocht aber selbst
@@ -333,7 +403,8 @@ function zweiTageUmschalten(tag) {
   }
   // War der Folgetag selbst ein Kochtag für zwei Tage, werden dessen Reste frei
   const alteReste = resteVon(folgetag);
-  plan[folgetag] = { id: plan[tag].id, fest: plan[tag].fest, reste: tag };
+  const extras = plan[folgetag].extras;
+  plan[folgetag] = { id: plan[tag].id, fest: plan[tag].fest, reste: tag, ...(extras ? { extras } : {}) };
   meldung = "";
   if (alteReste !== undefined) {
     neuWuerfeln(alteReste);
@@ -370,6 +441,19 @@ const kochtage = () => geplanteTage()
   .filter((t) => plan[t].reste === undefined && rezeptMitId(plan[t].id))
   .map((t) => ({ tag: t, rezept: rezeptMitId(plan[t].id), portionen: portionenAm(t) }));
 
+// Alles, was eingekauft werden muss: Kochtage plus Zusätze [{ tag, rezept, portionen }]
+function einkaufGerichte() {
+  const zusaetze = [];
+  for (const t of geplanteTage()) {
+    const extras = plan[t].extras || {};
+    for (const x of EXTRAS) {
+      const r = rezeptMitId(extras[x.art]);
+      if (r) zusaetze.push({ tag: t, rezept: r, portionen: extraPortionen(x.art, r) });
+    }
+  }
+  return [...kochtage(), ...zusaetze];
+}
+
 // ---------- Anzeige ----------
 
 // Montag der Woche, für die geplant wird: heute, wenn Montag ist, sonst der kommende
@@ -384,6 +468,31 @@ function datumVon(tag, format) {
   const d = wochenstart();
   d.setDate(d.getDate() + tag);
   return d.toLocaleDateString("de-DE", format);
+}
+
+function dazuHTML(tag) {
+  const extras = plan[tag].extras || {};
+  const aktiv = [];
+  const knoepfe = [];
+  for (const x of EXTRAS) {
+    const r = rezeptMitId(extras[x.art]);
+    if (!r) {
+      knoepfe.push(`<button type="button" class="chip ohne-punkt" data-aktion="extra" data-art="${x.art}" data-tag="${tag}">+ ${x.name}</button>`);
+      continue;
+    }
+    aktiv.push(`<li>
+      <span class="dazu-art">${x.name}</span>
+      <a href="${esc(rezeptLink(r, extraPortionen(x.art, r)))}">${esc(extraTitel(r))}</a>
+      <span class="dazu-mini-knoepfe">
+        <button type="button" class="dazu-mini" data-aktion="extra-wuerfeln" data-art="${x.art}" data-tag="${tag}" title="Anderen ${x.name} würfeln" aria-label="${x.name}: neu würfeln">↻</button>
+        <button type="button" class="dazu-mini" data-aktion="extra" data-art="${x.art}" data-tag="${tag}" title="${x.name} entfernen" aria-label="${x.name} entfernen">×</button>
+      </span>
+    </li>`);
+  }
+  return `<div class="dazu">
+    ${aktiv.length ? `<ul class="dazu-liste">${aktiv.join("")}</ul>` : ""}
+    ${knoepfe.length ? `<div class="dazu-knoepfe">${knoepfe.join("")}</div>` : ""}
+  </div>`;
 }
 
 function tagHTML(tag) {
@@ -408,6 +517,7 @@ function tagHTML(tag) {
       <div class="tag-info">
         <h3>Reste: <a href="${esc(r.seite)}">${esc(r.titel)}</a></h3>
         <p class="tag-hinweis">Vom ${TAGE[eintrag.reste].lang}, dort die doppelte Menge kochen.</p>
+        ${dazuHTML(tag)}
       </div>
       <div class="tag-aktion">
         <button type="button" class="knopf zweit klein" data-aktion="wuerfeln" data-tag="${tag}" ${eintrag.fest ? "disabled" : ""}>Neu würfeln</button>
@@ -439,6 +549,7 @@ function tagHTML(tag) {
       <h3><a href="${esc(link)}">${esc(r.titel)}</a></h3>
       <p class="tag-beschreibung">${esc(r.beschreibung)}</p>
       <ul class="merkmale">${merkmale.join("")}</ul>
+      ${dazuHTML(tag)}
     </div>
     <div class="tag-aktion">
       ${zweiTageKnopf}
@@ -482,7 +593,7 @@ function anzeigen() {
           <h2 id="einkauf-titel">Einkaufsliste</h2>
           <p class="hinweis">${einkaufUntertitel()}</p>
         </div>
-        ${kochtage().length ? `<button type="button" class="knopf klein" data-aktion="uebernehmen">In gemeinsame Liste übernehmen</button>` : ""}
+        ${einkaufGerichte().length ? `<button type="button" class="knopf klein" data-aktion="uebernehmen">In gemeinsame Liste übernehmen</button>` : ""}
       </div>
       <div id="einkauf-inhalt"><p class="hinweis">Zutaten werden geladen …</p></div>
     </section>`;
@@ -491,9 +602,11 @@ function anzeigen() {
 
 function einkaufUntertitel() {
   const tage = kochtage();
-  if (!tage.length) return "";
+  const zusaetze = einkaufGerichte().length - tage.length;
+  if (!tage.length && !zusaetze) return "";
   const summe = tage.reduce((n, k) => n + k.portionen, 0);
-  return `${tage.length} ${tage.length === 1 ? "Gericht" : "Gerichte"}, ${summe} Portionen zusammen. Abhaken, was schon im Schrank ist.`;
+  const dazu = zusaetze ? `, dazu ${zusaetze} ${zusaetze === 1 ? "Beilage oder Nachtisch" : "Beilagen und Nachtische"}` : "";
+  return `${tage.length} ${tage.length === 1 ? "Gericht" : "Gerichte"} mit ${summe} Portionen${dazu}. Abhaken, was schon im Schrank ist.`;
 }
 
 // ---------- Einkaufsliste ----------
@@ -502,7 +615,7 @@ function einkaufUntertitel() {
 const VORRAT_EINHEITEN = ["EL", "TL", "Prise", "Tropfen", "Schuss"];
 // Nicht auf die Liste
 const NICHT_KAUFEN = /^(lauwarmes |warmes |kaltes |heißes )?wasser$/i;
-const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Glas: "Gläser", Flasche: "Flaschen" };
+const EINHEIT_MEHRZAHL = { Dose: "Dosen", Prise: "Prisen", Scheibe: "Scheiben", Packung: "Packungen", Zehe: "Zehen", Tasse: "Tassen", Glas: "Gläser", Flasche: "Flaschen", Kopf: "Köpfe" };
 const BRUECHE = { 0.25: "¼", 0.5: "½", 0.75: "¾" };
 
 // Zutaten je Rezeptseite: id -> Promise<{ basis, zutaten: [{ menge, einheit, einzahl, mehrzahl }] }>
@@ -545,6 +658,8 @@ function zutatenLesen(doc, rezept) {
       mehrzahl: nameBereinigen(name ? name.dataset.mehrzahl : text),
     };
   }).filter((z) => z.einzahl && !NICHT_KAUFEN.test(z.einzahl));
+  // Im Planer steht eine Salatsoße für „Blattsalat mit …“: ein Kopf Salat je 4 Portionen
+  if (rezept.kategorie === "Salatsoßen") zutaten.push({ menge: basis / 4, einheit: "Kopf", einzahl: "Blattsalat", mehrzahl: "Blattsalat" });
   return { basis, zutaten };
 }
 
@@ -576,7 +691,7 @@ function mengeText(wert, einheit) {
 
 // Fasst die Zutaten aller Kochtage zusammen, umgerechnet auf die geplanten Portionen
 async function einkaufsliste() {
-  const tage = kochtage();
+  const tage = einkaufGerichte();
   const daten = await Promise.all(tage.map((k) => zutatenLaden(k.rezept)));
   const posten = new Map();
 
@@ -623,7 +738,7 @@ let einkaufLauf = 0;
 async function einkaufAnzeigen() {
   const lauf = ++einkaufLauf;
   const ziel = () => (lauf === einkaufLauf ? document.getElementById("einkauf-inhalt") : null);
-  if (!kochtage().length) {
+  if (!einkaufGerichte().length) {
     ziel().innerHTML = `<p class="hinweis">Sobald Gerichte geplant sind, steht hier, was du einkaufen musst.</p>`;
     return;
   }
@@ -672,6 +787,11 @@ async function teilenText() {
       const portionen = portionenAm(tag);
       zeilen.push(`${kopf}: ${r.titel} (${portionen} ${portionen === 1 ? "Portion" : "Portionen"})`);
       if (basis) zeilen.push(`  ${basis}${rezeptLink(r, portionen)}`);
+    }
+    const extras = r ? e.extras || {} : {};
+    for (const x of EXTRAS) {
+      const z = rezeptMitId(extras[x.art]);
+      if (z) zeilen.push(`  + ${x.name}: ${extraTitel(z)}${basis ? ` (${basis}${rezeptLink(z, extraPortionen(x.art, z))})` : ""}`);
     }
   }
 
@@ -748,6 +868,8 @@ el.woche.addEventListener("click", (e) => {
   switch (knopf.dataset.aktion) {
     case "wuerfeln": neuWuerfeln(tag); break;
     case "festhalten": festhalten(tag); break;
+    case "extra": extraUmschalten(tag, knopf.dataset.art); break;
+    case "extra-wuerfeln": extraWuerfeln(tag, knopf.dataset.art); break;
     case "zwei-tage": zweiTageUmschalten(tag); break;
     case "teilen": teilen(); break;
     case "uebernehmen": uebernehmen(); break;

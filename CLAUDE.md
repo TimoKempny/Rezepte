@@ -44,6 +44,10 @@ SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 (`#liste=…`, danach im `localStorage`); er gehört nie ins Repo. Regeln in `firestore.rules`, bei Änderungen in der
 Firebase-Konsole neu einfügen. Der Wochenplaner übergibt Zutaten über `localStorage` (`einkaufsliste-import`).
 
+Zusätze im Wochenplaner (Salat, Brot, Nachtisch je Tag) sind in `EXTRAS` in `assets/planer.js` definiert und landen mit
+in der Einkaufsliste. Als Salat zählen Salate aus „Beilagen & Salate“ und jede Salatsoße (als „Blattsalat mit …“, der
+Planer ergänzt dann einen Kopf Blattsalat je 4 Portionen); Nachtisch zieht aus „Nachtisch“ und „Süßgebäck“.
+
 ## Web-App (PWA)
 
 `manifest.webmanifest` und App-Symbole `assets/app-*.png` (aus dem Favicon) machen die Seite installierbar. Jede Seite
@@ -55,7 +59,7 @@ Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=35`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=36`).
 
 ## Gestaltung
 
