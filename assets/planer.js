@@ -13,6 +13,15 @@ const TAGE = [
   { kurz: "So", lang: "Sonntag", wochenende: true },
 ];
 
+// Vorgaben je Kochtag; die Regler heißen wie der Schlüssel (#fleisch, #fisch, #fleischfrei)
+const ARTEN = [
+  { schluessel: "fleisch", name: "Fleisch", passt: (r) => r.ernaehrung === "fleisch" },
+  { schluessel: "fisch", name: "Fisch", passt: (r) => r.ernaehrung === "fisch" },
+  { schluessel: "fleischfrei", name: "fleischfrei", passt: istFleischfrei },
+];
+const artVon = (r) => (r ? ARTEN.find((a) => a.passt(r)) : undefined);
+const ARTEN_MAX = 7;
+
 // Erhöhen, wenn sich die Standardauswahl ändert: gespeicherte Kategorien werden dann einmal verworfen
 const KATEGORIEN_STAND = 4;
 
@@ -22,8 +31,11 @@ const el = {
   zeitWoche: document.getElementById("zeit-woche"),
   zeitWochenende: document.getElementById("zeit-wochenende"),
   schwierigkeit: document.getElementById("schwierigkeit-woche"),
-  fleischfrei: document.getElementById("fleischfrei"),
-  fleischfreiWert: document.getElementById("fleischfrei-wert"),
+  arten: Object.fromEntries(ARTEN.map((a) => [a.schluessel, {
+    regler: document.getElementById(a.schluessel),
+    wert: document.getElementById(`${a.schluessel}-wert`),
+  }])),
+  artenHinweis: document.getElementById("arten-hinweis"),
   zweiTage: document.getElementById("zwei-tage"),
   zweiTageWert: document.getElementById("zwei-tage-wert"),
   portionen: document.getElementById("portionen"),
@@ -95,7 +107,7 @@ function kriterienLesen() {
     zeitWoche: Number(el.zeitWoche.value),
     zeitWochenende: Number(el.zeitWochenende.value),
     schwierigkeit: el.schwierigkeit.value,
-    fleischfrei: Number(el.fleischfrei.value),
+    ...Object.fromEntries(ARTEN.map((a) => [a.schluessel, Number(el.arten[a.schluessel].regler.value)])),
     kategorien: [...el.kategorien.querySelectorAll('[aria-pressed="true"]')].map((b) => b.dataset.wert),
     kategorienStand: KATEGORIEN_STAND,
     zweiTage: Number(el.zweiTage.value),
@@ -109,7 +121,7 @@ function kriterienSetzen(k) {
   el.zeitWoche.value = k.zeitWoche;
   el.zeitWochenende.value = k.zeitWochenende;
   el.schwierigkeit.value = k.schwierigkeit;
-  el.fleischfrei.value = k.fleischfrei;
+  for (const a of ARTEN) if (k[a.schluessel] !== undefined) el.arten[a.schluessel].regler.value = k[a.schluessel];
   if (k.zweiTage !== undefined) el.zweiTage.value = k.zweiTage;
   el.abwechslung.checked = k.abwechslung;
   // Ältere gespeicherte Auswahl (vor der aktuellen Standardauswahl) nicht übernehmen
@@ -118,16 +130,40 @@ function kriterienSetzen(k) {
   }
 }
 
+// Zusammen höchstens eine Woche: Wird ein Regler erhöht, geben die anderen nach (der größte zuerst)
+function artenBegrenzen(geaendert) {
+  const regler = ARTEN.map((a) => el.arten[a.schluessel].regler);
+  let ueber = regler.reduce((n, r) => n + Number(r.value), 0) - ARTEN_MAX;
+  while (ueber > 0) {
+    const andere = regler.filter((r) => r !== geaendert && Number(r.value) > 0);
+    if (!andere.length) break;
+    const groesster = andere.reduce((a, b) => (Number(b.value) > Number(a.value) ? b : a));
+    groesster.value = Number(groesster.value) - 1;
+    ueber--;
+  }
+}
+
 function reglerAnzeigen() {
-  const n = Number(el.fleischfrei.value);
-  el.fleischfreiWert.textContent = n === 0 ? "keine Vorgabe" : n;
+  let summe = 0;
+  for (const a of ARTEN) {
+    const n = Number(el.arten[a.schluessel].regler.value);
+    el.arten[a.schluessel].wert.textContent = n === 0 ? "keine Vorgabe" : `mind. ${n}`;
+    summe += n;
+  }
+  const tage = el.tage.querySelectorAll("input:checked").length;
+  el.artenHinweis.textContent =
+    !summe || !tage ? "Ohne Vorgabe ist an den Tagen alles erlaubt."
+    : summe > tage ? `Mehr Vorgaben als Kochtage (${tage}). Sie werden reihum verteilt.`
+    : summe === tage ? "Damit ist jeder Kochtag festgelegt."
+    : `${tage - summe} von ${tage} Kochtagen ohne Vorgabe.`;
   const z = Number(el.zweiTage.value);
   el.zweiTageWert.textContent = z === 0 ? "keine" : z;
 }
 
 // ---------- Auswahl ----------
 
-function kandidaten(tag, k, nurFleischfrei) {
+// art: Eintrag aus ARTEN oder undefined (keine Vorgabe)
+function kandidaten(tag, k, art) {
   const wochenende = TAGE[tag].wochenende;
   const maxZeit = wochenende ? k.zeitWochenende : k.zeitWoche;
   const maxStufe = wochenende ? SCHWIERIGKEITEN.length - 1 : SCHWIERIGKEITEN.indexOf(k.schwierigkeit);
@@ -135,7 +171,7 @@ function kandidaten(tag, k, nurFleischfrei) {
     r.zeit <= maxZeit &&
     SCHWIERIGKEITEN.indexOf(r.schwierigkeit) <= maxStufe &&
     k.kategorien.includes(r.kategorie) &&
-    (!nurFleischfrei || istFleischfrei(r)));
+    (!art || art.passt(r)));
 }
 
 // Kategorien der direkt benachbarten geplanten Tage (die eigenen Reste zählen nicht)
@@ -165,7 +201,7 @@ function erstellen() {
   const k = kriterienLesen();
   const neu = {};
   const benutzt = new Set();
-  let fleischfreiFest = 0;
+  const festJeArt = Object.fromEntries(ARTEN.map((a) => [a.schluessel, 0]));
 
   // Festgehaltene Tage (und ihre Reste) bleiben
   for (const tag of k.tage) {
@@ -173,7 +209,8 @@ function erstellen() {
     if (alt && alt.fest && rezeptMitId(alt.id)) {
       neu[tag] = { ...alt };
       benutzt.add(alt.id);
-      if (istFleischfrei(rezeptMitId(alt.id))) fleischfreiFest++;
+      const art = artVon(rezeptMitId(alt.id));
+      if (art) festJeArt[art.schluessel]++;
     }
   }
   for (const tag of Object.keys(neu).map(Number)) {
@@ -192,20 +229,33 @@ function erstellen() {
   }
   const fehlendePaare = Math.max(0, k.zweiTage - vorhandenePaare - resteFuer.size);
 
-  // Kochtage, für die ein Rezept gewählt wird; ein Paar zählt doppelt für die fleischfreien Tage
+  // Kochtage, für die ein Rezept gewählt wird. Vorgaben (Fleisch, Fisch, fleischfrei) werden reihum auf
+  // zufällige Kochtage verteilt, damit bei zu vielen Vorgaben jede Art etwas abbekommt; ein Paar zählt doppelt.
   const kochtage = k.tage.filter((t) => offen.has(t) && ![...resteFuer.values()].includes(t));
-  let benoetigt = Math.max(0, Math.min(k.fleischfrei, k.tage.length) - fleischfreiFest);
-  const fleischfreiTage = new Set();
-  for (const tag of mischen(kochtage)) {
-    if (benoetigt <= 0) break;
-    fleischfreiTage.add(tag);
-    benoetigt -= resteFuer.has(tag) ? 2 : 1;
+  const benoetigt = Object.fromEntries(ARTEN.map((a) => [a.schluessel, Math.max(0, (k[a.schluessel] || 0) - festJeArt[a.schluessel])]));
+  const artFuer = new Map();
+  const frei = mischen(kochtage);
+  while (frei.length && ARTEN.some((a) => benoetigt[a.schluessel] > 0)) {
+    for (const a of ARTEN) {
+      if (benoetigt[a.schluessel] <= 0 || !frei.length) continue;
+      const tag = frei.pop();
+      artFuer.set(tag, a);
+      benoetigt[a.schluessel] -= resteFuer.has(tag) ? 2 : 1;
+    }
   }
+  const ueberbucht = ARTEN.some((a) => benoetigt[a.schluessel] > 0);
 
   let leer = 0;
   let doppelt = 0;
+  const verfehlt = new Set();
   for (const tag of kochtage) {
-    let pool = kandidaten(tag, k, fleischfreiTage.has(tag));
+    const art = artFuer.get(tag);
+    let pool = kandidaten(tag, k, art);
+    // Passt nichts zur Vorgabe, lieber irgendein passendes Gericht als ein leerer Tag
+    if (art && !pool.length) {
+      pool = kandidaten(tag, k);
+      if (pool.length) verfehlt.add(art.name);
+    }
     if (resteFuer.has(tag) && pool.some((r) => r.zweiTage)) pool = pool.filter((r) => r.zweiTage);
     const meiden = k.abwechslung ? nachbarKategorien(tag, k, neu) : [];
     const wahl = auswaehlen(pool, benutzt, meiden);
@@ -222,15 +272,17 @@ function erstellen() {
 
   plan = neu;
   abgehakt = new Set();
-  meldung = meldungBauen(k, leer, doppelt, fehlendePaare);
+  meldung = meldungBauen(k, { leer, doppelt, fehlendePaare, ueberbucht, verfehlt: [...verfehlt] });
   speichern(k);
   anzeigen();
 }
 
-function meldungBauen(k, leer, doppelt, fehlendePaare = 0) {
+function meldungBauen(k, { leer = 0, doppelt = 0, fehlendePaare = 0, ueberbucht = false, verfehlt = [] }) {
   if (!k.tage.length) return "";
   if (fehlendePaare) return `Für ${fehlendePaare === 1 ? "ein Gericht" : `${fehlendePaare} Gerichte`} für zwei Tage fehlen aufeinanderfolgende freie Tage. Wähle mehr Kochtage aus oder löse festgehaltene Tage.`;
-  if (leer) return `Für ${leer === 1 ? "einen Tag" : `${leer} Tage`} passt kein Rezept. Erhöhe die Kochzeit, erlaube mehr Kategorien oder senke die Zahl der fleischfreien Tage.`;
+  if (leer) return `Für ${leer === 1 ? "einen Tag" : `${leer} Tage`} passt kein Rezept. Erhöhe die Kochzeit, oder erlaube mehr Kategorien.`;
+  if (verfehlt.length) return `Nicht für jeden Tag mit Vorgabe „${verfehlt.join("“ oder „")}“ gibt es ein passendes Rezept, dort steht jetzt etwas anderes. Erhöhe die Kochzeit oder erlaube mehr Kategorien (z. B. Fisch).`;
+  if (ueberbucht) return "Es gibt mehr Vorgaben für Fleisch, Fisch und fleischfreie Tage als Kochtage. Sie wurden reihum verteilt.";
   if (doppelt) return "Es gibt nicht genug passende Rezepte für die ganze Woche, deshalb kommen manche doppelt vor.";
   return "";
 }
@@ -238,11 +290,13 @@ function meldungBauen(k, leer, doppelt, fehlendePaare = 0) {
 function neuWuerfeln(tag) {
   const k = kriterienLesen();
   const aktuell = rezeptMitId(plan[tag].id);
-  const fleischfreiImPlan = Object.values(plan).filter((e) => istFleischfrei(rezeptMitId(e.id) || {})).length;
-  const mussFleischfrei = aktuell && istFleischfrei(aktuell) && fleischfreiImPlan <= k.fleischfrei;
+  // Würde mit dem neuen Rezept eine Vorgabe unterschritten, bleibt die Art des bisherigen Rezepts
+  const art = artVon(aktuell);
+  const imPlan = art ? Object.values(plan).filter((e) => artVon(rezeptMitId(e.id)) === art).length : 0;
+  const mussArt = art && imPlan <= (k[art.schluessel] || 0) ? art : undefined;
 
   const andere = new Set(Object.entries(plan).filter(([t]) => Number(t) !== tag).map(([, e]) => e.id));
-  const pool = kandidaten(tag, k, mussFleischfrei).filter((r) => !aktuell || r.id !== aktuell.id);
+  const pool = kandidaten(tag, k, mussArt).filter((r) => !aktuell || r.id !== aktuell.id);
   const meiden = k.abwechslung ? nachbarKategorien(tag, k, plan) : [];
   const wahl = auswaehlen(pool, andere, meiden);
 
@@ -661,7 +715,13 @@ function laden() {
 // ---------- Ereignisse ----------
 
 el.form.addEventListener("submit", (e) => { e.preventDefault(); erstellen(); });
-el.fleischfrei.addEventListener("input", reglerAnzeigen);
+for (const a of ARTEN) {
+  el.arten[a.schluessel].regler.addEventListener("input", (e) => {
+    artenBegrenzen(e.target);
+    reglerAnzeigen();
+  });
+}
+el.tage.addEventListener("change", reglerAnzeigen);
 el.zweiTage.addEventListener("input", reglerAnzeigen);
 // Portionen ändern nur Mengen und Links, der Plan bleibt
 el.portionen.addEventListener("change", () => {
