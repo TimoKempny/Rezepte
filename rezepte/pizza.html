@@ -7,13 +7,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/style.css?v=37">
+  <link rel="stylesheet" href="../assets/style.css?v=38">
   <link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/favicon-180.png?v=2">
   <link rel="manifest" href="../manifest.webmanifest">
   <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-title" content="Rezepte">
-  <script src="../assets/thema.js?v=37"></script>
+  <script src="../assets/thema.js?v=38"></script>
 </head>
 <body>
   <header class="kopf">
@@ -37,8 +37,8 @@
 
         <div class="rezept-kopf">
           <div>
-            <h1>Pizza <span data-nur="margherita">Margherita</span><span data-nur="salami">Salami</span><span data-nur="bianca">Bianca</span><span data-nur="napoli">Napoli</span></h1>
-            <p class="rezept-intro">Dünner Boden aus <a href="pizzateig.html">unserem besten Pizzateig</a>, heiß und kurz gebacken. <span data-nur="margherita">Klassisch mit roher Tomatensoße, Mozzarella und Basilikum.</span><span data-nur="salami">Mit Tomatensoße, Mozzarella und Salami.</span><span data-nur="bianca">Ohne Tomaten: Knoblauchöl, Mozzarella, Ricotta und Rosmarin.</span><span data-nur="napoli">Mit Tomatensoße, Mozzarella, Sardellen, Kapern und Oliven.</span></p>
+            <h1>Pizza <span data-nur="margherita">Margherita</span><span data-nur="salami">Salami</span><span data-nur="bianca">Bianca</span><span data-nur="parma">Parma</span></h1>
+            <p class="rezept-intro">Dünner Boden aus <a href="pizzateig.html">unserem besten Pizzateig</a>, heiß und kurz gebacken. <span data-nur="margherita">Klassisch mit roher Tomatensoße, Mozzarella und Basilikum.</span><span data-nur="salami">Mit Tomatensoße, Mozzarella und Salami.</span><span data-nur="bianca">Ohne Tomaten: Knoblauchöl, Mozzarella, Ricotta und Rosmarin.</span><span data-nur="parma">Mit Tomatensoße und Mozzarella, nach dem Backen mit Parmaschinken, Rucola und Parmesan belegt.</span></p>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
         <div><dt>Zeit</dt><dd>45 Min.</dd></div>
         <div><dt>Schwierigkeit</dt><dd>mittel</dd></div>
         <div><dt>Kategorie</dt><dd>Ofen</dd></div>
-        <div><dt>Ernährung</dt><dd><span data-nur="margherita bianca">vegetarisch</span><span data-nur="salami">mit Fleisch</span><span data-nur="napoli">mit Fisch</span></dd></div>
+        <div><dt>Ernährung</dt><dd><span data-nur="margherita bianca">vegetarisch</span><span data-nur="salami parma">mit Fleisch</span></dd></div>
       </dl>
 
       <div class="rezept-raster">
@@ -60,7 +60,7 @@
             <button type="button" class="chip ohne-punkt" data-variante="margherita" aria-pressed="true">Margherita</button>
             <button type="button" class="chip ohne-punkt" data-variante="salami" aria-pressed="false">Salami</button>
             <button type="button" class="chip ohne-punkt" data-variante="bianca" aria-pressed="false">Bianca</button>
-            <button type="button" class="chip ohne-punkt" data-variante="napoli" aria-pressed="false">Napoli</button>
+            <button type="button" class="chip ohne-punkt" data-variante="parma" aria-pressed="false">Parma</button>
           </div>
           <div class="portionen" data-basis="4">
             <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
@@ -74,8 +74,8 @@
             <li><b data-menge="2" data-einheit="TL">2 TL</b>Salz</li>
             <li><b data-menge="5" data-einheit="g">5 g</b>Frischhefe</li>
           </ul>
-          <h3 data-nur="margherita salami napoli">Für die Tomatensoße</h3>
-          <ul data-nur="margherita salami napoli">
+          <h3 data-nur="margherita salami parma">Für die Tomatensoße</h3>
+          <ul data-nur="margherita salami parma">
             <li><b data-menge="400" data-einheit="g">400 g</b>passierte Tomaten</li>
             <li><b data-menge="1" data-einheit="EL">1 EL</b>Olivenöl</li>
             <li><b data-menge="1" data-einheit="TL">1 TL</b>Oregano, getrocknet</li>
@@ -94,11 +94,11 @@
             <li data-nur="salami"><b data-menge="120" data-einheit="g">120 g</b>Salami, in Scheiben</li>
             <li data-nur="bianca"><b data-menge="250" data-einheit="g">250 g</b>Ricotta</li>
             <li data-nur="bianca"><b data-menge="2">2</b><span data-einzahl="Zweig Rosmarin" data-mehrzahl="Zweige Rosmarin">Zweige Rosmarin</span></li>
-            <li data-nur="napoli"><b data-menge="8">8</b><span data-einzahl="Sardellenfilet, in Öl" data-mehrzahl="Sardellenfilets, in Öl">Sardellenfilets, in Öl</span></li>
-            <li data-nur="napoli"><b data-menge="2" data-einheit="EL">2 EL</b>Kapern</li>
-            <li data-nur="napoli"><b data-menge="60" data-einheit="g">60 g</b>schwarze Oliven, entsteint</li>
+            <li data-nur="parma"><b data-menge="120" data-einheit="g">120 g</b>Parmaschinken (Prosciutto), in dünnen Scheiben</li>
+            <li data-nur="parma"><b data-menge="80" data-einheit="g">80 g</b>Rucola</li>
+            <li data-nur="parma"><b data-menge="30" data-einheit="g">30 g</b>Parmesan, am Stück</li>
             <li data-nur="margherita"><b></b>Basilikum, frisch</li>
-            <li data-nur="margherita salami napoli"><b data-menge="2" data-einheit="EL">2 EL</b>Olivenöl, zum Beträufeln</li>
+            <li data-nur="margherita salami parma"><b data-menge="2" data-einheit="EL">2 EL</b>Olivenöl, zum Beträufeln</li>
             <li><b></b>Hartweizengrieß oder Mehl, zum Formen</li>
           </ul>
         </section>
@@ -108,22 +108,22 @@
           <ol class="schritte">
             <li>Den Teig nach dem Rezept <a href="pizzateig.html">Der beste Pizzateig</a> zubereiten. Er braucht insgesamt etwa 8 Stunden zum Gehen, also morgens ansetzen. Die Teigkugeln 1 Stunde vor dem Backen aus dem Kühlschrank nehmen, falls sie dort lagen.</li>
             <li>Backofen mit Pizzastein oder umgedrehtem Backblech auf der untersten Schiene auf höchster Stufe (250–275 °C Ober-/Unterhitze) mindestens 30 Minuten vorheizen.</li>
-            <li data-nur="margherita salami napoli">Für die Soße passierte Tomaten mit Olivenöl, Oregano, Zucker und Salz verrühren. Sie wird nicht gekocht, sie gart auf der Pizza.</li>
+            <li data-nur="margherita salami parma">Für die Soße passierte Tomaten mit Olivenöl, Oregano, Zucker und Salz verrühren. Sie wird nicht gekocht, sie gart auf der Pizza.</li>
             <li data-nur="bianca">Für das Knoblauchöl den Knoblauch fein reiben oder pressen und mit dem Olivenöl und einer Prise Salz verrühren. Rosmarinnadeln abzupfen und fein hacken.</li>
             <li>Mozzarella in kleine Stücke zupfen und auf Küchenpapier abtropfen lassen, damit die Pizza nicht wässrig wird.</li>
-            <li data-nur="napoli">Sardellen abtropfen lassen und halbieren. Oliven in Ringe schneiden, Kapern abtropfen lassen.</li>
+            <li data-nur="parma">Rucola waschen, trocken schleudern und grobe Stiele abknipsen. Parmesan mit dem Sparschäler in dünne Späne hobeln.</li>
             <li>Eine Teigkugel auf Grieß oder Mehl legen und mit den Fingerspitzen von der Mitte nach außen zu einem Fladen von etwa 28 cm drücken. Den Rand etwas dicker lassen und den Teig nicht ausrollen, sonst geht die Luft raus. Auf ein Stück Backpapier legen.</li>
-            <li data-nur="margherita salami napoli">3–4 EL Soße dünn verstreichen, den Rand frei lassen, und ein Viertel des Mozzarellas darauf verteilen.</li>
+            <li data-nur="margherita salami parma">3–4 EL Soße dünn verstreichen, den Rand frei lassen, und ein Viertel des Mozzarellas darauf verteilen.</li>
             <li data-nur="bianca">Ein Viertel des Knoblauchöls auf dem Teig verstreichen, den Rand frei lassen. Ein Viertel des Mozzarellas und kleine Kleckse Ricotta darauf verteilen und mit Rosmarin bestreuen.</li>
             <li data-nur="salami">Mit einem Viertel der Salamischeiben belegen.</li>
-            <li data-nur="napoli">Mit einem Viertel der Sardellen, Kapern und Oliven belegen.</li>
             <li>Pizza mit dem Backpapier auf den heißen Stein oder das Blech ziehen und etwa 8–10 Minuten backen, bis der Rand gebräunt ist und der Käse blubbert. Mit den übrigen Teigkugeln genauso verfahren.</li>
             <li data-nur="margherita">Mit frischen Basilikumblättern belegen und mit etwas Olivenöl beträufeln.</li>
-            <li data-nur="salami napoli">Mit etwas Olivenöl beträufeln.</li>
+            <li data-nur="salami">Mit etwas Olivenöl beträufeln.</li>
+            <li data-nur="parma">Direkt nach dem Backen mit einem Viertel des Rucolas und des Schinkens belegen, Parmesanspäne darüberstreuen und mit etwas Olivenöl beträufeln. Der Schinken kommt erst jetzt darauf, damit er zart bleibt und nicht austrocknet.</li>
             <li data-nur="bianca">Mit etwas grobem Salz und Pfeffer bestreuen.</li>
           </ol>
           <p class="tipp"><strong>Tipp:</strong> Weitere Beläge: Schinken und Champignons, Thunfisch und rote Zwiebeln oder gegrilltes Gemüse. Nicht zu viel belegen, sonst wird der Boden nicht knusprig.</p>
-          <p class="tipp" data-nur="napoli"><strong>Tipp:</strong> Die Sardellen sind salzig, deshalb die Soße für die Napoli kaum salzen.</p>
+          <p class="tipp" data-nur="parma"><strong>Tipp:</strong> Der Parmaschinken ist salzig, deshalb die Soße für die Parma kaum salzen.</p>
           <p class="tipp"><strong>Hinweis:</strong> Die 45 Minuten gelten ohne die Gehzeit des Teigs. Eine Portion entspricht einer Pizza.</p>
         </section>
       </div>
@@ -134,7 +134,7 @@
     <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="../assets/rezept.js?v=37"></script>
-  <script src="../assets/timer.js?v=37"></script>
+  <script src="../assets/rezept.js?v=38"></script>
+  <script src="../assets/timer.js?v=38"></script>
 </body>
 </html>
