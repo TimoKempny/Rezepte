@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Schneller Flammkuchen</title>
+  <title>Flammkuchen Elsässer Art</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/style.css?v=36">
+  <link rel="stylesheet" href="../assets/style.css?v=37">
   <link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/favicon-180.png?v=2">
   <link rel="manifest" href="../manifest.webmanifest">
   <meta name="theme-color" content="#FFFFFF">
   <meta name="apple-mobile-web-app-title" content="Rezepte">
-  <script src="../assets/thema.js?v=36"></script>
+  <script src="../assets/thema.js?v=37"></script>
 </head>
 <body>
   <header class="kopf">
@@ -37,8 +37,8 @@
 
         <div class="rezept-kopf">
           <div>
-            <h1>Schneller Flammkuchen</h1>
-            <p class="rezept-intro">Dünner Teig ohne Hefe mit Schmand, Zwiebeln und Speck, in 20 Minuten bei voller Hitze gebacken.</p>
+            <h1>Flammkuchen <span data-nur="elsaesser">Elsässer Art</span><span data-nur="vegetarisch">mit Lauch und Champignons</span><span data-nur="ziegenkaese">mit Ziegenkäse und Honig</span><span data-nur="lachs">mit Räucherlachs</span></h1>
+            <p class="rezept-intro">Dünner Teig ohne Hefe mit Schmand, in 20 Minuten bei voller Hitze gebacken. <span data-nur="elsaesser">Klassisch mit Zwiebeln und Speck.</span><span data-nur="vegetarisch">Mit Lauch, Champignons und etwas Bergkäse.</span><span data-nur="ziegenkaese">Mit roten Zwiebeln, Ziegenkäse, Walnüssen und Honig.</span><span data-nur="lachs">Mit roten Zwiebeln, nach dem Backen mit Räucherlachs und Dill belegt.</span></p>
           </div>
         </div>
       </div>
@@ -50,12 +50,18 @@
         <div><dt>Zeit</dt><dd>35 Min.</dd></div>
         <div><dt>Schwierigkeit</dt><dd>leicht</dd></div>
         <div><dt>Kategorie</dt><dd>Ofen</dd></div>
-        <div><dt>Ernährung</dt><dd>mit Fleisch</dd></div>
+        <div><dt>Ernährung</dt><dd><span data-nur="elsaesser">mit Fleisch</span><span data-nur="vegetarisch ziegenkaese">vegetarisch</span><span data-nur="lachs">mit Fisch</span></dd></div>
       </dl>
 
       <div class="rezept-raster">
         <section class="zutaten">
           <h2>Zutaten</h2>
+          <div class="chips varianten" role="group" aria-label="Variante">
+            <button type="button" class="chip ohne-punkt" data-variante="elsaesser" aria-pressed="true">Elsässer Art</button>
+            <button type="button" class="chip ohne-punkt" data-variante="vegetarisch" aria-pressed="false">Lauch & Champignons</button>
+            <button type="button" class="chip ohne-punkt" data-variante="ziegenkaese" aria-pressed="false">Ziegenkäse & Honig</button>
+            <button type="button" class="chip ohne-punkt" data-variante="lachs" aria-pressed="false">Räucherlachs</button>
+          </div>
           <div class="portionen" data-basis="2">
             <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
             <span><output aria-live="polite">2</output> Portionen</span>
@@ -70,22 +76,42 @@
           </ul>
           <h3>Für den Belag</h3>
           <ul>
-            <li><b data-menge="2" data-einheit="Becher">2 Becher</b>Schmand</li>
-            <li><b data-menge="2">2</b><span data-einzahl="Zwiebel" data-mehrzahl="Zwiebeln">Zwiebeln</span></li>
-            <li><b data-menge="100" data-einheit="g">100 g</b>Speckwürfel</li>
+            <li><b data-menge="400" data-einheit="g">400 g</b>Schmand</li>
             <li><b></b>Salz und Pfeffer</li>
+            <li data-nur="elsaesser"><b data-menge="2">2</b><span data-einzahl="Zwiebel" data-mehrzahl="Zwiebeln">Zwiebeln</span></li>
+            <li data-nur="elsaesser"><b data-menge="100" data-einheit="g">100 g</b>Speckwürfel</li>
+            <li data-nur="vegetarisch"><b data-menge="1">1</b><span data-einzahl="Zwiebel" data-mehrzahl="Zwiebeln">Zwiebel</span></li>
+            <li data-nur="vegetarisch"><b data-menge="1">1</b><span data-einzahl="Stange Lauch" data-mehrzahl="Stangen Lauch">Stange Lauch</span></li>
+            <li data-nur="vegetarisch"><b data-menge="150" data-einheit="g">150 g</b>Champignons</li>
+            <li data-nur="vegetarisch"><b data-menge="50" data-einheit="g">50 g</b>Bergkäse, gerieben</li>
+            <li data-nur="ziegenkaese lachs"><b data-menge="1">1</b><span data-einzahl="rote Zwiebel" data-mehrzahl="rote Zwiebeln">rote Zwiebel</span></li>
+            <li data-nur="ziegenkaese"><b data-menge="150" data-einheit="g">150 g</b>Ziegenkäse (Rolle)</li>
+            <li data-nur="ziegenkaese"><b data-menge="30" data-einheit="g">30 g</b>Walnusskerne</li>
+            <li data-nur="ziegenkaese"><b data-menge="2" data-einheit="EL">2 EL</b>Honig</li>
+            <li data-nur="ziegenkaese"><b></b>Thymian, frisch oder getrocknet</li>
+            <li data-nur="lachs"><b data-menge="150" data-einheit="g">150 g</b>Räucherlachs</li>
+            <li data-nur="lachs"><b data-menge="0.5">½</b><span data-einzahl="Zitrone" data-mehrzahl="Zitronen">Zitrone</span></li>
+            <li data-nur="lachs"><b></b>Dill, frisch</li>
           </ul>
         </section>
 
         <section>
           <h2>Zubereitung</h2>
           <ol class="schritte">
-            <li>Mehl, Wasser, Öl und Salz zu einem Knetteig verarbeiten und ganz dünn ausrollen.</li>
+            <li>Backofen auf 250 °C Ober-/Unterhitze vorheizen.</li>
+            <li>Mehl, Wasser, Öl und Salz zu einem Knetteig verarbeiten und auf Backpapier ganz dünn ausrollen.</li>
             <li>Schmand mit Salz und Pfeffer würzen und auf dem Teig verstreichen.</li>
-            <li>Zwiebeln in dünne Halbringe schneiden und mit ganz wenig Wasser 1 Minute bei 600 Watt in der Mikrowelle dünsten.</li>
-            <li>Zwiebeln und Speck auf dem Schmand verteilen.</li>
-            <li>Im heißen Ofen bei 250 °C Ober-/Unterhitze auf der unteren Schiene 20 Minuten backen.</li>
+            <li data-nur="elsaesser vegetarisch">Zwiebeln in dünne Halbringe schneiden und mit ganz wenig Wasser 1 Minute bei 600 Watt in der Mikrowelle dünsten.</li>
+            <li data-nur="ziegenkaese lachs">Rote Zwiebel in feine Ringe schneiden.</li>
+            <li data-nur="elsaesser">Zwiebeln und Speck auf dem Schmand verteilen.</li>
+            <li data-nur="vegetarisch">Lauch putzen, waschen und in feine Ringe schneiden. Champignons in dünne Scheiben schneiden. Mit den Zwiebeln auf dem Schmand verteilen und mit Bergkäse bestreuen.</li>
+            <li data-nur="ziegenkaese">Zwiebelringe auf dem Schmand verteilen, Ziegenkäse in Scheiben schneiden oder zerbröseln und darauflegen. Walnüsse grob hacken, darüberstreuen und mit Thymian bestreuen.</li>
+            <li data-nur="lachs">Zwiebelringe auf dem Schmand verteilen. Der Lachs kommt erst nach dem Backen darauf.</li>
+            <li>Im heißen Ofen auf der unteren Schiene 20 Minuten backen, bis der Rand knusprig und braun ist.</li>
+            <li data-nur="ziegenkaese">Direkt nach dem Backen mit Honig beträufeln.</li>
+            <li data-nur="lachs">Räucherlachs in Streifen zupfen und auf dem heißen Flammkuchen verteilen. Mit Dill bestreuen, mit Zitronensaft beträufeln und pfeffern.</li>
           </ol>
+          <p class="tipp"><strong>Tipp:</strong> Statt Schmand geht auch Crème fraîche, dann wird der Belag etwas säuerlicher und cremiger.</p>
         </section>
       </div>
     </div>
@@ -95,7 +121,7 @@
     <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
   </footer>
 
-  <script src="../assets/rezept.js?v=36"></script>
-  <script src="../assets/timer.js?v=36"></script>
+  <script src="../assets/rezept.js?v=37"></script>
+  <script src="../assets/timer.js?v=37"></script>
 </body>
 </html>

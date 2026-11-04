@@ -646,7 +646,11 @@ function zutatenLesen(doc, rezept) {
   const ersteVariante = doc.querySelector("[data-variante]");
   const variante = new URLSearchParams(rezept.seite.split("?")[1] || "").get("variante") || (ersteVariante && ersteVariante.dataset.variante);
   const zutaten = [...doc.querySelectorAll(".zutaten li")]
-    .filter((li) => !li.dataset.nur || li.dataset.nur.split(" ").includes(variante))
+    .filter((li) => {
+      // data-nur kann an der Zeile oder an der ganzen Gruppe (<ul>) stehen
+      const nur = li.closest("[data-nur]");
+      return !nur || nur.dataset.nur.split(" ").includes(variante);
+    })
     .map((li) => {
     const b = li.querySelector("b");
     const name = li.querySelector("[data-einzahl]");
