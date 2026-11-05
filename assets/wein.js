@@ -4,6 +4,8 @@
 //           rating (1–10), preis (€ je Flasche), flasche (Liter), passtZu, link, datum (JJJJ-MM-TT), bild, notiz,
 //           profil: { intensitaet, suesse, saeure, tannin, koerper, abgang } (je 1–5, tannin nur bei Rotwein),
 //           aromen: [...] }
+// Aus dem Vivino-Export übernommene Weine haben zusätzlich quelle: "vivino" und vivinoSterne (1–5, eine Nachkommastelle);
+// rating ist dort Sterne × 2 gerundet, datum das Datum der Bewertung
 // Pflicht sind Name und Weinart. Noch nicht probiert: rating und profil sind null; fehlender Preis oder
 // Jahrgang null, fehlende Texte leer
 // Fotos (Etikett) liegen in assets/bilder/wein/<id>.jpg
@@ -137,7 +139,7 @@ function karteHTML(w) {
       ${w.passtZu ? `<div class="wein-passt"><span>Passt zu</span><ul>${passtZuHTML(w.passtZu)}</ul></div>` : ""}
       ${w.notiz ? `<p class="kaffee-notiz">${esc(w.notiz)}</p>` : ""}
       ${w.datum || link ? `<p class="kaffee-fuss">
-        ${w.datum ? `<span>Gekauft am ${esc(datumText(w.datum))}</span>` : "<span></span>"}
+        ${w.datum ? `<span>${w.quelle === "vivino" ? "Bei Vivino bewertet am" : "Gekauft am"} ${esc(datumText(w.datum))}</span>` : "<span></span>"}
         ${link ? `<a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(linkName(link))}</a>` : ""}
       </p>` : ""}
       ${token() ? `<p class="kaffee-verwalten">

@@ -166,6 +166,7 @@ function linkName(url) {
     || (host === "goo.gl" && url.pathname.startsWith("/maps"))
     || (/^google\./.test(host) && url.pathname.startsWith("/maps"))
     || /openstreetmap\.org$/.test(host);
+  if (/(^|\.)vivino\.com$/.test(host)) return "Bei Vivino";
   return istKarte ? "Auf der Karte" : host;
 }
 
