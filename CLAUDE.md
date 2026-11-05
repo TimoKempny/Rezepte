@@ -37,6 +37,14 @@ Jedes Rezept wird nach `rezepte/vorlage.html` gebaut und muss enthalten:
 umformatieren. Tasting-Profil nach SCA-Cupping-Formular (sechs Werte 1–5), Geschmacksnoten nach den Hauptgruppen des
 SCA Flavor Wheel, beides in `assets/kaffee.js` (`PROFIL`, `NOTEN`).
 
+## Wein
+
+`wein.html` liest `assets/wein.json` (Fotos der Etiketten in `assets/bilder/wein/`), funktioniert wie die Kaffeeseite
+und nutzt denselben Token. Gemeinsame Teile (GitHub-API, Foto verkleinern, Links, Netzdiagramm, Zugangsdialog) stehen in
+`assets/sammlung.js`, das vor `kaffee.js`/`wein.js` geladen wird. Verkostungsprofil nach WSET (`PROFIL`, Tannin nur
+bei Rotwein), Aromen nach dem Wine Aroma Wheel (`AROMEN`), Weinarten mit Farbtokens `--wein-*` (`WEINARTEN`), alles in
+`assets/wein.js`. „Passt zu“ verlinkt ein Rezept mit genau diesem Titel, sonst das einzige, dessen Titel den Begriff enthält.
+
 ## Einkaufsliste
 
 `einkaufsliste.html` mit `assets/einkauf.js` (ES-Modul, Firebase-SDK von gstatic): gemeinsame Liste in Firestore unter
@@ -59,7 +67,7 @@ Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=38`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=39`).
 
 ## Gestaltung
 

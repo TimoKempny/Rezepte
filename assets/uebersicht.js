@@ -3,8 +3,8 @@
 const rezepte = window.REZEPTE;
 const MAX_ZEIT = 180;
 
-const standard = { suche: "", kategorie: "alle", zeit: MAX_ZEIT, ernaehrung: "alle", schwierigkeit: "alle", sortierung: "neu" };
-const zustand = { ...standard };
+const standard = { suche: "", kategorien: [], zeit: MAX_ZEIT, ernaehrung: "alle", schwierigkeit: "alle", sortierung: "neu" };
+const zustand = { ...standard, kategorien: [] };
 
 const el = {
   suche: document.getElementById("suche"),
@@ -134,7 +134,7 @@ function kategorienAufbauen() {
 }
 
 function passt(r) {
-  if (zustand.kategorie !== "alle" && r.kategorie !== zustand.kategorie) return false;
+  if (zustand.kategorien.length && !zustand.kategorien.includes(r.kategorie)) return false;
   if (r.zeit > zustand.zeit && zustand.zeit < MAX_ZEIT) return false;
   if (zustand.ernaehrung === "vegetarisch" && !istFleischfrei(r)) return false;
   if (zustand.ernaehrung === "vegan" && r.ernaehrung !== "vegan") return false;
@@ -155,8 +155,9 @@ const sortierer = {
   "name": (a, b) => a.titel.localeCompare(b.titel, "de"),
 };
 
-function karteHTML(r, fehlend = []) {
+function karteHTML(r, fehlend = [], allesDa = false) {
   const merkmale = [`<li>${formatZeit(r.zeit)}</li>`, `<li>${esc(r.schwierigkeit)}</li>`];
+  if (allesDa) merkmale.unshift(`<li class="alles-da">Alles da</li>`);
   if (istFleischfrei(r)) merkmale.push(`<li>${esc(r.ernaehrung)}</li>`);
   return `<li>
     <a class="rezept-karte" href="${esc(r.seite)}">
@@ -164,20 +165,32 @@ function karteHTML(r, fehlend = []) {
       <h3>${esc(r.titel)}</h3>
       <p>${esc(r.beschreibung)}</p>
       <ul class="merkmale">${merkmale.join("")}</ul>
-      ${fehlend.length ? `<div class="fehlt"><span>Fehlt:</span>
+      ${fehlend.length ? `<div class="fehlt"><span>Noch besorgen:</span>
         <ul>${fehlend.map((k) => `<li>${esc(zutatName[k])}</li>`).join("")}</ul></div>` : ""}
     </a>
   </li>`;
 }
 
-// Mit Vorrat: erst die Rezepte ohne fehlende Zutaten, dann die mit wenigen, jeweils mit Überschrift
+// Mit Vorrat: erst die Rezepte ohne fehlende Zutaten, dann die mit wenigen, jeweils mit Überschrift und Erklärung
 function vorratRasterHTML(treffer) {
-  const titelHTML = (text, n) => `<li class="raster-titel"><h2>${text} <span>${n}</span></h2></li>`;
+  const titelHTML = (art, text, n, erklaerung) => `<li class="raster-titel ${art}">
+    <h2>${text} <span>${n}</span></h2><p>${erklaerung}</p></li>`;
   const sofort = treffer.filter((t) => !t.abgleich.fehlend.length);
   const wenig = treffer.filter((t) => t.abgleich.fehlend.length);
   const teile = [];
-  if (sofort.length) teile.push(titelHTML("Kannst du sofort kochen", sofort.length), ...sofort.map((t) => karteHTML(t.r)));
-  if (wenig.length) teile.push(titelHTML("Fehlt nur wenig", wenig.length), ...wenig.map((t) => karteHTML(t.r, t.abgleich.fehlend)));
+  if (sofort.length) {
+    teile.push(titelHTML("sofort", "Kannst du sofort kochen", sofort.length,
+      "Alle Hauptzutaten hast du da, du brauchst nichts zu kaufen."),
+      ...sofort.map((t) => karteHTML(t.r, [], true)));
+  } else if (wenig.length) {
+    teile.push(titelHTML("sofort", "Kannst du sofort kochen", 0,
+      "Für kein Rezept hast du schon alles da. Unten steht, was dir jeweils noch fehlt."));
+  }
+  if (wenig.length) {
+    teile.push(titelHTML("wenig", "Mit ein paar Zutaten mehr", wenig.length,
+      `Hier fehlen dir 1 bis ${MAX_FEHLEND} Zutaten, sie stehen unter jedem Rezept.`),
+      ...wenig.map((t) => karteHTML(t.r, t.abgleich.fehlend)));
+  }
   return teile.join("");
 }
 
@@ -198,7 +211,8 @@ function anzeigen() {
   el.leerText.textContent = mitVorrat ? "Kreuze weitere Zutaten an oder lockere die Filter." : LEER_TEXT;
 
   if (mitVorrat) {
-    el.anzahl.innerHTML = `<strong>${treffer.length}</strong> ${treffer.length === 1 ? "Rezept passt" : "Rezepte passen"} zu deinem Vorrat`;
+    const sofort = treffer.filter((t) => !t.abgleich.fehlend.length).length;
+    el.anzahl.innerHTML = `<strong>${sofort}</strong> sofort kochbar, <strong>${treffer.length - sofort}</strong> mit ein paar Zutaten mehr`;
   } else {
     el.anzahl.innerHTML = treffer.length === rezepte.length
       ? `<strong>${rezepte.length}</strong> Rezepte`
@@ -214,18 +228,19 @@ function anzeigen() {
   el.zeitWert.textContent = zustand.zeit >= MAX_ZEIT ? "beliebig" : formatZeit(zustand.zeit);
 
   for (const knopf of el.kategorien.children) {
-    knopf.setAttribute("aria-pressed", String(knopf.dataset.wert === zustand.kategorie));
+    const an = knopf.dataset.wert === "alle" ? !zustand.kategorien.length : zustand.kategorien.includes(knopf.dataset.wert);
+    knopf.setAttribute("aria-pressed", String(an));
   }
   for (const knopf of el.ernaehrung.children) {
     knopf.setAttribute("aria-pressed", String(knopf.dataset.wert === zustand.ernaehrung));
   }
 
-  const gefiltert = ["suche", "kategorie", "zeit", "ernaehrung", "schwierigkeit"].some((k) => zustand[k] !== standard[k]);
+  const gefiltert = zustand.kategorien.length > 0 || ["suche", "zeit", "ernaehrung", "schwierigkeit"].some((k) => zustand[k] !== standard[k]);
   el.zuruecksetzen.hidden = !gefiltert;
 }
 
 function zuruecksetzen() {
-  Object.assign(zustand, standard, { sortierung: zustand.sortierung });
+  Object.assign(zustand, standard, { kategorien: [], sortierung: zustand.sortierung });
   el.suche.value = "";
   el.zeit.value = MAX_ZEIT;
   el.schwierigkeit.value = "alle";
@@ -240,7 +255,13 @@ el.schwierigkeit.addEventListener("change", () => { zustand.schwierigkeit = el.s
 el.sortierung.addEventListener("change", () => { zustand.sortierung = el.sortierung.value; anzeigen(); });
 el.kategorien.addEventListener("click", (e) => {
   const knopf = e.target.closest("button");
-  if (knopf) { zustand.kategorie = knopf.dataset.wert; anzeigen(); }
+  if (!knopf) return;
+  // Mehrere Kategorien lassen sich kombinieren, „Alle“ hebt die Auswahl auf
+  const k = knopf.dataset.wert;
+  if (k === "alle") zustand.kategorien = [];
+  else if (zustand.kategorien.includes(k)) zustand.kategorien = zustand.kategorien.filter((x) => x !== k);
+  else zustand.kategorien = [...zustand.kategorien, k];
+  anzeigen();
 });
 el.ernaehrung.addEventListener("click", (e) => {
   const knopf = e.target.closest("button");

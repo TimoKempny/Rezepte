@@ -17,6 +17,12 @@
   --teller-innen: #FFFFFF;
   --teaser: #FEE0CE;
   --auf-teaser: #2A211C;
+  /* Weinarten (Punkte in Filtern und auf Karten, in beiden Designs gleich) */
+  --wein-rot: #8A1E3C;
+  --wein-weiss: #E3CF6E;
+  --wein-rose: #F0A3B1;
+  --wein-schaum: #B8C9D6;
+  --wein-suess: #C98A2B;
 
   --schrift-ui: "Bricolage Grotesque", system-ui, sans-serif;
   --schrift-text: "Literata", Georgia, serif;
@@ -142,9 +148,13 @@ a { color: inherit; }
 @media (max-width: 36rem) {
   .thema-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .thema-knopf { padding-inline: var(--s2); }
-  .kopf nav { gap: 0; }
-  .kopf nav a { padding-inline: var(--s2); font-size: 0.95rem; }
+  .kopf nav { gap: 0; margin-inline: calc(-1 * var(--s2)); }
+  .kopf nav a { padding-inline: 0.4rem; font-size: 0.9rem; }
+  .thema-knopf { padding-inline: 0.4rem; }
+  /* Kurze Beschriftungen, damit die Navigation in eine Zeile passt */
+  .nav-lang { display: none; }
 }
+@media (min-width: 36.01rem) { .nav-kurz { display: none; } }
 .thema-knopf .sonne, .thema-knopf[data-dunkel="true"] .mond { display: none; }
 .thema-knopf[data-dunkel="true"] .sonne { display: block; }
 .kopf nav a[aria-current="page"] { color: var(--auf-haupt); background: var(--haupt); }
@@ -380,6 +390,11 @@ a { color: inherit; }
 .raster-titel h2 { font-size: 1.4rem; letter-spacing: -0.01em; }
 .raster-titel span { color: var(--leise); font-weight: 600; }
 .raster-titel:not(:first-child) { margin-top: var(--s4); }
+.raster-titel p { color: var(--leise); font-size: 0.95rem; margin-top: var(--s1); }
+.raster-titel.sofort h2 span { background: var(--akzent); color: var(--auf-akzent); }
+.raster-titel.wenig h2 span { background: var(--haupt); color: var(--auf-haupt); }
+.raster-titel h2 span { display: inline-block; min-width: 1.8em; padding: 0 var(--s2); border-radius: 999px; font-size: 1rem; text-align: center; vertical-align: middle; }
+.merkmale li.alles-da { background: var(--akzent); color: var(--auf-akzent); font-weight: 700; }
 
 .fehlt { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); font-size: 0.85rem; }
 .fehlt span { color: var(--leise); font-weight: 600; }
@@ -945,4 +960,21 @@ a { color: inherit; }
 .kaffee-meldung:empty { display: none; }
 .kaffee-meldung { color: var(--leise); }
 .kaffee-meldung.fehler { color: var(--haupt-text); font-weight: 600; }
+/* ---------- Wein (nutzt die Kaffee-Karten) ---------- */
+.wein-art-filter { margin-top: var(--s4); }
+.wein-art-filter + .kaffee-noten-filter { margin-top: var(--s2); }
+.merkmale li.wein-art { display: inline-flex; align-items: center; gap: var(--s1); font-weight: 700; }
+.merkmale li.wein-art::before {
+  content: ""; width: 0.7rem; height: 0.7rem; border-radius: 50%;
+  background: var(--punkt, var(--leise)); box-shadow: 0 0 0 1px var(--linie);
+}
+.wein-preise { grid-template-columns: repeat(2, 1fr); }
+.wein-passt { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); font-size: 0.88rem; }
+.wein-passt > span { color: var(--leise); font-weight: 600; }
+.wein-passt ul { list-style: none; margin: 0; padding: 0; display: contents; }
+.wein-passt li { font-weight: 600; padding: 0 var(--s2); border-radius: 999px; background: var(--grund); }
+.wein-passt a { color: var(--haupt-text); }
+#w-profil { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--s2) var(--s4); }
+.profil-regler[hidden] { display: none; }
+.formular-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: var(--s4); }
 .dialog-knoepfe { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: flex-end; }

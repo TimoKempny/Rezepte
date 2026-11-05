@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wein</title>
+  <meta name="description" content="Weine, die wir schon getrunken haben, mit Bewertung, Verkostungsprofil, Preis und Bezugsquelle.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=39">
+  <link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png?v=2">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="apple-mobile-web-app-title" content="Rezepte">
+  <script src="assets/thema.js?v=39"></script>
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="index.html"><svg class="marke-logo" viewBox="0 0 64 64" aria-hidden="true"><defs><mask id="logo-besteck"><rect width="64" height="64" fill="#fff"/><g fill="#000"><path d="M20.6 31h1.6v6h1.1v-6h1.4v6h1.1v-6h1.6v7.4a3.2 3.2 0 0 1-2.4 3.1V55h-2V41.5a3.2 3.2 0 0 1-2.4-3.1z"/><ellipse cx="32" cy="36.2" rx="3.3" ry="5"/><rect x="31" y="40" width="2" height="15"/><path d="M39 31c2.6 0.6 4.2 4.6 4.2 9.8 0 1.8-0.6 3-2 3.4V55h-2z"/></g></mask></defs><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M24 15c-2.6-2.4 2.6-4 0-6.6"/><path d="M32 14c-3-2.8 3-4.6 0-7.6s3-4.2 0-5"/><path d="M40 15c-2.6-2.4 2.6-4 0-6.6"/></g><g fill="currentColor"><circle cx="32" cy="19" r="2.6"/><path d="M13 26.5C14 21.5 22 20 32 20s18 1.5 19 6.5z"/><rect x="6" y="31" width="12" height="3.4" rx="1.7"/><rect x="46" y="31" width="12" height="3.4" rx="1.7"/><path d="M15 28h34v21a6 6 0 0 1-6 6H21a6 6 0 0 1-6-6z" mask="url(#logo-besteck)"/></g></svg>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="index.html"><span class="nav-lang">Alle </span>Rezepte</a>
+        <a href="planer.html"><span class="nav-lang">Wochenplaner</span><span class="nav-kurz">Planer</span></a>
+        <a href="kaffee.html">Kaffee</a>
+        <a href="wein.html" aria-current="page">Wein</a>
+        <a href="einkaufsliste.html">Einkauf</a>
+        <button type="button" class="thema-knopf" id="thema-knopf"><svg class="mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="thema-text">Dunkel</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="huelle">
+    <div class="planer-kopf kaffee-kopf">
+      <div>
+        <h1>Wein</h1>
+        <p>Die Weine, die wir schon getrunken haben: wie gut sie waren, wie sie schmecken, wozu sie passen und wo es sie gibt.</p>
+      </div>
+      <div class="kaffee-aktionen">
+        <button type="button" class="knopf" id="neu-knopf">Wein eintragen</button>
+        <button type="button" class="knopf zweit klein" id="zugang-knopf">GitHub-Zugang</button>
+      </div>
+    </div>
+
+    <div class="ergebnis-zeile kaffee-leiste">
+      <p class="anzahl" id="wein-anzahl" aria-live="polite"></p>
+      <div class="feld">
+        <label for="wein-sortierung" class="nur-screenreader">Sortieren nach</label>
+        <select id="wein-sortierung">
+          <option value="neu">Zuletzt gekauft</option>
+          <option value="alt">Zuerst gekauft</option>
+          <option value="rating">Beste Bewertung</option>
+          <option value="preis">Günstigste pro Liter</option>
+          <option value="preis-ab">Teuerste pro Liter</option>
+          <option value="jahrgang-alt">Jahrgang, älteste zuerst</option>
+          <option value="jahrgang-neu">Jahrgang, jüngste zuerst</option>
+          <option value="name">Name A–Z</option>
+          <optgroup label="Verkostungsprofil, stärkste zuerst" id="sortierung-profil"></optgroup>
+        </select>
+      </div>
+    </div>
+
+    <div class="chips wein-art-filter" id="art-filter" role="group" aria-label="Nach Weinart filtern"></div>
+    <div class="chips kaffee-noten-filter" id="aromen-filter" role="group" aria-label="Nach Aroma filtern"></div>
+
+    <ul class="kaffee-raster" id="wein-liste"></ul>
+  </main>
+
+  <dialog class="teilen-dialog kaffee-dialog" id="wein-dialog" aria-labelledby="wein-dialog-titel">
+    <h2 id="wein-dialog-titel">Wein eintragen</h2>
+    <form id="wein-form" class="kaffee-form">
+      <div class="feld">
+        <label for="w-name">Name</label>
+        <input id="w-name" name="name" required maxlength="80" placeholder="z. B. Spätburgunder trocken">
+      </div>
+      <div class="feld">
+        <label for="w-weingut">Weingut</label>
+        <input id="w-weingut" name="weingut" maxlength="80" placeholder="optional">
+      </div>
+      <div class="formular-paar">
+        <div class="feld">
+          <label for="w-weinart">Weinart</label>
+          <select id="w-weinart" name="weinart" required></select>
+        </div>
+        <div class="feld">
+          <label for="w-jahrgang">Jahrgang</label>
+          <input id="w-jahrgang" name="jahrgang" type="number" min="1900" step="1" inputmode="numeric" placeholder="optional">
+        </div>
+      </div>
+      <div class="formular-paar">
+        <div class="feld">
+          <label for="w-rebsorte">Rebsorte</label>
+          <input id="w-rebsorte" name="rebsorte" maxlength="80" placeholder="optional, z. B. Riesling">
+        </div>
+        <div class="feld">
+          <label for="w-herkunft">Herkunft</label>
+          <input id="w-herkunft" name="herkunft" maxlength="80" placeholder="optional, z. B. Pfalz">
+        </div>
+      </div>
+      <label class="schalter">
+        <input type="checkbox" id="w-probiert" name="probiert" checked>
+        <span>Schon probiert <span class="hinweis">Ohne Haken bleiben Bewertung und Verkostungsprofil offen und lassen sich später nachtragen.</span></span>
+      </label>
+      <div class="bewertung-felder" id="w-bewertung">
+      <div class="feld">
+        <label for="w-rating">Bewertung <span class="feld-wert" id="w-rating-wert">7 / 10</span></label>
+        <input id="w-rating" name="rating" type="range" min="1" max="10" step="1" value="7">
+      </div>
+      <fieldset class="profil-eingabe">
+        <legend>Verkostungsprofil <span class="hinweis">1 = kaum, 5 = sehr ausgeprägt</span></legend>
+        <div id="w-profil"></div>
+      </fieldset>
+      <fieldset class="profil-eingabe">
+        <legend>Aromen</legend>
+        <div class="chips" id="w-aromen"></div>
+      </fieldset>
+      </div>
+      <div class="feld">
+        <span class="feld-name" id="w-preis-label">Preis</span>
+        <div class="preis-eingabe" role="group" aria-labelledby="w-preis-label">
+          <input id="w-preis" name="preis" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="optional" aria-label="Preis in Euro">
+          <span>€ für</span>
+          <select id="w-flasche" name="flasche" aria-label="Flaschengröße"></select>
+        </div>
+        <p class="hinweis" id="w-preis-liter"></p>
+      </div>
+      <div class="feld">
+        <label for="w-passt">Passt zu</label>
+        <input id="w-passt" name="passtZu" maxlength="160" list="rezept-vorschlaege" autocomplete="off" placeholder="optional, z. B. Lasagne, Käse">
+        <datalist id="rezept-vorschlaege"></datalist>
+        <p class="hinweis">Mehreres mit Komma trennen. Rezepte aus der Sammlung (z. B. „Lasagne“) werden auf der Karte verlinkt.</p>
+      </div>
+      <div class="feld">
+        <label for="w-link">Link zum Laden</label>
+        <input id="w-link" name="link" type="text" inputmode="url" autocomplete="off" placeholder="optional, Shop oder Google/Apple Maps">
+        <p class="hinweis">Aus „Teilen“ in Maps kannst du den ganzen Text einfügen, der Link wird herausgesucht.</p>
+      </div>
+      <div class="feld">
+        <label for="w-datum">Kaufdatum</label>
+        <input id="w-datum" name="datum" type="date">
+      </div>
+      <div class="feld">
+        <span class="feld-name" id="w-bild-label">Foto des Etiketts</span>
+        <div class="bild-wahl" role="group" aria-labelledby="w-bild-label">
+          <label class="knopf zweit klein foto-kamera">
+            <input type="file" accept="image/*" capture="environment" data-foto>Foto aufnehmen
+          </label>
+          <label class="knopf zweit klein">
+            <input type="file" accept="image/*" data-foto>Bild auswählen
+          </label>
+        </div>
+        <img class="bild-vorschau" id="w-bild-vorschau" alt="Vorschau des Fotos" hidden>
+      </div>
+      <div class="feld">
+        <label for="w-notiz">Notiz</label>
+        <textarea id="w-notiz" name="notiz" rows="2" maxlength="300" placeholder="optional, z. B. Trinktemperatur oder Anlass"></textarea>
+      </div>
+      <p class="kaffee-meldung" id="wein-meldung" role="status"></p>
+      <div class="dialog-knoepfe">
+        <button type="button" class="knopf zweit klein" data-schliessen>Abbrechen</button>
+        <button type="submit" class="knopf" id="w-speichern">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="teilen-dialog kaffee-dialog" id="zugang-dialog" aria-labelledby="zugang-titel">
+    <h2 id="zugang-titel">GitHub-Zugang</h2>
+    <form id="zugang-form" class="kaffee-form">
+      <p class="hinweis">Neue Weine werden direkt ins Repository geschrieben. Dafür braucht dieser Browser einmalig einen
+        Zugriffsschlüssel: auf GitHub unter <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Settings → Fine-grained tokens</a>
+        einen Token nur für das Repository <b>Rezepte</b> mit der Berechtigung <b>Contents: Read and write</b> anlegen.
+        Er wird nur in diesem Browser gespeichert.</p>
+      <div class="feld">
+        <label for="z-token">Token</label>
+        <input id="z-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+      </div>
+      <p class="kaffee-meldung" id="zugang-meldung" role="status"></p>
+      <div class="dialog-knoepfe">
+        <button type="button" class="knopf zweit klein" id="z-entfernen">Entfernen</button>
+        <button type="button" class="knopf zweit klein" data-schliessen>Abbrechen</button>
+        <button type="submit" class="knopf">Prüfen und speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="fuss">
+    <div class="huelle">Verkostungsprofil nach dem Systematic Approach to Tasting des Wine &amp; Spirit Education Trust (WSET), Aromen nach dem Wine Aroma Wheel von Ann C. Noble. <a href="bildnachweise.html">Bildnachweise</a></div>
+  </footer>
+
+  <script src="assets/gemeinsam.js?v=39"></script>
+  <script src="assets/rezepte.js?v=39"></script>
+  <script src="assets/sammlung.js?v=39"></script>
+  <script src="assets/wein.js?v=39"></script>
+</body>
+</html>

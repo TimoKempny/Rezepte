@@ -1,7 +1,7 @@
 // Service Worker für den Offline-Modus. Strategie: immer zuerst das Netz, damit Änderungen sofort ankommen.
 // Jede erfolgreiche Antwort wird zwischengespeichert; ohne Verbindung (oder wenn das Netz zu lange braucht)
 // kommt die zuletzt gespeicherte Fassung. Seiten, die noch nie geöffnet wurden, sind offline nicht verfügbar.
-// Firestore (Einkaufsliste) und die GitHub-API (Kaffee) laufen am Service Worker vorbei.
+// Firestore (Einkaufsliste) und die GitHub-API (Kaffee, Wein) laufen am Service Worker vorbei.
 
 const CACHE = "rezepte-v1";
 // Fremde Server, deren Dateien offline gebraucht werden: Schriften und das Firebase-SDK
