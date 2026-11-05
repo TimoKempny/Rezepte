@@ -1,6 +1,6 @@
 // Hell-/Dunkelmodus. Wird im <head> geladen, damit die gespeicherte Wahl
 // greift, bevor die Seite gezeichnet wird. Ohne Wahl folgt die Seite dem System.
-// Außerdem: Farbe der Statusleiste (installierte App) und Anmeldung des Service Workers.
+// Außerdem: Farbe der Statusleiste und Tab-Leiste unten (installierte App), Anmeldung des Service Workers.
 
 (function () {
   // Offline-Modus und Installierbarkeit: sw.js liegt im Hauptordner, eine Ebene über diesem Skript
@@ -11,6 +11,10 @@
 
   const wurzel = document.documentElement;
   const systemDunkel = window.matchMedia("(prefers-color-scheme: dark)");
+
+  // Als App installiert (Startbildschirm): Navigation als Tab-Leiste unten, siehe [data-app] in style.css
+  const alsApp = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (alsApp) wurzel.dataset.app = "";
 
   try {
     const gespeichert = localStorage.getItem("thema");
@@ -33,6 +37,10 @@
     const knopf = document.getElementById("thema-knopf");
     systemDunkel.addEventListener("change", statusleiste);
     if (!knopf) return;
+
+    // In der App steht der Umschalter oben rechts in der Kopfzeile, die Navigation ist unten
+    const kopf = document.querySelector(".kopf .huelle");
+    if (alsApp && kopf) kopf.append(knopf);
 
     const text = knopf.querySelector(".thema-text");
     // Der Knopf nennt das Design, zu dem er wechselt

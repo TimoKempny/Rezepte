@@ -91,6 +91,9 @@ body {
   font-size: 1.0625rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  /* viewport-fit=cover: im Querformat nicht unter die Kamera-Aussparung */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 h1, h2, h3 { line-height: 1.1; margin: 0; font-weight: 700; }
@@ -156,6 +159,41 @@ a { color: inherit; }
 }
 @media (min-width: 36.01rem) { .nav-kurz { display: none; } }
 .thema-knopf .sonne, .thema-knopf[data-dunkel="true"] .mond { display: none; }
+/* ---------- Installierte App: Navigation als Tab-Leiste unten (data-app setzt thema.js) ---------- */
+@media (max-width: 47.99rem) {
+  [data-app] body { padding-bottom: calc(4.4rem + env(safe-area-inset-bottom)); }
+  [data-app] .kopf .huelle { min-height: 3.4rem; flex-wrap: nowrap; }
+  [data-app] .kopf nav {
+    position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s1);
+    padding: var(--s1) calc(var(--s2) + env(safe-area-inset-right)) calc(var(--s1) + env(safe-area-inset-bottom)) calc(var(--s2) + env(safe-area-inset-left));
+    background: var(--flaeche); border-top: 1px solid var(--linie);
+    box-shadow: 0 -0.25rem 1rem rgb(0 0 0 / 0.06);
+  }
+  [data-app] .kopf nav a {
+    display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+    padding: var(--s1) 0; border-radius: var(--rund);
+    font-size: 0.72rem; line-height: 1.2; white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  [data-app] .kopf nav a::before {
+    content: ""; width: 1.45rem; height: 1.45rem; background: currentColor;
+    -webkit-mask: var(--symbol) center / contain no-repeat; mask: var(--symbol) center / contain no-repeat;
+  }
+  [data-app] .kopf nav a:hover { background: transparent; color: var(--leise); }
+  [data-app] .kopf nav a[aria-current="page"] { background: var(--haupt-hell); color: var(--haupt-text); font-weight: 800; }
+  [data-app] .nav-lang { display: none; }
+  [data-app] .nav-kurz { display: inline; }
+  /* Falls der Umschalter noch in der Leiste steckt (ohne JavaScript), nicht als sechsten Tab zeigen */
+  [data-app] .kopf nav .thema-knopf { display: none; }
+  [data-app] .timer-leiste { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+  [data-app] .kopf nav a[href$="index.html"] { --symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z'/%3E%3Cpath d='M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z'/%3E%3C/svg%3E"); }
+  [data-app] .kopf nav a[href$="planer.html"] { --symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E"); }
+  [data-app] .kopf nav a[href$="kaffee.html"] { --symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z'/%3E%3Cpath d='M17 11h1.5a2.5 2.5 0 0 1 0 5H17'/%3E%3Cpath d='M8 3c-.8 1 .8 2 0 3M12 3c-.8 1 .8 2 0 3'/%3E%3C/svg%3E"); }
+  [data-app] .kopf nav a[href$="wein.html"] { --symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 3h10l-.5 6a4.5 4.5 0 0 1-9 0z'/%3E%3Cpath d='M12 13.5V21M8 21h8'/%3E%3C/svg%3E"); }
+  [data-app] .kopf nav a[href$="einkaufsliste.html"] { --symbol: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4h2.5l2.2 11h10.6l2-8H6.3'/%3E%3Ccircle cx='9.5' cy='19.5' r='1.5'/%3E%3Ccircle cx='17' cy='19.5' r='1.5'/%3E%3C/svg%3E"); }
+}
+
 .thema-knopf[data-dunkel="true"] .sonne { display: block; }
 .kopf nav a[aria-current="page"] { color: var(--auf-haupt); background: var(--haupt); }
 
@@ -515,14 +553,14 @@ a { color: inherit; }
 .tag {
   display: grid; align-items: center; gap: var(--s3) var(--s4);
   grid-template-columns: 3.4rem 4.2rem 1fr;
-  grid-template-areas: "name teller info" "aktion aktion aktion";
+  grid-template-areas: "name teller info" "dazu dazu dazu" "aktion aktion aktion";
   padding: var(--s4);
   background: var(--flaeche);
   border: 1px solid var(--linie);
   border-radius: 1rem;
 }
 @media (min-width: 40rem) {
-  .tag { grid-template-columns: 4rem 4.6rem 1fr auto; grid-template-areas: "name teller info aktion"; }
+  .tag { grid-template-columns: 4rem 4.6rem 1fr auto; grid-template-areas: "name teller info aktion" ". . dazu dazu"; }
 }
 .tag.fest { border-color: var(--akzent-tief); box-shadow: inset 6px 0 0 var(--akzent); background: linear-gradient(90deg, var(--akzent-hell), var(--flaeche) 40%); }
 .tag-name { grid-area: name; font-weight: 800; font-size: 1.05rem; line-height: 1.15; }
@@ -544,22 +582,36 @@ a { color: inherit; }
 .tag-hinweis { color: var(--leise); font-size: 0.92rem; margin-top: var(--s1); }
 .merkmale li.zwei-tage { background: var(--akzent); color: var(--auf-akzent); }
 
-/* Zusätze am Tag: Salat, Brot, Nachtisch */
-.dazu { margin-top: var(--s3); display: grid; gap: var(--s2); }
-.dazu-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s1); }
-.dazu-liste li { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; align-items: center; gap: var(--s2); font-size: 0.95rem; }
-.dazu-art { font-family: var(--schrift-ui); font-weight: 700; font-size: 0.78rem; color: var(--leise); }
-.dazu-liste a { font-weight: 600; text-decoration: none; }
+/* Zusätze am Tag: Salat, Brot, Nachtisch. Eigene Zeile unter dem Gericht, am Handy über die volle Breite */
+.dazu { grid-area: dazu; display: grid; gap: var(--s2); min-width: 0; }
+.dazu:empty { display: none; }
+.dazu-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+@media (min-width: 52rem) { .dazu-liste { grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); } }
+.dazu-liste li {
+  display: flex; align-items: center; gap: var(--s2);
+  padding: var(--s2) var(--s2) var(--s2) var(--s3);
+  border-radius: var(--rund); background: var(--grund); border: 1px solid var(--linie);
+}
+.tag.reste .dazu-liste li { background: var(--flaeche); }
+.dazu-text { display: grid; flex: 1; min-width: 0; line-height: 1.3; }
+.dazu-art { font-family: var(--schrift-ui); font-weight: 700; font-size: 0.75rem; color: var(--leise); text-transform: uppercase; letter-spacing: 0.04em; }
+.dazu-liste a { font-weight: 600; font-size: 0.95rem; text-decoration: none; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
 .dazu-liste a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.dazu-mini-knoepfe { display: inline-flex; gap: var(--s1); }
+.dazu-mini-knoepfe { display: flex; gap: var(--s1); flex: none; }
 .dazu-mini {
-  font: inherit; font-weight: 700; line-height: 1;
-  width: 1.9rem; height: 1.9rem; border-radius: 50%;
-  border: 1px solid var(--linie); background: transparent; color: var(--tinte); cursor: pointer;
+  font: inherit; font-weight: 700; font-size: 1rem; line-height: 1;
+  width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  display: grid; place-items: center; padding: 0;
+  border: 1px solid var(--linie); background: var(--flaeche); color: var(--tinte); cursor: pointer;
 }
 .dazu-mini:hover { border-color: var(--haupt-text); color: var(--haupt-text); }
-.dazu-knoepfe { display: flex; flex-wrap: wrap; gap: var(--s1); }
-.dazu-knoepfe .chip { min-height: 1.9rem; font-size: 0.85rem; padding: 0 var(--s3); }
+.dazu-knoepfe { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.dazu-knoepfe .chip { min-height: 2.25rem; font-size: 0.88rem; padding: 0 var(--s3); justify-content: center; }
+@media (max-width: 39.99rem) {
+  /* Drei gleich breite Knöpfe nebeneinander, statt umzubrechen */
+  .dazu-knoepfe .chip, .tag-aktion .knopf { flex: 1 1 0; min-width: 0; padding-inline: var(--s2); white-space: nowrap; }
+  .tag-aktion { flex-wrap: nowrap; }
+}
 .knopf.zweit[aria-pressed="true"] { background: var(--haupt); border-color: var(--haupt); color: var(--auf-haupt); }
 .tag-leer .teller { --speise: var(--linie); }
 
@@ -822,7 +874,7 @@ a { color: inherit; }
   .woche { gap: 0; }
   .tag, .tag.fest {
     grid-template-columns: 30mm 25mm 1fr;
-    grid-template-areas: "name teller info";
+    grid-template-areas: "name teller info" ". . dazu";
     gap: 0 6mm; padding: 3.8mm 0;
     border: 0; border-bottom: 0.6pt solid var(--linie); border-radius: 0;
     background: none; box-shadow: none;
@@ -841,6 +893,12 @@ a { color: inherit; }
   .merkmale .nur-druck { display: block; }
   .tag.reste { border-style: solid; }
   .tag.reste .teller { opacity: 0.55; }
+  .dazu { margin-top: 1.5mm; }
+  .dazu-liste { gap: 0.5mm; }
+  .dazu-liste li, .tag.reste .dazu-liste li { padding: 0; border: 0; background: none; }
+  .dazu-text { display: block; font-size: 9.5pt; }
+  .dazu-art { font-size: 8pt; margin-right: 2mm; }
+  .dazu-liste a { font-size: 9.5pt; color: inherit; }
 
   .druck-fuss { display: block; margin-top: 4mm; font-size: 8pt; color: var(--leise); }
 

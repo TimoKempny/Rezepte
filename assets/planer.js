@@ -481,8 +481,10 @@ function dazuHTML(tag) {
       continue;
     }
     aktiv.push(`<li>
-      <span class="dazu-art">${x.name}</span>
-      <a href="${esc(rezeptLink(r, extraPortionen(x.art, r)))}">${esc(extraTitel(r))}</a>
+      <span class="dazu-text">
+        <span class="dazu-art">${x.name}</span>
+        <a href="${esc(rezeptLink(r, extraPortionen(x.art, r)))}">${esc(extraTitel(r))}</a>
+      </span>
       <span class="dazu-mini-knoepfe">
         <button type="button" class="dazu-mini" data-aktion="extra-wuerfeln" data-art="${x.art}" data-tag="${tag}" title="Anderen ${x.name} würfeln" aria-label="${x.name}: neu würfeln">↻</button>
         <button type="button" class="dazu-mini" data-aktion="extra" data-art="${x.art}" data-tag="${tag}" title="${x.name} entfernen" aria-label="${x.name} entfernen">×</button>
@@ -517,8 +519,8 @@ function tagHTML(tag) {
       <div class="tag-info">
         <h3>Reste: <a href="${esc(r.seite)}">${esc(r.titel)}</a></h3>
         <p class="tag-hinweis">Vom ${TAGE[eintrag.reste].lang}, dort die doppelte Menge kochen.</p>
-        ${dazuHTML(tag)}
       </div>
+      ${dazuHTML(tag)}
       <div class="tag-aktion">
         <button type="button" class="knopf zweit klein" data-aktion="wuerfeln" data-tag="${tag}" ${eintrag.fest ? "disabled" : ""}>Neu würfeln</button>
       </div>
@@ -549,8 +551,8 @@ function tagHTML(tag) {
       <h3><a href="${esc(link)}">${esc(r.titel)}</a></h3>
       <p class="tag-beschreibung">${esc(r.beschreibung)}</p>
       <ul class="merkmale">${merkmale.join("")}</ul>
-      ${dazuHTML(tag)}
     </div>
+    ${dazuHTML(tag)}
     <div class="tag-aktion">
       ${zweiTageKnopf}
       <button type="button" class="knopf zweit klein" data-aktion="festhalten" data-tag="${tag}" aria-pressed="${eintrag.fest}">${eintrag.fest ? "Festgehalten" : "Festhalten"}</button>

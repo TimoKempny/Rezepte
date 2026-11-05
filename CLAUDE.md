@@ -63,11 +63,15 @@ braucht im `<head>` nach dem `apple-touch-icon` die Zeilen für Manifest, `theme
 (wie in `rezepte/vorlage.html`); `thema.js` setzt die Statusleistenfarbe aus `--flaeche` und meldet `sw.js` an.
 `sw.js` arbeitet „Netz zuerst“ (offline die zuletzt gespeicherte Fassung), deshalb braucht es dort keine Versionsnummer.
 Nur wenn sich die Cache-Strategie ändert, `CACHE` in `sw.js` hochzählen.
+Als installierte App (Standalone) setzt `thema.js` `data-app` am `<html>` und schiebt den Themen-Knopf in die
+Kopfzeile; unter 48rem Breite wird die Navigation dann zur Tab-Leiste unten mit Symbolen (CSS-Masken je Link-Ziel in
+`style.css`, Block „Installierte App“). Neue Hauptseiten brauchen dort ein Symbol. Der Viewport hat `viewport-fit=cover`,
+Abstände unten über `env(safe-area-inset-bottom)`.
 
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=39`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=41`).
 
 ## Gestaltung
 

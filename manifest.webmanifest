@@ -1,7 +1,7 @@
 {
   "name": "Rezepte",
   "short_name": "Rezepte",
-  "description": "Unsere Rezepte mit Wochenplaner, Einkaufsliste und Kaffee-Tagebuch.",
+  "description": "Unsere Rezepte mit Wochenplaner, Einkaufsliste, Kaffee- und Weintagebuch.",
   "lang": "de",
   "start_url": "./",
   "scope": "./",
