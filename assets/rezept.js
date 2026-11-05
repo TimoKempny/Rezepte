@@ -62,6 +62,68 @@
     setzen(neu);
   });
 
+  // ---------- Zutaten auf die Einkaufsliste ----------
+  // Übernimmt die sichtbaren Zutaten (aktuelle Portionen, gewählte Variante) über localStorage
+  // ("einkaufsliste-import", wie der Wochenplaner) und öffnet die Einkaufsliste. Zutaten ohne Menge (Salz, Fett
+  // für die Form), Prisen und Wasser bleiben weg, gleiche Zutaten aus mehreren Gruppen werden zusammengezählt.
+  const NICHT_KAUFEN = /^(lauwarmes |warmes |kaltes |heißes )?wasser$/i;
+
+  function nameBereinigen(name) {
+    const ohne = name.replace(/\s*\([^)]*\)/g, "").replace(/,\s*\p{Ll}.*$/u, "").replace(/^etwas\s+/i, "").trim();
+    return ohne.charAt(0).toUpperCase() + ohne.slice(1);
+  }
+
+  function einkaufPosten() {
+    const faktor = Number(anzeige.value) / basis;
+    const posten = new Map();
+    for (const li of document.querySelectorAll(".zutaten li")) {
+      if (li.closest("[hidden]")) continue;
+      const b = li.querySelector("b[data-menge]");
+      // Ohne Menge (Salz, Fett für die Form) und Prisen braucht man nicht einzukaufen
+      if (!b || ["Prise", "Messerspitze"].includes(b.dataset.einheit)) continue;
+      const span = li.querySelector("[data-einzahl]");
+      const text = li.textContent.replace(b.textContent, "").trim();
+      const einzahl = nameBereinigen(span ? span.dataset.einzahl : text);
+      if (!einzahl || NICHT_KAUFEN.test(einzahl)) continue;
+      const schluessel = einzahl.toLowerCase();
+      if (!posten.has(schluessel)) {
+        posten.set(schluessel, { einzahl, mehrzahl: nameBereinigen(span ? span.dataset.mehrzahl : text), mengen: new Map() });
+      }
+      const p = posten.get(schluessel);
+      const einheit = b.dataset.einheit || "";
+      p.mengen.set(einheit, (p.mengen.get(einheit) || 0) + Number(b.dataset.menge) * faktor);
+    }
+    return [...posten.values()].map((p) => {
+      const teile = [...p.mengen].map(([einheit, wert]) => {
+        const t = zahl(wert, einheit);
+        const e = zahlwert(t) > 1 && EINHEIT_MEHRZAHL[einheit] ? EINHEIT_MEHRZAHL[einheit] : einheit;
+        return e ? `${t} ${e}` : t;
+      });
+      const stueck = p.mengen.get("") || 0;
+      return { name: stueck > 1 ? p.mehrzahl : p.einzahl, menge: teile.join(" + ") };
+    });
+  }
+
+  const einkaufKnopf = document.createElement("button");
+  einkaufKnopf.type = "button";
+  einkaufKnopf.className = "knopf zweit klein einkauf-uebernehmen";
+  einkaufKnopf.textContent = "Auf die Einkaufsliste";
+  regler.closest(".zutaten").append(einkaufKnopf);
+  einkaufKnopf.addEventListener("click", () => {
+    const titel = document.querySelector("h1").innerText.replace(/\s+/g, " ").trim();
+    const portionen = Number(anzeige.value);
+    try {
+      localStorage.setItem("einkaufsliste-import", JSON.stringify({
+        quelle: "rezept",
+        titel,
+        posten: einkaufPosten().map((p) => ({ ...p, rezepte: `${titel} (${portionen} ${portionen === 1 ? "Portion" : "Portionen"})` })),
+      }));
+    } catch {
+      return;
+    }
+    location.href = new URL("../einkaufsliste.html", location.href).href;
+  });
+
   // Der Wochenplaner verlinkt bei Gerichten für zwei Tage mit ?portionen=…
   const ausLink = Number(new URLSearchParams(location.search).get("portionen"));
   setzen(ausLink >= MIN && ausLink <= MAX ? Math.round(ausLink) : basis);

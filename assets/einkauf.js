@@ -1,6 +1,6 @@
 // Gemeinsame Einkaufsliste: Die Einträge liegen in Firestore unter listen/{liste}/eintraege und erscheinen auf allen
 // Geräten mit demselben Link sofort. Der zufällige Listen-Schlüssel im Link ist der Zugangsschutz (siehe Regeln in
-// firestore.rules). Der Wochenplaner legt seine Zutaten unter IMPORT_SPEICHER ab, diese Seite übernimmt sie beim Öffnen.
+// firestore.rules). Wochenplaner und Rezeptseiten legen Zutaten unter IMPORT_SPEICHER ab, diese Seite übernimmt sie beim Öffnen.
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {
@@ -180,11 +180,35 @@ function hinzufuegen(text, extra = {}) {
   });
 }
 
-// Zutaten aus dem Wochenplaner übernehmen. Ein offener Eintrag mit derselben Zutat wird nicht verdoppelt:
-// Stammt er aus einer früheren Übernahme, bekommt er die neue Menge, von Hand Eingetragenes bleibt, wie es ist.
+// Mengen zusammenzählen, wenn beide dieselbe Einheit haben ("120 g" + "200 g" = "320 g"), sonst "… + …"
+const ZAHL_EINHEIT = /^(\d+(?:[.,]\d+)?|\d*[¼½¾])\s*(.*)$/;
+function mengeZahl(text) {
+  const t = text.replace("¼", ".25").replace("½", ".5").replace("¾", ".75").replace(",", ".");
+  return Number(t.startsWith(".") ? "0" + t : t);
+}
+function mengenAddieren(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  const x = a.match(ZAHL_EINHEIT), y = b.match(ZAHL_EINHEIT);
+  if (x && y && x[2] === y[2] && !a.includes("+")) {
+    const summe = Math.round((mengeZahl(x[1]) + mengeZahl(y[1])) * 100) / 100;
+    return `${summe.toLocaleString("de-DE")}${x[2] ? " " + x[2] : ""}`;
+  }
+  return `${a} + ${b}`;
+}
+
+// Zutaten aus dem Wochenplaner oder von einer Rezeptseite übernehmen. Ein offener Eintrag mit derselben Zutat wird
+// nicht verdoppelt. Wochenplan (Liste der Posten): Stammt der Eintrag aus einer früheren Planübernahme, bekommt er die
+// neue Menge. Rezept ({ quelle: "rezept", titel, posten }): Die Menge wird zum vorhandenen Eintrag dazugezählt.
+// Von Hand Eingetragenes ohne Menge bleibt, wie es ist.
 async function importieren() {
-  const posten = speicherLesen(IMPORT_SPEICHER);
-  if (!Array.isArray(posten) || !posten.length) return;
+  const gespeichert = speicherLesen(IMPORT_SPEICHER);
+  const ausRezept = gespeichert && gespeichert.quelle === "rezept";
+  const posten = ausRezept ? gespeichert.posten : gespeichert;
+  if (!Array.isArray(posten) || !posten.length) {
+    if (gespeichert) speicherSchreiben(IMPORT_SPEICHER, null);
+    return;
+  }
   speicherSchreiben(IMPORT_SPEICHER, null);
 
   const offen = new Map(eintraege.filter((e) => !e.erledigt).map((e) => [e.schluessel, e]));
@@ -199,7 +223,13 @@ async function importieren() {
     if (!vorhanden) {
       batch.set(doc(eintraegeRef), { ...daten, schluessel: schluesselVon(name), quelle: "plan", erledigt: false, zeit: zeit + i });
       neu++;
-    } else if (vorhanden.quelle === "plan") {
+    } else if (ausRezept && (vorhanden.quelle !== "hand" || vorhanden.menge)) {
+      batch.update(doc(eintraegeRef, vorhanden.id), {
+        menge: mengenAddieren(vorhanden.menge || "", daten.menge).slice(0, 100),
+        rezepte: [vorhanden.rezepte, daten.rezepte].filter(Boolean).join(", ").slice(0, 300),
+      });
+      aktualisiert++;
+    } else if (!ausRezept && vorhanden.quelle === "plan") {
       batch.update(doc(eintraegeRef, vorhanden.id), daten);
       aktualisiert++;
     } else {
@@ -207,8 +237,9 @@ async function importieren() {
     }
   });
   await batch.commit();
-  const teile = [`${neu} ${neu === 1 ? "Zutat" : "Zutaten"} aus dem Wochenplan übernommen`];
-  if (aktualisiert) teile.push(`${aktualisiert} aktualisiert`);
+  const herkunft = ausRezept ? `von „${String(gespeichert.titel || "Rezept").slice(0, 100)}“` : "aus dem Wochenplan";
+  const teile = [`${neu} ${neu === 1 ? "Zutat" : "Zutaten"} ${herkunft} übernommen`];
+  if (aktualisiert) teile.push(`${aktualisiert} ${ausRezept ? "zu vorhandenen Einträgen dazugezählt" : "aktualisiert"}`);
   if (schonDa) teile.push(`${schonDa} ${schonDa === 1 ? "stand" : "standen"} schon drauf`);
   melden(teile.join(", ") + ".");
 }
@@ -327,6 +358,6 @@ if (schluessel) {
   el.start.hidden = false;
   if (speicherLesen(IMPORT_SPEICHER)) {
     document.getElementById("start-meldung").textContent =
-      "Lege zuerst eine Liste an, dann werden die Zutaten aus dem Wochenplan übernommen.";
+      "Lege zuerst eine Liste an, dann werden die Zutaten übernommen.";
   }
 }

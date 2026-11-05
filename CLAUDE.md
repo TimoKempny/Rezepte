@@ -50,7 +50,9 @@ bei Rotwein), Aromen nach dem Wine Aroma Wheel (`AROMEN`), Weinarten mit Farbtok
 `einkaufsliste.html` mit `assets/einkauf.js` (ES-Modul, Firebase-SDK von gstatic): gemeinsame Liste in Firestore unter
 `listen/{schluessel}/eintraege`, Live-Abgleich und Offline-Cache. Zugang über den zufälligen Schlüssel im Link
 (`#liste=…`, danach im `localStorage`); er gehört nie ins Repo. Regeln in `firestore.rules`, bei Änderungen in der
-Firebase-Konsole neu einfügen. Der Wochenplaner übergibt Zutaten über `localStorage` (`einkaufsliste-import`).
+Firebase-Konsole neu einfügen. Der Wochenplaner übergibt Zutaten über `localStorage` (`einkaufsliste-import`, Liste der
+Posten), ebenso der Knopf „Auf die Einkaufsliste“, den `rezept.js` unter die Zutaten jeder Rezeptseite setzt
+(`{ quelle: "rezept", titel, posten }`, aktuelle Portionen und Variante; Mengen werden zu offenen Einträgen dazugezählt).
 
 Zusätze im Wochenplaner (Salat, Brot, Nachtisch je Tag) sind in `EXTRAS` in `assets/planer.js` definiert und landen mit
 in der Einkaufsliste. Als Salat zählen Salate aus „Beilagen & Salate“ und jede Salatsoße (als „Blattsalat mit …“, der
@@ -71,7 +73,7 @@ Abstände unten über `env(safe-area-inset-bottom)`.
 ## Cache
 
 GitHub Pages lässt Dateien 10 Minuten im Browser-Cache. CSS/JS werden mit `?v=N` eingebunden: Nach jeder Änderung
-an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=42`).
+an `assets/*.css` oder `assets/*.js` die Zahl in allen HTML-Dateien erhöhen (aktuell `v=43`).
 
 ## Gestaltung
 

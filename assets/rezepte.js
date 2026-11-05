@@ -94,6 +94,20 @@ window.ZUTATEN = [
 
 window.REZEPTE = [
   {
+    id: "brookie",
+    titel: "Brookie",
+    seite: "rezepte/brookie.html",
+    bild: "assets/bilder/brookie.jpg",
+    kategorie: "Süßgebäck",
+    zeit: 60,
+    schwierigkeit: "leicht",
+    ernaehrung: "vegetarisch",
+    portionen: 16,
+    beschreibung: "Brownie und Chocolate-Chip-Cookie in einem: saftiger Schokoboden mit knusprigen Keksbröseln obendrauf.",
+    hinzugefuegt: "2026-11-05",
+    zutaten: ["butter", "schokolade", "zucker", "eier", "mehl", "kakao", "backpulver"],
+  },
+  {
     id: "kaesespaetzle",
     titel: "Käsespätzle",
     seite: "rezepte/kaesespaetzle.html",
