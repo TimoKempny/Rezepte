@@ -224,6 +224,7 @@ window.REZEPTE = [
     id: "gefuellte-haehnchenbrust-spinat-feta",
     titel: "Gefüllte Hähnchenbrust mit Spinat und Feta",
     seite: "rezepte/gefuellte-haehnchenbrust-spinat-feta.html",
+    bild: "assets/bilder/gefuellte-haehnchenbrust-spinat-feta.jpg",
     kategorie: "Ofen",
     zeit: 70,
     schwierigkeit: "mittel",
