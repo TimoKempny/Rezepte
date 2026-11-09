@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mac and Cheese</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css?v=44">
+  <link rel="icon" href="../assets/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/favicon-180.png?v=2">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#FFFFFF">
+  <meta name="apple-mobile-web-app-title" content="Rezepte">
+  <script src="../assets/thema.js?v=44"></script>
+</head>
+<body>
+  <header class="kopf">
+    <div class="huelle">
+      <a class="marke" href="../index.html"><svg class="marke-logo" viewBox="0 0 64 64" aria-hidden="true"><defs><mask id="logo-besteck"><rect width="64" height="64" fill="#fff"/><g fill="#000"><path d="M20.6 31h1.6v6h1.1v-6h1.4v6h1.1v-6h1.6v7.4a3.2 3.2 0 0 1-2.4 3.1V55h-2V41.5a3.2 3.2 0 0 1-2.4-3.1z"/><ellipse cx="32" cy="36.2" rx="3.3" ry="5"/><rect x="31" y="40" width="2" height="15"/><path d="M39 31c2.6 0.6 4.2 4.6 4.2 9.8 0 1.8-0.6 3-2 3.4V55h-2z"/></g></mask></defs><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M24 15c-2.6-2.4 2.6-4 0-6.6"/><path d="M32 14c-3-2.8 3-4.6 0-7.6s3-4.2 0-5"/><path d="M40 15c-2.6-2.4 2.6-4 0-6.6"/></g><g fill="currentColor"><circle cx="32" cy="19" r="2.6"/><path d="M13 26.5C14 21.5 22 20 32 20s18 1.5 19 6.5z"/><rect x="6" y="31" width="12" height="3.4" rx="1.7"/><rect x="46" y="31" width="12" height="3.4" rx="1.7"/><path d="M15 28h34v21a6 6 0 0 1-6 6H21a6 6 0 0 1-6-6z" mask="url(#logo-besteck)"/></g></svg>Rezepte</a>
+      <nav aria-label="Hauptmenü">
+        <a href="../index.html"><span class="nav-lang">Alle </span>Rezepte</a>
+        <a href="../planer.html"><span class="nav-lang">Wochenplaner</span><span class="nav-kurz">Planer</span></a>
+        <a href="../kaffee.html">Kaffee</a>
+        <a href="../wein.html">Wein</a>
+        <a href="../einkaufsliste.html">Einkauf</a>
+        <button type="button" class="thema-knopf" id="thema-knopf"><svg class="mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="thema-text">Dunkel</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="rezept">
+    <section class="rezept-buehne">
+      <img class="buehne-bild" src="../assets/bilder/mac-and-cheese-breit.jpg" alt="" width="1800" height="1012" fetchpriority="high">
+      <div class="huelle">
+        <a class="zurueck" href="../index.html">Zurück zur Übersicht</a>
+
+        <div class="rezept-kopf">
+          <div>
+            <h1>Mac and Cheese <span data-nur="ofen">aus dem Ofen</span><span data-nur="schnell">vom Herd</span></h1>
+            <p class="rezept-intro"><span data-nur="ofen">Überbackene Maccheroni mit Cheddar und Gruyère, oben goldbraun gegrillt.</span><span data-nur="schnell">Schnelle Maccheroni in samtiger Soße aus Cheddar, Schmelzkäse und geräuchertem Gouda.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="huelle">
+
+      <dl class="fakten">
+        <div><dt>Zeit</dt><dd><span data-nur="ofen">45 Min.</span><span data-nur="schnell">25 Min.</span></dd></div>
+        <div><dt>Schwierigkeit</dt><dd><span data-nur="ofen">mittel</span><span data-nur="schnell">leicht</span></dd></div>
+        <div><dt>Kategorie</dt><dd>Pasta</dd></div>
+        <div><dt>Ernährung</dt><dd><span data-nur="ofen">vegetarisch</span><span data-nur="schnell">fleisch</span></dd></div>
+      </dl>
+
+      <div class="rezept-raster">
+        <section class="zutaten">
+          <h2>Zutaten</h2>
+          <div class="chips varianten" role="group" aria-label="Variante">
+            <button type="button" class="chip ohne-punkt" data-variante="ofen" aria-pressed="true">Aus dem Ofen</button>
+            <button type="button" class="chip ohne-punkt" data-variante="schnell" aria-pressed="false">Vom Herd</button>
+          </div>
+          <div class="portionen" data-basis="8">
+            <button type="button" data-schritt="-1" aria-label="Eine Portion weniger">−</button>
+            <span><output aria-live="polite">8</output> Portionen</span>
+            <button type="button" data-schritt="1" aria-label="Eine Portion mehr">+</button>
+          </div>
+          <ul>
+            <li data-nur="ofen"><b data-menge="450" data-einheit="g">450 g</b>Große Hörnchennudeln</li>
+            <li data-nur="ofen"><b data-menge="270" data-einheit="g">270 g</b>Mittelalter Cheddar, gerieben</li>
+            <li data-nur="ofen"><b data-menge="270" data-einheit="g">270 g</b>Gruyère, gerieben</li>
+            <li data-nur="ofen"><b data-menge="110" data-einheit="g">110 g</b>Butter</li>
+            <li data-nur="ofen"><b data-menge="75" data-einheit="g">75 g</b>Mehl</li>
+            <li data-nur="ofen"><b data-menge="720" data-einheit="ml">720 ml</b>Vollmilch</li>
+            <li data-nur="ofen"><b data-menge="300" data-einheit="ml">300 ml</b>Sahne</li>
+            <li data-nur="schnell"><b data-menge="450" data-einheit="g">450 g</b>Kleine Hörnchennudeln</li>
+            <li data-nur="schnell"><b data-menge="55" data-einheit="g">55 g</b>Butter</li>
+            <li data-nur="schnell"><b data-menge="40" data-einheit="g">40 g</b>Mehl</li>
+            <li data-nur="schnell"><b data-menge="14" data-einheit="g">14 g</b>Hühnerbrühe-Pulver</li>
+            <li data-nur="schnell"><b data-menge="4" data-einheit="g">4 g</b>Geräuchertes Paprikapulver</li>
+            <li data-nur="schnell"><b data-menge="4" data-einheit="g">4 g</b>Zwiebelpulver</li>
+            <li data-nur="schnell"><b data-menge="600" data-einheit="ml">600 ml</b>Vollmilch</li>
+            <li data-nur="schnell"><b data-menge="240" data-einheit="ml">240 ml</b>Sahne</li>
+            <li data-nur="schnell"><b data-menge="180" data-einheit="g">180 g</b>Kräftiger Cheddar, gerieben</li>
+            <li data-nur="schnell"><b data-menge="180" data-einheit="g">180 g</b>American Cheese (Schmelzkäse), gerieben</li>
+            <li data-nur="schnell"><b data-menge="90" data-einheit="g">90 g</b>Geräucherter Gouda, gerieben</li>
+            <li><b></b>Salz</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Zubereitung</h2>
+          <ol class="schritte">
+            <li data-nur="ofen">Backofen auf 165 °C vorheizen, eine Auflaufform (etwa 2,8 l) einfetten.</li>
+            <li data-nur="ofen">Nudeln in reichlich Salzwasser 1–2 Minuten kürzer kochen als auf der Packung angegeben. Cheddar und Gruyère mischen.</li>
+            <li data-nur="ofen">Butter schmelzen, Mehl einrühren und 30 Sekunden anschwitzen. Milch nach und nach einrühren, Sahne zugeben und erhitzen, bis die Soße glänzt und leicht andickt.</li>
+            <li data-nur="ofen">Vom Herd nehmen und die Hälfte der Käsemischung einrühren, bis sie geschmolzen ist. Nudeln unterheben und abschmecken.</li>
+            <li data-nur="ofen">Die Hälfte der Nudeln in die Form geben, die Hälfte des restlichen Käses darüberstreuen, dann die übrigen Nudeln und den restlichen Käse schichten.</li>
+            <li data-nur="ofen">15–20 Minuten backen, bis es blubbert. Zum Schluss den Grill einschalten und die Oberfläche kurz bräunen. Heiß servieren.</li>
+            <li data-nur="schnell">Nudeln in stark gesalzenem Wasser 1–2 Minuten kürzer kochen als auf der Packung angegeben. Vor dem Abgießen etwa 240 ml Kochwasser aufheben.</li>
+            <li data-nur="schnell">Butter bei mittlerer Hitze schmelzen, Mehl einrühren und 1–2 Minuten hellgolden anschwitzen. Brühepulver, Paprika und Zwiebelpulver einrühren.</li>
+            <li data-nur="schnell">Milch und Sahne nach und nach einrühren, unter ständigem Rühren aufkochen und 2–3 Minuten sämig einkochen.</li>
+            <li data-nur="schnell">Vom Herd nehmen, erst die Hälfte des Käses einrühren, dann den Rest. Bei Bedarf nachsalzen.</li>
+            <li data-nur="schnell">Nudeln unter die Soße heben. Ist sie zu dick, 1–2 EL Kochwasser zugeben.</li>
+          </ol>
+          <p class="tipp"><strong>Quelle:</strong> nach einem Rezept von <a href="https://www.joshuaweissman.com/recipes/the-best-mac-and-cheese-2-ways">Joshua Weissman</a>.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="fuss">
+    <div class="huelle"><a href="../bildnachweise.html">Bildnachweise</a></div>
+  </footer>
+
+  <script src="../assets/rezept.js?v=44"></script>
+  <script src="../assets/timer.js?v=44"></script>
+</body>
+</html>
