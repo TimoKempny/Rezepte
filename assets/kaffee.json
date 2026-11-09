@@ -105,5 +105,18 @@
       "Nussig",
       "Schokolade & Kakao"
     ]
+  },
+  {
+    "id": "weihnachts-kaffee-mischung-2026-11-09-r3rt",
+    "name": "Weihnachts-Kaffee-Mischung",
+    "roester": "Arabica",
+    "rating": null,
+    "preisProKg": 32,
+    "link": "https://maps.app.goo.gl/t3SfZm525jpJjBP59",
+    "datum": "2026-11-09",
+    "bild": "assets/bilder/kaffee/weihnachts-kaffee-mischung-2026-11-09-r3rt.jpg",
+    "notiz": "",
+    "profil": null,
+    "noten": []
   }
 ]
