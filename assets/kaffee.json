@@ -118,5 +118,18 @@
     "notiz": "",
     "profil": null,
     "noten": []
+  },
+  {
+    "id": "togo-espresso-2026-11-09-t773",
+    "name": "Togo Espresso",
+    "roester": "Arabica",
+    "rating": null,
+    "preisProKg": 32,
+    "link": "https://maps.app.goo.gl/t3SfZm525jpJjBP59",
+    "datum": "2026-11-09",
+    "bild": "assets/bilder/kaffee/togo-espresso-2026-11-09-t773.jpg",
+    "notiz": "",
+    "profil": null,
+    "noten": []
   }
 ]
